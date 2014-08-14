@@ -1,0 +1,496 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Parallelising Python with Threading and Multiprocessing - QuantStart</title>
+  <meta name="description" content="Using the Threading and Multiprocessing Python libraries to improve performance in numerical financial code.">
+  <meta name="keywords" content="parallel python, python concurrency, python threading, python multiprocessing">
+
+  <meta content="text/html; charset=UTF-8" />
+  <meta name="google-site-verification" content="wl3-8ed1QZjI0iYZMv10zoZWYElkMObTfwLlWIj9cpA" />
+  <link rel="icon" href="/static/images/favicon.jpg" type="image/x-icon" />
+
+  <link href="/static/css/prettify.css" type="text/css" rel="stylesheet" />
+  <link href="/static/css/style.css?v=17" rel="stylesheet" type="text/css" media="all" />
+  
+<script type="text/javascript" src="/static/js/prettify/prettify.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://gumroad.com/js/gumroad.js"></script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/javascript" src="http://forms.aweber.com/form/47/1729344447.js"></script>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-5383959-5']);
+  _gaq.push(['_trackPageview']);
+  
+  (function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<script type="text/javascript">
+  setTimeout(function(){var a=document.createElement("script");
+  var b=document.getElementsByTagName("script")[0];
+  a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0019/0294.js?"+Math.floor(new Date().getTime()/3600000);
+  a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<script type="text/javascript" src="//use.typekit.net/pxp4qze.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    
+</head>
+<body onload="prettyPrint()">
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=395932680454962";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+  
+<div class="header">
+  
+  
+  
+  <div class="menu">
+    <ul class="inner-menu">
+      <li class="header-logo">
+        <a href="/">
+          <img src="/static/images/qs-logo-sm.png">
+        </a>
+      </li>
+      <li><a href="/about">ABOUT</a></li>
+      <li><a href="/ebooks">E-BOOKS</a></li>
+      
+      <li><a href="/articles">ARTICLES</a></li>
+      <li><a href="http://www.quantstart.com/articles/Quantitative-Finance-Reading-List">READING LIST</a></li>
+      
+      <li><a href="/writing-for-quantstart">WRITE FOR QUANTSTART</a></li>
+      <li><a href="/jobs">JOBS</a></li>
+      <li><a href="http://www.quantstart.com/articles/Free-Quantitative-Finance-Resources">RESOURCES</a></li>
+      
+    </ul>
+  </div>
+</div>      
+
+  <div class="container">
+    
+    
+    <div class="main-content">
+      
+      
+
+<div class="left-column">
+  
+  
+<div class="left-column-section about">
+  <div class="left-column-header"><a href="/cpp-for-quantitative-finance-ebook">C++ FOR QUANTITATIVE FINANCE</a></div>
+  <div class="left-column-body">
+    <div class="ebook-block">
+      <a href="/cpp-for-quantitative-finance-ebook">
+	<img src="/static/images/qs-ebook-tilted.png">
+      </a>
+    </div>
+    <div class="ebook-copy">
+      Check out my <a href="/cpp-for-quantitative-finance-ebook">new e-book on C++</a> where I teach you all the C++ you need to get a quant job paying <strong>$100k a year</strong> on average.
+    </div>
+    <a href="/cpp-for-quantitative-finance-ebook">
+      <button class="ebook-submit-button">Find Out More &raquo</button>
+    </a>
+  </div>
+</div>
+
+  
+  
+  <div class="google-ad-lhs">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- QuantStart Lefthand Square -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-6669474597699588"
+     data-ad-slot="2677498933"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+  
+  <div class="left-column-section about">
+    <div class="left-column-header"><a href="/about-mike">ABOUT ME</a></div>
+    <div class="left-column-body">
+      <p style="float:left;margin-right:1.0em;">
+        <a href="/about-mike">
+          <img src="/static/images/mike-pic.jpg" class="about-image">
+        </a>
+      </p>
+      <p>Hi! My name is Mike and I'm the guy behind QuantStart.com. I used to work in a hedge fund as a quantitative trading developer in London.</p>
+      <p>Now I research, develop, backtest and implement my own intraday algorithmic trading strategies using C++ and Python.</p>
+      <p><a href="/about-mike">MORE &raquo;</a></p>
+      <p><a href="https://twitter.com/mhallsmoore" class="twitter-follow-button" data-show-count="true" data-lang="en">Follow @mhallsmoore</a></p>
+    </div>
+  </div>
+  
+  <div class="left-column-section popular-articles">
+    <div class="left-column-header"><a href="/articles">POPULAR ARTICLES</a></div>
+    <div class="left-column-body">
+      <ul class="popular-articles">
+        <li><a href="/articles/Quantitative-Finance-Reading-List">Quantitative Finance Reading List</a></li>
+        <li><a href="/articles/How-to-Identify-Algorithmic-Trading-Strategies">How to Identify Algorithmic Trading Strategies</a></li>
+        <li><a href="/articles/Beginners-Guide-to-Quantitative-Trading">Beginner's Guide to Quantitative Trading</a></li>
+        <li><a href="/articles/Understanding-How-to-Become-a-Quantitative-Analyst">Understanding How to Become a Quantitative Analyst</a></li>
+        <li class="last"><a href="/articles/Self-Study-Plan-for-Becoming-a-Quantitative-Analyst">Self-Study Plan for Becoming a Quantitative Analyst</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fb-like-box" data-href="http://www.facebook.com/Quantstart" data-width="300" data-show-faces="true" data-stream="false" data-header="true"></div>
+
+</div>
+
+      
+      
+<div class="main-column">
+<div class="article">
+
+  <h1>Parallelising Python with Threading and Multiprocessing</h1>
+
+  <div class="share-buttons">
+    <div class="share-text">Share this:</div>
+    <div class="share-button">
+      <a href="https://twitter.com/share" class="twitter-share-button" data-via="mhallsmoore">Tweet</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </div>
+    <div class="share-button margin-right share-button-fb">
+      <div class="fb-like" data-send="false" data-layout="button_count" data-width="150" data-show-faces="false"></div>
+    </div>
+    <div class="share-button margin-right">
+      <script src="//platform.linkedin.com/in.js" type="text/javascript"></script>
+      <script type="IN/Share" data-counter="right"></script>
+    </div>
+  </div>
+
+  
+  <p>One aspect of coding in Python that we have yet to discuss in any great detail is how to optimise the execution performance of our simulations. While NumPy, SciPy and pandas are extremely useful in this regard when considering <em>vectorised</em> code, we aren't able to use these tools effectively when building <em>event-driven</em> systems. Are there any other means available to us to speed up our code? The answer is yes - but with caveats!</p>
+
+<p>In this article we are going to look at the different models of <em>parallelism</em> that can be introduced into our Python programs. These models work particularly well for simulations that do not need to share <em>state</em>. Monte Carlo simulations used for options pricing and backtesting simulations of various parameters for algorithmic trading fall into this category.</p>
+
+<p>In particular we are going to consider the <a href="https://docs.python.org/2/library/threading.html">Threading</a> library and the <a href="https://docs.python.org/2/library/multiprocessing.html">Multiprocessing</a> library.</p>
+
+<h2>Concurrency in Python</h2>
+
+<p>One of the most frequently asked questions from beginning Python programmers when they explore multithreaded code for optimisation of CPU-bound code is "Why does my program run slower when I use multiple threads?".</p>
+
+<p>The expectation is that on a multi-core machine a multithreaded code should make use of these extra cores and thus increase overall performance. Unfortunately the internals of the main Python interpreter, <a href="http://en.wikipedia.org/wiki/CPython">CPython</a>, negate the possibility of true multi-threading due to a process known as the <a href="http://en.wikipedia.org/wiki/Global_Interpreter_Lock">Global Interpreter Lock</a> (GIL).</p>
+
+<p>The GIL is necessary because the Python interpreter is not <em>thread safe</em>. This means that there is a globally enforced lock when trying to safely access Python objects from within threads. At any one time only a single thread can acquire a lock for a Python object or C API. The interpreter will reacquire this lock for every 100 bytecodes of Python instructions and around (potentially) blocking I/O operations. Because of this lock <em>CPU-bound code</em> will see no gain in performance when using the Threading library, but it will likely gain performance increases if the Multiprocessing library is used.</p>
+
+<h2>Parallelisation Libraries Implementation</h2>
+
+<p>We are now going to utilise the above two separate libraries to attempt a parallel optimisation of a "toy" problem.</p>
+
+<h3>Threading Library</h3>
+
+<p>Above we alluded to the fact that Python on the CPython interpreter does not support true multi-core execution via multithreading. However, Python DOES have a <a href="https://docs.python.org/2/library/threading.html">Threading</a> library. So what is the benefit of using the library if we (supposedly) cannot make use of multiple cores?</p>
+
+<p>Many programs, particularly those relating to network programming or data input/output (I/O) are often <em>network-bound</em> or <em>I/O bound</em>. This means that the Python interpreter is awaiting the result of a function call that is manipulating data from a "remote" source such as a network address or hard disk. Such access is far slower than reading from local memory or a CPU-cache.</p>
+
+<p>Hence, one means of speeding up such code if many data sources are being accessed is to generate a <em>thread</em> for each data item needing to be accessed.</p>
+
+<p>For example, consider a Python code that is scraping many web URLs. Given that each URL will have an associated download time well in excess of the CPU processing capability of the computer, a single-threaded implementation will be significantly I/O bound.</p>
+
+<p>By adding a new thread for each download resource, the code can download multiple data sources in parallel and combine the results at the end of every download. This means that each subsequent download is not waiting on the download of earlier web pages. In this case the program is now bound by the bandwidth limitations of the client/server(s) instead.</p>
+
+<p>However, many financial applications ARE CPU-bound since they are highly numerically intensive. They often involve large-scale numerical linear algebra solutions or random statistical draws, such as in Monte Carlo simulations. Thus as far as Python and the GIL are concerned, there is no benefit to using the Python Threading library for such tasks.</p>
+
+<h4>Python Implementation</h4>
+
+<p>The following code illustrates a multithreaded implementation for a "toy" code that sequentially adds numbers to lists. Each thread creates a new list and adds random numbers to it. This has been chosen as a toy example since it is CPU heavy.</p> 
+
+<p>The following code will outline the interface for the Threading library but it will not grant us any additional speedup beyond that obtainable in a single-threaded implementation. When we come to use the Multiprocessing library below, we will see that it will significantly decrease the overall runtime.</p>
+
+<p>Let's examine how the code works. Firstly we import the <code>threading</code> library. Then we create a function <code>list_append</code> that takes three parameters. The first, <code>count</code>, determines the size of the list to create. The second, <code>id</code>, is the ID of the "job" (which can be useful if we are writing debug info to the console). The third parameter, <code>out_list</code>, is the list to append the random numbers to.</p>
+
+<p>The <code>__main__</code> function creates a <code>size</code> of $10^7$ and uses two <code>threads</code> to carry out the work. It then creates a <code>jobs</code> list, which is used to store the separate threads. The <code>threading.Thread</code> object takes the <code>list_append</code> function as a parameter and then appends it to the <code>jobs</code> list.</p>
+
+<p>Finally, the jobs are sequentially started and then sequentially "joined". The <code>join()</code> method blocks the calling thread (i.e. the main Python interpreter thread) until the thread has terminated. This ensures that all of the threads are complete before printing the completion message to the console:</p>
+
+<pre class="prettyprint">
+# thread_test.py
+
+import random
+import threading
+
+
+def list_append(count, id, out_list):
+	"""
+	Creates an empty list and then appends a 
+	random number to the list 'count' number
+	of times. A CPU-heavy operation!
+	"""
+	for i in range(count):
+		out_list.append(random.random())
+
+if __name__ == "__main__":
+	size = 10000000   # Number of random numbers to add
+	threads = 2   # Number of threads to create
+
+	# Create a list of jobs and then iterate through
+	# the number of threads appending each thread to
+	# the job list 
+	jobs = []
+	for i in range(0, threads):
+		out_list = list()
+		thread = threading.Thread(target=list_append(size, i, out_list))
+		jobs.append(thread)
+
+	# Start the threads (i.e. calculate the random number lists)
+	for j in jobs:
+		j.start()
+
+	# Ensure all of the threads have finished
+	for j in jobs:
+		j.join()
+
+	print "List processing complete."
+</pre>
+
+<p>We can time this code using the following console call:</p>
+
+<pre class="prettyprint">
+time python thread_test.py
+</pre>
+
+<p>It produces the following output:</p>
+
+<pre class="prettyprint">
+List processing complete.
+
+real    0m2.003s
+user    0m1.838s
+sys     0m0.161s
+</pre>
+
+<p>Notice that the <code>user</code> and <code>sys</code> both approximately sum to the <code>real</code> time. This is indicative that we gained no benefit from using the Threading library. If we had then we would expect the <code>real</code> time to be significantly less. These concepts within concurrent programming are usually known as <em>CPU-time</em> and <em>wall-clock</em> time respectively.</p>
+
+<h3>Multiprocessing Library</h3>
+
+<p>In order to actually make use of the extra cores present in nearly all modern consumer processors we can instead use the <a href="https://docs.python.org/2/library/multiprocessing.html">Multiprocessing</a> library. This works in a fundamentally different way to the Threading library, even though the syntax of the two is extremely similar.</p>
+
+<p>The Multiprocessing library actually spawns multiple operating system <em>processes</em> for each parallel task. This nicely side-steps the GIL, by giving each process its own Python interpreter and thus own GIL. Hence each process can be fed to a separate processor core and then regrouped at the end once all processes have finished.</p>
+
+<p>There are some drawbacks, however. Spawning extra processes introduces I/O overhead as data is having to be shuffled around between processors. This can add to the overall run-time. However, assuming the data is restricted to each process, it is possible to gain significant speedup. Of course, one must always be aware of <a href="http://en.wikipedia.org/wiki/Amdahl%27s_law">Amdahl's Law</a>!</p>
+
+<h4>Python Implementation</h4>
+
+<p>The only modifications needed for the Multiprocessing implementation include changing the import line and the functional form of the <code>multiprocessing.Process</code> line. In this case the arguments to the target function are passed separately. Beyond that the code is almost identical to the Threading implementation above:</p>
+
+<pre class="prettyprint">
+# multiproc_test.py
+
+import random
+import multiprocessing
+
+
+def list_append(count, id, out_list):
+	"""
+	Creates an empty list and then appends a 
+	random number to the list 'count' number
+	of times. A CPU-heavy operation!
+	"""
+	for i in range(count):
+		out_list.append(random.random())
+
+if __name__ == "__main__":
+	size = 10000000   # Number of random numbers to add
+	procs = 2   # Number of processes to create
+
+	# Create a list of jobs and then iterate through
+	# the number of processes appending each process to
+	# the job list 
+	jobs = []
+	for i in range(0, procs):
+		out_list = list()
+		process = multiprocessing.Process(target=list_append, 
+			                              args=(size, i, out_list))
+		jobs.append(process)
+
+	# Start the processes (i.e. calculate the random number lists)		
+	for j in jobs:
+		j.start()
+
+	# Ensure all of the processes have finished
+	for j in jobs:
+		j.join()
+
+	print "List processing complete."
+</pre>
+
+<p>We can once again time this code using a similar console call:</p>
+
+<pre class="prettyprint">
+time python multiproc_test.py
+</pre>
+
+<p>We receive the following output:</p>
+
+<pre class="prettyprint">
+List processing complete.
+
+real    0m1.045s
+user    0m1.824s
+sys     0m0.231s
+</pre>
+
+<p>In this case you can see that while the <code>user</code> and <code>sys</code> times have reamined approximately the same, the <code>real</code> time has dropped by a factor of almost two. This makes sense since we're using two processes. Scaling to four processes while halving the list size for comparison gives the following output (under the assumption that you have at least four cores!):</p>
+
+<pre class="prettyprint">
+List processing complete.
+
+real    0m0.540s
+user    0m1.792s
+sys     0m0.269s
+</pre>
+
+<p>This is an approximate 3.8x speed-up with four processes. However, we must be careful of generalising this to larger, more complex programs. Data transfer, hardware cache-levels and other issues will almost certainly reduce this sort of performance gain in "real" codes.</p>
+
+<p>In later articles we will be modifying the Event-Driven Backtester to use parallel techniques in order to improve the ability to carry out multi-dimensional parameter optimisation studies.</p> 
+  
+
+  
+  <h2>Related Articles</h2>
+  <ul>
+    
+    <li><a href="/articles/Cholesky-Decomposition-in-Python-and-NumPy">Cholesky Decomposition in Python and NumPy</a></li>
+    
+    <li><a href="/articles/Easy-Multi-Platform-Installation-of-a-Scientific-Python-Stack-Using-Anaconda">Easy Multi-Platform Installation of a Scientific Python Stack Using Anaconda</a></li>
+    
+    <li><a href="/articles/European-Vanilla-Call-Put-Option-Pricing-with-Python">European Vanilla Call-Put Option Pricing with Python</a></li>
+    
+    <li><a href="/articles/Jacobi-Method-in-Python-and-NumPy">Jacobi Method in Python and NumPy</a></li>
+    
+    <li><a href="/articles/LU-Decomposition-in-Python-and-NumPy">LU Decomposition in Python and NumPy</a></li>
+    
+    <li><a href="/articles/Options-Pricing-in-Python">Options Pricing in Python</a></li>
+    
+    <li><a href="/articles/QR-Decomposition-with-Python-and-NumPy">QR Decomposition with Python and NumPy</a></li>
+    
+    <li><a href="/articles/Quick-Start-Python-Quantitative-Research-Environment-on-Ubuntu-14-04">Quick-Start Python Quantitative Research Environment on Ubuntu 14.04</a></li>
+    
+  </ul>
+  
+
+  <div class="email-optin">
+  <div class="email-optin-header"><em>Like what you read?</em></div>
+  <div class="email-optin-body">
+    
+    <p>If so, please join QuantStart's growing list of people who receive FREE exclusive weekly <strong>algorithmic trading</strong>, <strong>quantitative finance</strong> and <strong>programming</strong> help. Just enter your name and email below:</p>
+    <form method="post" class="af-form-wrapper" action="http://www.aweber.com/scripts/addlead.pl">
+    <div style="display: none;">
+      <input type="hidden" name="meta_web_form_id" value="94422480" />
+      <input type="hidden" name="meta_split_id" value="" />
+      <input type="hidden" name="listname" value="quantstart" />
+      <input type="hidden" name="redirect" value="http://www.aweber.com/thankyou-coi.htm?m=text" id="redirect_a7ce65e9cb1021cff18f4b2393a7e9db" />
+      <input type="hidden" name="meta_adtracking" value="QuantStart_Form" />
+      <input type="hidden" name="meta_message" value="1" />
+      <input type="hidden" name="meta_required" value="name,email" />
+      <input type="hidden" name="meta_tooltip" value="" />
+    </div>
+
+    <div id="af-form-94422480" class="af-form">
+      <div id="af-body-94422480"  class="af-body af-standards">
+	<div class="af-element">
+	  <div class="af-textWrap">
+	    <input id="awf_field-40193249" type="text" name="name" class="text" value="First Name"  tabindex="500" />
+	  </div>
+	  <div class="af-element">
+	    <div class="af-textWrap"><input class="text" id="awf_field-40193250" type="text" name="email" value="Email" tabindex="501"  />
+	    </div>
+	    <div class="af-element buttonContainer">
+	      <input name="submit" class="submit" type="submit" value="Free Instant Access &raquo;" tabindex="502" />
+	    </div>
+	  </div>
+	</div>
+	
+	<div style="display: none;">
+	  <img src="http://forms.aweber.com/form/displays.htm?id=nCwsTEwsHAw=" alt="" />
+	</div>
+      </div>
+    </div>
+  </form>
+  
+  <script type="text/javascript">
+    <!--
+	(function() {
+        var IE = /*@cc_on!@*/false;
+        if (!IE) { return; }
+        if (document.compatMode && document.compatMode == 'BackCompat') {
+        if (document.getElementById("af-form-94422480")) {
+        document.getElementById("af-form-94422480").className = 'af-form af-quirksMode';
+            }
+            if (document.getElementById("af-body-94422480")) {
+                document.getElementById("af-body-94422480").className = "af-body inline af-quirksMode";
+            }
+            if (document.getElementById("af-header-94422480")) {
+                document.getElementById("af-header-94422480").className = "af-header af-quirksMode";
+            }
+            if (document.getElementById("af-footer-94422480")) {
+                document.getElementById("af-footer-94422480").className = "af-footer af-quirksMode";
+            }
+        }
+    })();
+    -->
+  </script>
+  </div>
+</div>
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'quantstart'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+</div>
+
+      
+    </div>
+    <footer>
+  <p>
+    <a href="/">HOME</a> | 
+    <a href="/about">ABOUT</a> |
+    <a href="/ebooks">E-BOOKS</a> |
+    <a href="/articles">ARTICLES</a> |
+    <a href="http://www.quantstart.com/articles/Quantitative-Finance-Reading-List">
+      READING LIST</a> |
+    <a href="/jobs">JOBS</a> |
+    <a href="http://www.quantstart.com/articles/Free-Quantitative-Finance-Resources">
+      RESOURCES
+    </a>
+  </p>
+  <p class="small">Copyright &copy; 2010-2014 QuarkGluon Ltd.</p>
+</footer>
+
+  </div>
+</body>
+</html>
+
