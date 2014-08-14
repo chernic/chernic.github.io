@@ -28,59 +28,7 @@
   <script type="text/javascript" src="/js/channel.js?2014022501"></script>
     </head>
 <body>
-<div id='OSC_NavTop'>
-	<div class="wp998">
-        <div id="OSC_Channels">
-        	<ul>
-        	<li class="item"><a href="http://www.oschina.net/" class='home'>首页</a></li>        	<li class="item control_select"><a href="http://www.oschina.net/project" class='project'>开源项目</a>
-				<ul class="cs_content">					
-                	                	<li><a href="http://www.oschina.net/project/lang/19/java">Java 开源软件</a></li>
-                	<li><a href="http://www.oschina.net/project/lang/194/csharp">C# 开源软件</a></li>
-                	<li><a href="http://www.oschina.net/project/lang/22/php">PHP 开源软件</a></li>
-                	<li><a href="http://www.oschina.net/project/lang/21/c">C/C++ 开源软件</a></li>
-                	<li><a href="http://www.oschina.net/project/lang/26/ruby">Ruby 开源软件</a></li>
-                	<li><a href="http://www.oschina.net/project/lang/25/python">Python 开源软件</a></li>
-                	<li><a href="http://www.oschina.net/project/lang/358/go">Go开源软件</a></li>
-                	<li><a href="http://www.oschina.net/project/lang/28/javascript">JS开源软件</a></li>
-				</ul>
-			</li>
-        	<li class="item control_select">
-				<a href="http://www.oschina.net/question" class='question'>讨论区</a>				
-				<ul class="cs_content">					
-                	<li><a href="http://www.oschina.net/question?catalog=1"> 技术问答 &raquo; </a></li>
-                	<li><a href="http://www.oschina.net/question?catalog=2"> 技术分享 &raquo; </a></li>
-                	<li><a href="http://www.oschina.net/question?catalog=3"> IT大杂烩 &raquo; </a></li>
-                	<li><a href="http://www.oschina.net/question?catalog=100"> 职业生涯 &raquo; </a></li>
-                	<li><a href="http://www.oschina.net/question?catalog=4"> 站务/建议 &raquo; </a></li>
-                	<li><a href="http://www.oschina.net/alipay"> 支付宝专区 &raquo; </a></li>
-                	<li><a href="http://www.oschina.net/hardware"> 开源硬件专区 &raquo; </a></li>
-				</ul>
-			</li>
-        	<li class="item"><a href="http://www.oschina.net/code/list" class='code'>代码</a></li>
-        	        	<li class="item"><a href="http://www.oschina.net/blog" class='blog'>博客</a></li>
-        	<li class="item"><a href="http://www.oschina.net/translate" class='tran hl'>翻译</a></li>
-            <li class="item"><a href="http://www.oschina.net/news" class='news'>资讯</a></li>
-        	<li class="item control_select">
-				<a href="http://www.oschina.net/android" class='mobile'>移动开发</a>
-				<ul class="cs_content cs_mobile">
-                	<li class="android_"><a href="http://www.oschina.net/android">Android开发专区</a></li>
-                	<li class="ios_"><a href="http://www.oschina.net/ios/home">iOS开发专区</a></li>
-                	<li class="ios_"><a href="http://www.oschina.net/ios/codingList">iOS代码库</a></li>
-                	<li class="wp7_"><a href="http://www.oschina.net/wp">Windows Phone</a></li>
-				</ul>
-			</li>
-        	<li class="item t_job"><a href="http://www.oschina.net/job" class='job'>招聘</a></li>
-									            <li class="item control_select">
-                <a href="http://city.oschina.net/" id="MyCities" title="城市圈">城市圈</a>
-							</li>
-        	</ul>
-        </div>
-		<div id="OSC_Userbar">
-                		    		当前访客身份：游客 [ <a href="http://www.oschina.net/home/login?goto_page=http%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fparallelising-python-with-threading-and-multiprocessing">登录</a> | <a href="http://www.oschina.net/home/reg">加入开源中国</a> ]
-    				</div>
-		<div class='clear'></div>
-	</div>
-</div>
+
 <div id='OSC_Banner'><div class="wp998"><a href='http://www.oschina.net/' class='Logo' title='OSChina 开源中国'>开源中国</a>
 <h1><a href="/translate">技术翻译</a></h1>
 <dl>
@@ -1765,17 +1713,6 @@ function trim(str){
         <td style="border-right:1px solid #E3E3E3;" ><div class='TextContent'><p>在Python编码中我们经常讨论的一个方面就是如何优化模拟执行的性能。尽管在考虑量化代码时NumPy、SciPy和pandas在这方面已然非常有用，但在构建<em>事件驱动</em>系统时我们无法有效地使用这些工具。有没有可以加速我们代码的其他办法？答案是肯定的，但需要留意！</p> 
 <p>在这篇文章中，我们看一种不同的模型-<em>并发</em>，我们可以将它引入我们Python程序中。这种模型在模拟中工作地特别好，它不需要共享状态。Monte Carlo模拟器可以用来做期权定价以及检验算法交易等类型的各种参数的模拟。</p> 
 <p>我们将特别考虑<a href="https://docs.python.org/2/library/threading.html" rel="nofollow">Threading</a>库和<a href="https://docs.python.org/2/library/multiprocessing.html" rel="nofollow">Multiprocessing</a>库。</p></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/Garfielt' title='Garfielt' target='_blank'><img src="http://static.oschina.net/uploads/user/73/147631_50.jpg?t=1370742483000" align="absmiddle" alt="Garfielt" title="Garfielt" class="SmallPortrait" user="147631"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/Garfielt' target='_blank'>Garfielt</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32738'>0</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32738);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
     </table>
 </div>
@@ -1786,17 +1723,6 @@ function trim(str){
 <p>当Python初学者探索多线程的代码为了计算密集型优化时，问得最多的问题之一是：”当我用多线程的时候，为什么我的程序变慢了？“</p> 
 <p>在多核机器上，我们期望多线程的代码使用额外的核，从而提高整体性能。不幸的是，主Python解释器（CPython）的内部并不是真正的多线程，是通过一个全局解释锁（GIL）来进行处理的。</p> 
 <p>GIL是必须的，因为Python解释器是非线程安全的。这意味着当从线程内尝试安全的访问Python对象的时候将有一个全局的强制锁。在任何时候，仅仅一个单一的线程能够获取Python对象或者C API。每100个字节的Python指令解释器将重新获取锁，这（潜在的）阻塞了I/0操作。因为锁，CPU密集型的代码使用线程库时，不会获得性能的提高，但是当它使用多处理库时，性能可以获得提高。</p></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/zqstarmoon' title='地狱星星' target='_blank'><img src="http://static.oschina.net/uploads/user/61/123500_50.jpg?t=1370487333000" align="absmiddle" alt="地狱星星" title="地狱星星" class="SmallPortrait" user="123500"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/zqstarmoon' target='_blank'>地狱星星</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32745'>0</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32745);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
         <tr>
         <td class="translater" valign="bottom">
@@ -1817,17 +1743,6 @@ function trim(str){
 <p>上面我们提到： 运行CPython解释器的Python不会支持通过多线程来实现多核处理。不过，Python确实有一个<a target="_blank" href="https://docs.python.org/2/library/threading.html" rel="nofollow">线程库</a>。那么如果我们（可能）不能使用多个核心进行处理，那么使用这个库能取得什么好处呢？</p> 
 <p>许多程序，尤其是那些与网络通信或者数据输入/输出(I/O)相关的程序，都经常受到网络性能或者输入/输出(I/O)性能的限制。这样Python解释器就会等待哪些从诸如网络地址或者硬盘等“远端”数据源读写数据的函数调用返回。因此这样的数据访问比从本地内存或者CPU缓冲区读取数据要慢的多。</p> 
 <p>因此，如果许多数据源都是通过这种方式访问的，那么就有一种方式对这种数据访问进行性能提高，那就是对每个需要访问的数据项都产生一个线程 。</p></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/jidianren' title='几点人' target='_blank'><img src="http://static.oschina.net/uploads/user/524/1049534_50.jpg?t=1376472396000" align="absmiddle" alt="几点人" title="几点人" class="SmallPortrait" user="1049534"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/jidianren' target='_blank'>几点人</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32753'>0</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32753);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
         <tr>
         <td class="translater" valign="bottom">
@@ -1845,17 +1760,6 @@ function trim(str){
         <td style="border-right:1px solid #E3E3E3;" ><div class='TextContent'><p> 举个例子，假设有一段Python代码，它用来对许多站点的URL进行扒取。再假定下载每个URL所需时间远远超过计算机CPU对它的处理时间，那么仅使用一个线程来实现就会大大地受到输入/输出(I/O)性能限制。 </p> 
 <p> 通过给每个下载资源生成一个新的线程，这段代码就会并行地对多个数据源进行下载，在所有下载都结束的时候再对结果进行组合。这就意味着每个后续下载都不会等待前一个网页下载完成。此时，这段代码就受收到客户/服务端带宽的限制。 </p> 
 <p> 不过，许多与财务相关的应用都受到CPU性能的限制，这是因为这样的应用都是高度集中式的对数字进行处理。这样的应用都会进行大型线性代数计算或者数值的随机统计，比如进行蒙地卡罗模拟统计。所以只要对这样的应用使用Python和全局解释锁(GIL)，此时使用Python线程库就不会有任何性能的提高。 </p></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/jidianren' title='几点人' target='_blank'><img src="http://static.oschina.net/uploads/user/524/1049534_50.jpg?t=1376472396000" align="absmiddle" alt="几点人" title="几点人" class="SmallPortrait" user="1049534"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/jidianren' target='_blank'>几点人</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32755'>0</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32755);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
     </table>
 </div>
@@ -1866,17 +1770,6 @@ function trim(str){
 <p>下面这段依次添加数字到列表的“玩具”代码，举例说明了多线程的实现。每个线程创建一个新的列表并随机添加一些数字到列表中。这个已选的“玩具”例子对CPU的消耗非常高。</p> 
 <p>下面的代码概述了线程库的接口，但是他不会比我们用单线程实现的速度更快。当我们对下面的代码用多处理库时，我们将看到它会显著的降低总的运行时间。</p> 
 <p>让我们检查一下代码是怎样工作的。首先我们导入threading库。然后我们创建一个带有三个参数的函数list_append。第一个参数count定义了创建列表的大小。第二个参数id是“工作”(用于我们输出debug信息到控制台)的ID。第三个参数out_list是追加随机数的列表。</p></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/zqstarmoon' title='地狱星星' target='_blank'><img src="http://static.oschina.net/uploads/user/61/123500_50.jpg?t=1370487333000" align="absmiddle" alt="地狱星星" title="地狱星星" class="SmallPortrait" user="123500"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/zqstarmoon' target='_blank'>地狱星星</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32790'>0</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32790);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
         <tr>
         <td class="translater" valign="bottom">
@@ -1933,17 +1826,6 @@ real&nbsp;&nbsp;&nbsp;&nbsp;0m2.003s
 user&nbsp;&nbsp;&nbsp;&nbsp;0m1.838s
 sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0m0.161s</pre> 
 <p>注意user时间和sys时间相加大致等于real时间。这表明我们使用线程库没有获得性能的提升。我们期待real时间显著的降低。在并发编程的这些概念中分别被称为CPU时间和挂钟时间（wall-clock time） <br /> </p></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/zqstarmoon' title='地狱星星' target='_blank'><img src="http://static.oschina.net/uploads/user/61/123500_50.jpg?t=1370487333000" align="absmiddle" alt="地狱星星" title="地狱星星" class="SmallPortrait" user="123500"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/zqstarmoon' target='_blank'>地狱星星</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32792'>0</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32792);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
         <tr>
         <td class="translater" valign="bottom">
@@ -1962,17 +1844,6 @@ sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0m0.161s</pre>
 <p>为了充分地使用所有现代处理器所能提供的多个核心 ，我们就要使用<a target="_blank" href="https://docs.python.org/2/library/multiprocessing.html" rel="nofollow">多进程处理库</a> 。它的工作方式与线程库完全不同 ，不过两种库的语法却非常相似 。</p> 
 <p>多进程处理库事实上对每个并行任务都会生成多个操作系统进程。通过给每个进程赋予单独的Python解释器和单独的全局解释锁(GIL)十分巧妙地规避了一个全局解释锁所带来的问题。而且每个进程还可独自占有一个处理器核心，在所有进程处理都结束的时候再对结果进行重组。</p> 
 <p>不过也存在一些缺陷。生成许多进程就会带来很多I/O管理问题，这是因为多个处理器对数据的处理会引起数据混乱 。这就会导致整个运行时间增多 。不过，假设把数据限制在每个进程内部 ，那么就可能大大的提高性能 。当然，再怎么提高也不会超过<a target="_blank" href="http://en.wikipedia.org/wiki/Amdahl%27s_law" rel="nofollow">阿姆达尔法则</a>所规定的极限值。</p></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/jidianren' title='几点人' target='_blank'><img src="http://static.oschina.net/uploads/user/524/1049534_50.jpg?t=1376472396000" align="absmiddle" alt="几点人" title="几点人" class="SmallPortrait" user="1049534"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/jidianren' target='_blank'>几点人</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32752'>2</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32752);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
     </table>
 </div>
@@ -2019,17 +1890,6 @@ real&nbsp;&nbsp;&nbsp;&nbsp;0m1.045s
 user&nbsp;&nbsp;&nbsp;&nbsp;0m1.824s
 sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0m0.231s</pre> 
 <p></p></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/alazyer' title='alazyer' target='_blank'><img src="http://static.oschina.net/uploads/user/637/1275007_50.jpg?t=1382960294000" align="absmiddle" alt="alazyer" title="alazyer" class="SmallPortrait" user="1275007"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/alazyer' target='_blank'>alazyer</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32746'>0</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32746);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
     </table>
 </div>
@@ -2053,17 +1913,6 @@ sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0m0.269s</pre>
  <li><p><a href="http://www.quantstart.com/articles/QR-Decomposition-with-Python-and-NumPy" rel="nofollow">QR Decomposition with Python and NumPy</a></p></li> 
  <li><p><a href="http://www.quantstart.com/articles/Quick-Start-Python-Quantitative-Research-Environment-on-Ubuntu-14-04" rel="nofollow">Quick-Start Python Quantitative Research Environment on Ubuntu 14.04</a></p></li> 
 </ul></div></td>
-        <td class='translater' valign="top">
-                        <a href='http://my.oschina.net/alazyer' title='alazyer' target='_blank'><img src="http://static.oschina.net/uploads/user/637/1275007_50.jpg?t=1382960294000" align="absmiddle" alt="alazyer" title="alazyer" class="SmallPortrait" user="1275007"/></a>
-            <div class='info'>
-                <h6><a href='http://my.oschina.net/alazyer' target='_blank'>alazyer</a><br/>翻译于 3个月前</h6>
-                <p><em id='vote_count_32749'>1</em>人顶</p>
-            </div>
-            <div class='clear'></div>
-            <p class='vote'>
-            <a href='javascript:vote_block(32749);' class='rndbutton'><span>顶</span></a>&nbsp;翻译的不错哦!
-            			            </p>
-        </td>
     </tr>
     </table>
 </div>
