@@ -2,47 +2,6 @@
 
 Powered by [jekyll](http://jekyllrb.com "Jekyll - Simple, blog-aware, static sites")
 
-# Features
-
-* Mobile friendly responsive type scale
-* Geolocation Supported
-
-# Getting started
-
-* Create a new repo for your project on Github
-* In terminal run
-```bash
-    git clone git@github.com:willin/now.git [yourNewRepoName]
-    cd [yourNewRepoName]
-    rm -rf .git
-    git init
-    git remote add origin git@github.com:[yourUserName]/[yourNewRepoName].git
-    git remote -v
-```
-
-gitcafe.com also can be used instead of github.com 
-
-
-* git remote -v will allow you to check that you have changed the remote origin correctly. The output should look like:
-```bash
-    origin git@github.com:[yourUserName]/[yourNewRepoName].git (fetch)
-    origin  git@github.com:[yourUserName]/[yourNewRepoName].git (push)
-```
-
-* Once you add & commit files you are ready to publish run:
-```bash
-git push -u origin master
-```
-
-# Getting going
-
-```
-  cd [repo]
-  gem install foreman
-  foreman start
-```
-
-Now go to http://localhost:4000 and see Hello World.
 
 # Author
 
