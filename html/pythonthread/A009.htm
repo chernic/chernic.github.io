@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<title>python多线程学习 - Rollen Holt - 博客园</title>
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=vVKakOZtmmmI9PttuB8cajJQIPwEqvGelvnOjnc3uik1"/>
+<link id="MainCss" type="text/css" rel="stylesheet" href="/skins/Minyx2_Lite/bundle-Minyx2_Lite.css?v=box8Dmmj5G0VFMZyypCbLIqNJsuu5lz6TpJ4OOK0WkE1"/>
+<link type="text/css" rel="stylesheet" href="/blog/customcss/80995.css?v=tA67LprVDWvSSaARgRywIA3OZoU%3d"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/rollenholt/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/rollenholt/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/rollenholt/wlwmanifest.xml"/>
+<script src="http://common.cnblogs.com/script/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'rollenholt', cb_enable_mathjax=false;</script>
+<script src="/bundles/blog-common.js?v=5SljHjvFayhSwYEpPGn3hGjzMUiUy8_LhBNYFY8TdeA1" type="text/javascript"></script>
+<script src="/skins/Minyx2_Lite/bundle-Minyx2_Lite.js?v=dAK2Rw4GyogXqBvhMZEW0IkYD2kjtuL3y_BKRj-vp4g1" language="javascript" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+
+
+<div id="container">
+    <a class="minyx" href="http://www.cnblogs.com/">代码改变世界</a>
+    <ul id="topMnu">
+        <!-- 统计数据 -->
+        <li>
+            
+                
+Posts - 500, 
+Articles - 262, 
+Comments - 719
+<!---->
+            
+        </li>
+        <!-- 这边可以增加一些链接 -->
+        <!-- 博客园 -->
+        <li><a href="http://www.cnblogs.com">Cnblogs</a></li>
+        <!-- 管理 -->
+        <li id="topMnu-dashboard">
+            <a id="lnkDashboard" href="http://www.cnblogs.com/rollenholt/admin/EditPosts.aspx">Dashboard</a></li>
+        <li>
+            <a id="lnkLogin" href="http://passport.cnblogs.com/login.aspx?ReturnUrl=http://www.cnblogs.com/rollenholt/archive/2011/08/09/2131719.html">Login</a></li>
+    </ul>
+
+    <script type="text/javascript">
+        var m = window.__blog.topMenuRendered;
+        if (m) { m(__$("topMnu")); }
+    </script>
+
+    <div id="header">
+        <ul id="menu">
+            <!-- 首页，当前section加上current类 -->
+            <li id="menu-home" class="current">
+                <a id="lnkHome" href="http://www.cnblogs.com/rollenholt/">Home</a></li>
+            <!-- 联系 -->
+            <li id="menu-contact">
+                <a id="lnkContact" href="http://space.cnblogs.com/msg/send/Rollen+Holt">Contact</a></li>
+            <!-- 相册 -->
+            <li id="menu-gallary">
+                <a id="lnkGallery" href="http://www.cnblogs.com/rollenholt/gallery.html">Gallery</a></li>
+            <!-- Rss订阅 -->
+            <li id="rss">
+                <a id="lnkRss" href="http://www.cnblogs.com/rollenholt/rss">RSS</a></li>
+        </ul>
+        <div id="newmsg"></div>
+        <h1>
+            <!-- 主标题 -->
+            <a id="lnkBlogTitle" href="http://www.cnblogs.com/rollenholt/">一个人的旅行</a>
+            <!-- 子标题 -->
+            <small>
+                白首为功名。旧山松竹老，阻归程。欲将心事付瑶琴。知音少，弦断有谁听？</small>
+        </h1>
+    </div>
+
+    <script type="text/javascript">
+        var m = window.__blog.headerRendered;
+        if (m) { m(__$("header")); }
+    </script>
+
+    <div id="wrapper">
+        <div id="content">
+            <script type="text/javascript">
+                var m = window.__blog.preRenderPosts;
+                if (m) { m(); }
+            </script>
+            
+
+<div class="post" id="post">
+    <a name="top"></a>
+    <h2><a id="cb_post_title_url" href="http://www.cnblogs.com/rollenholt/archive/2011/08/09/2131719.html">python多线程学习</a></h2>
+    <small>2011-08-09 09:17 by Rollen Holt, <span id="post_view_count">...</span> 阅读, <span id="post_comment_count">...</span> 评论, <a href="#" onclick="AddToWz({0});return false;">收藏</a>,  <a href ="http://i.cnblogs.com/EditPosts.aspx?postid=2131719" rel="nofollow">编辑</a></small>
+    <div class="entry">
+        <div id="cnblogs_post_body"><p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">今天在学习尝试学习</span><span lang="EN-US" style="font-size: 9.0pt;">python</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">多线程的时候，突然发现自己一直对</span><span lang="EN-US" style="font-size: 9.0pt;">super</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">的用法不是很清楚，所以先总结一些遇到的问题。当我尝试编写下面的代码的时候：</span></p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;">class A():
+    def __init__( self ):
+        print "A"
+class B( A ):
+    def __init__( self ):
+        super( B, self ).__init__(  )
+# A.__init__( self )
+        print "B"
+b = B()
+</pre>
+</div>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; mso-font-kerning: 0pt;">出现：</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: red; mso-font-kerning: 0pt;">super( B, self ).__init__()</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: red; mso-font-kerning: 0pt;">TypeError: must be type, not classobj</span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; mso-font-kerning: 0pt;">最后发现原来是</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;">python</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; mso-font-kerning: 0pt;">中的新式类的问题，也就是</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;">A</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; mso-font-kerning: 0pt;">必须是新式类。解决方法如下两种：</span></p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;">（1）
+class A( object ):
+    def __init__( self ):
+        print "A"
+class B( A ):
+    def __init__( self ):
+        super( B, self ).__init__(  )
+# A.__init__( self )       ##这条语句是旧式的，存在潜在的问题，应该避免使用
+        print "B"
+b = B()
+</pre>
+</div>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;">（2）
+__metaclass__=type
+class A():
+    def __init__( self ):
+        print "A"
+class B( A ):
+    def __init__( self ):
+        super( B, self ).__init__(  )
+# A.__init__( self )    ##这条语句是旧式的，存在潜在的问题，应该避免使用
+        print "B"
+b = B()
+</pre>
+</div>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">注意，如果在</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; background: white; mso-highlight: white; mso-font-kerning: 0pt;">super( B, </span><b><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: #7f0055; background: white; mso-highlight: white; mso-font-kerning: 0pt;">self</span></b><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; background: white; mso-highlight: white; mso-font-kerning: 0pt;"> ).__init__(<span>&nbsp; </span>)</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; mso-font-kerning: 0pt;">语句中添加</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;">self</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; mso-font-kerning: 0pt;">，也就是</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; background: white; mso-highlight: white; mso-font-kerning: 0pt;">super( B, </span><b><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: #7f0055; background: white; mso-highlight: white; mso-font-kerning: 0pt;">self</span></b><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; background: white; mso-highlight: white; mso-font-kerning: 0pt;"> ).__init__( self )</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">，会出现如下的错误：</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: red; mso-font-kerning: 0pt;"><span>&nbsp;&nbsp;&nbsp;
+</span>super( B, self ).__init__( self )</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: red; mso-font-kerning: 0pt;">TypeError: __init__() takes exactly 1
+argument (2 given)</span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">以上只是一点点本人的心得笔记，呵呵。</span></p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;">import threading, time
+class myThread( threading.Thread ):
+    def __init__( self, threadname = "" ):
+        #threading.Thread.__init__( self, name = threadname )
+        super( myThread, self ).__init__( name = threadname )
+    def run( self ):
+        print "starting====", self.name, time.ctime()
+        time.sleep( 5 )
+        print "end====", self.name, time.ctime(),
+
+m = myThread( "m" )
+n = myThread( "n" )
+
+m.start()
+n.start()     
+</pre>
+</div>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">输出的结果：</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">starting==== m Mon Aug 08 21:55:41
+2011</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">starting==== n Mon Aug 08 21:55:41
+2011</span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">如果一个进程的主线程运行完毕而子线程还在执行的话，那么进程就不会退出，直到所有子线程结束为止。比如下面的例子：</span></p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;">import threading, time
+class myThread( threading.Thread ):
+    def __init__( self, threadname = "" ):
+        #threading.Thread.__init__( self, name = threadname )
+        super( myThread, self ).__init__( name = threadname )
+    def run( self ):
+        print "starting====", self.name, time.ctime()
+        time.sleep( 5 )
+        print "end====", self.name, time.ctime(),
+
+m = myThread( "m" )
+m.start()
+print "main end"
+print        
+</pre>
+</div>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">输出的结果为：</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">starting==== m Mon Aug 08 22:01:06
+2011</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">main end</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">end==== m Mon Aug 08 22:01:11 2011<o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">也就是主进程结束之后，子进程还没有结束</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">如果我们想在主进程结束的时候，子进程也结束的话，我们就应该使用</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">setDaemon</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">（）函数。</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">实例如下：</span></p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;">import threading, time
+class myThread( threading.Thread ):
+    def __init__( self, threadname = "" ):
+        #threading.Thread.__init__( self, name = threadname )
+        super( myThread, self ).__init__( name = threadname )
+    def run( self ):
+        print "starting====", self.name, time.ctime()
+        time.sleep( 5 )
+        print "end====", self.name, time.ctime(),
+
+m = myThread( "m" )
+m.setDaemon( True )
+m.start()
+print "main end"
+print 
+</pre>
+</div>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">输出的结果为：</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">starting====main
+end m Mon Aug 08 22:02:58 2011<o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">可以看出，并没有打印出子进程</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">m</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">结束的时候本应该打印的&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">end===&hellip;</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Consolas; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Consolas; mso-bidi-font-family: Consolas; color: black; mso-font-kerning: 0pt;">&rdquo;</span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><b><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">简单的线程同步</span></b><b><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></b></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">个执行线程经常要共享数据，如果仅仅读取共享数据还好，但是如果多个线程要修改共享数据的话就可能出现无法预料的结果。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><span>&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">假如两个线程对象</span><span lang="EN-US" style="font-size: 9.0pt;">t1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">和</span><span lang="EN-US" style="font-size: 9.0pt;">t2</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">都要对数值</span><span lang="EN-US" style="font-size: 9.0pt;">num=0</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">进行增</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">运算，那么</span><span lang="EN-US" style="font-size: 9.0pt;">t1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">和</span><span lang="EN-US" style="font-size: 9.0pt;">t2</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">都各对</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">修改</span><span lang="EN-US" style="font-size: 9.0pt;">10</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">次的话，那么</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">最终的结果应该为</span><span lang="EN-US" style="font-size: 9.0pt;">20</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">。但是如果当</span><span lang="EN-US" style="font-size: 9.0pt;">t1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">取得</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">的值时（假如此时</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为</span><span lang="EN-US" style="font-size: 9.0pt;">0</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">），系统把</span><span lang="EN-US" style="font-size: 9.0pt;">t1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">调度为&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">sleeping</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态，而此时</span><span lang="EN-US" style="font-size: 9.0pt;">t2</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">转换为&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">running</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态，此时</span><span lang="EN-US" style="font-size: 9.0pt;">t2</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">获得的</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">的值也为</span><span lang="EN-US" style="font-size: 9.0pt;">0</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">，然后他把</span><span lang="EN-US" style="font-size: 9.0pt;">num+1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">的值</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">赋给</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">。系统又把</span><span lang="EN-US" style="font-size: 9.0pt;">t2</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">转化为&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">sleeping</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态，</span><span lang="EN-US" style="font-size: 9.0pt;">t1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">running</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态，由于</span><span lang="EN-US" style="font-size: 9.0pt;">t1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">已经得到</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">值为</span><span lang="EN-US" style="font-size: 9.0pt;">0</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">，所以他也把</span><span lang="EN-US" style="font-size: 9.0pt;">num+1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">的值赋给了</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">。本来是</span><span lang="EN-US" style="font-size: 9.0pt;">2</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">次增</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">运行，结果却是</span><span lang="EN-US" style="font-size: 9.0pt;">num</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">只增了</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">次。类似这样的情况在多线程同时执行的时候是有可能发生的。所以为了防止这类情况的出现就要使用线程同步机制。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><span>&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">最简单的同步机制就是&ldquo;锁&rdquo;</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><span>&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">锁对象用</span><span lang="EN-US" style="font-size: 9.0pt;">threading.RLock</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">类创建</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><span>&nbsp;&nbsp;&nbsp; </span>mylock = threading.RLock()<o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><span>&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">如何使用锁来同步线程呢？线程可以使用锁的</span><span lang="EN-US" style="font-size: 9.0pt;">acquire() </span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">（获得）方法，这样锁就进入&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">locked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态。每次只有一个线程可以获得锁。如果当另一个线程试图获得这个锁的时候，就会被系统变为&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">blocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态，直到那个拥有锁的线程调用锁的</span><span lang="EN-US" style="font-size: 9.0pt;">release() </span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">（释放）方法，这样锁就会进入&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">unlocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态。&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">blocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态的线程就会收到一个通知，并有权利获得锁。如果多个线程处于&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">blocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态，所有线程都会先解除&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">blocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态，然后系统选择一个线程来获得锁，其他的线程继续沉默（&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">blocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;）。</span></p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;">import threading
+mylock = threading.RLock()
+class mythread(threading.Thread)
+    ...
+    def run(self ...):
+        ...     #此处 不可以 放置修改共享数据的代码
+        mylock.acquire()
+        ...     #此处 可以 放置修改共享数据的代码
+        mylock.release()
+        ...     #此处 不可以 放置修改共享数据的代码
+</pre>
+</div>
+<p class="MsoNormal"><span style="font-size: 9.0pt; color: red;"><span>&nbsp;</span></span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin; color: red;">我们把修改共享数据的代码称为&ldquo;临界区&rdquo;，必须将所有&ldquo;临界区&rdquo;都封闭在同一锁对象的</span><span lang="EN-US" style="font-size: 9.0pt; color: red;">acquire()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin; color: red;">和</span><span lang="EN-US" style="font-size: 9.0pt; color: red;">release()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin; color: red;">方法调用之间。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">锁只能提供最基本的同步级别。有时需要更复杂的线程同步，例如只在发生某些事件时才访问一个临界区（例如当某个数值改变时）。这就要使用&ldquo;条件变量&rdquo;。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><span>&nbsp;&nbsp; </span></span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">条件变量用</span><span lang="EN-US" style="font-size: 9.0pt;">threading.Condition</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">类创建</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" style="text-indent: 21.0pt;"><span lang="EN-US" style="font-size: 9.0pt;">mycondition = threading.Condition()<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">条件变量是如何工作的呢？首先一个线程成功获得一个条件变量后，调用此条件变量的</span><span lang="EN-US" style="font-size: 9.0pt;">wait()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法会导致这个线程释放这个锁，并进入&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">blocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态，直到另一个线程调用同一个条件变量的</span><span lang="EN-US" style="font-size: 9.0pt;">notify()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法来唤醒那个进入&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">blocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态的线程。如果调用这个条件变量的</span><span lang="EN-US" style="font-size: 9.0pt;">notifyAll()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法的话就会唤醒所有的在等待的线程。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><span>&nbsp;&nbsp;&nbsp; </span></span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">如果程序或者线程永远处于&ldquo;</span><span lang="EN-US" style="font-size: 9.0pt;">blocked</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">&rdquo;状态的话，就会发生死锁。所以如果使用了锁、条件变量等同步机制的话，一定要注意仔细检查，防止死锁情况的发生。对于可能产生异常的临界区要使用异常处理机制中的</span><span lang="EN-US" style="font-size: 9.0pt;">finally</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">子句来保证释放锁。等待一个条件变量的线程必须用</span><span lang="EN-US" style="font-size: 9.0pt;">notify()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法显式的唤醒，否则就永远沉默。保证每一个</span><span lang="EN-US" style="font-size: 9.0pt;">wait()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法调用都有一个相对应的</span><span lang="EN-US" style="font-size: 9.0pt;">notify()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">调用，当然也可以调用</span><span lang="EN-US" style="font-size: 9.0pt;">notifyAll()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法以防万一。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><b><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">同步队列</span></b><b><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></b></p>
+<p class="MsoNormal" style="text-indent: 21.0pt;"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">我们经常会采用生产者</span><span lang="EN-US" style="font-size: 9.0pt;">/</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">消费者关系的两个线程来处理一个共享缓冲区的数据。例如一个生产者线程接受用户数据放入一个共享缓冲区里，等待一个消费者线程对数据取出处理。但是如果缓冲区的太小而生产者和消费者两个异步线程的速度不同时，容易出现一个线程等待另一个情况。为了尽可能的缩短共享资源并以相同速度工作的各线程的等待时间，我们可以使用一个&ldquo;队列&rdquo;来提供额外的缓冲区。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">创建一个&ldquo;队列&rdquo;对象，可以使用如下代码：</span></p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;">import Queue
+myqueue = Queue.Queue(maxsize = 10)
+</pre>
+</div>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;">Queue.Queue</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">类即是一个队列的同步实现。队列长度可为无限或者有限。可通过</span><span lang="EN-US" style="font-size: 9.0pt;">Queue</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">的构造函数的可选参数</span><span lang="EN-US" style="font-size: 9.0pt;">maxsize</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">来设定队列长度。如果</span><span lang="EN-US" style="font-size: 9.0pt;">maxsize</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">小于</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">就表示队列长度无限。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">将一个值放入队列中：</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;">myqueue.put(10)<o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">调用队列对象的</span><span lang="EN-US" style="font-size: 9.0pt;">put()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法在队尾插入一个项目。</span><span lang="EN-US" style="font-size: 9.0pt;">put()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">有两个参数，第一个</span><span lang="EN-US" style="font-size: 9.0pt;">item</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为必需的，为插入项目的值；第二个</span><span lang="EN-US" style="font-size: 9.0pt;">block</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为可选参数，默认为</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">。如果队列当前为空且</span><span lang="EN-US" style="font-size: 9.0pt;">block</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">，</span><span lang="EN-US" style="font-size: 9.0pt;">put()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法就使调用线程暂停</span><span lang="EN-US" style="font-size: 9.0pt;">,</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">直到空出一个数据单元。如果</span><span lang="EN-US" style="font-size: 9.0pt;">block</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为</span><span lang="EN-US" style="font-size: 9.0pt;">0</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">，</span><span lang="EN-US" style="font-size: 9.0pt;">put</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法将引发</span><span lang="EN-US" style="font-size: 9.0pt;">Full</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">异常。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">将一个值从队列中取出：</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;">myqueue.get()<o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">调用队列对象的</span><span lang="EN-US" style="font-size: 9.0pt;">get()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">方法从队头删除并返回一个项目。可选参数为</span><span lang="EN-US" style="font-size: 9.0pt;">block</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">，默认为</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">。如果队列为空且</span><span lang="EN-US" style="font-size: 9.0pt;">block</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为</span><span lang="EN-US" style="font-size: 9.0pt;">1</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">，</span><span lang="EN-US" style="font-size: 9.0pt;">get()</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">就使调用线程暂停，直至有项目可用。如果</span><span lang="EN-US" style="font-size: 9.0pt;">block</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">为</span><span lang="EN-US" style="font-size: 9.0pt;">0</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">，队列将引发</span><span lang="EN-US" style="font-size: 9.0pt;">Empty</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">异常。</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">我们用一个例子来展示如何使用</span><span lang="EN-US" style="font-size: 9.0pt;">Queue</span><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">：</span></p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:python;gutter:true;"># queue_example.py
+from Queue import Queue
+import threading
+import random
+import time
+
+# Producer thread
+class Producer( threading.Thread ):
+    def __init__( self, threadname, queue ):
+        threading.Thread.__init__( self, name = threadname )
+        self.sharedata = queue
+    def run( self ):
+        for i in range( 20 ):
+            print self.getName(), 'adding', i, 'to queue'
+            self.sharedata.put( i )
+            time.sleep( random.randrange( 10 ) / 10.0 )
+            print self.getName(), 'Finished'
+
+# Consumer thread
+class Consumer( threading.Thread ):
+    def __init__( self, threadname, queue ):
+        threading.Thread.__init__( self, name = threadname )
+        self.sharedata = queue
+    def run( self ):
+        for i in range( 20 ):
+            print self.getName(), 'got a value:', self.sharedata.get()
+            time.sleep( random.randrange( 10 ) / 10.0 )
+            print self.getName(), 'Finished'
+
+# Main thread
+def main():
+    queue = Queue()
+    producer = Producer( 'Producer', queue )
+    consumer = Consumer( 'Consumer', queue )
+
+    print 'Starting threads ...'
+    producer.start()
+    consumer.start()
+
+    producer.join()
+    consumer.join()
+
+    print 'All threads have terminated.'
+
+if __name__ == '__main__':
+    main()
+</pre>
+</div>
+<p class="MsoNormal"><span style="font-size: 9.0pt; font-family: 宋体; mso-ascii-font-family: Calibri; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: 宋体; mso-fareast-theme-font: minor-fareast; mso-hansi-font-family: Calibri; mso-hansi-theme-font: minor-latin;">程序输出的结果为：</span><span lang="EN-US" style="font-size: 9.0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Starting threads ...</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 0 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 0</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 1 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 2 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 1</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 2</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: Producer
+Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 3 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">3</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: Producer
+Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 4 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">4</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">ConsumerProducer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;"><span>&nbsp;</span>ConsumerFinished </span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">got a value:Producer adding 5 to
+queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">5</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: Producer
+Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 6 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 7 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">6</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 7</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 8 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 9 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 8</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">ConsumerProducer<span>&nbsp; </span>FinishedFinished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">ConsumerProducer<span>&nbsp; </span>got a value:adding 109 </span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 11 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 12 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">ConsumerProducer<span>&nbsp; </span>FinishedFinished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p>&nbsp;</o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">ConsumerProducer<span>&nbsp; </span>got a value:adding 1310 </span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 14 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 11</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 15 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 16 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 17 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 18 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 12</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer adding 19 to queue</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Producer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 13</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 14</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 15</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 16</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 17</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 18</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer got a value: 19</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">Consumer Finished</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" align="left" style="text-align: left; mso-layout-grid-align: none; text-autospace: none;"><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; color: black; mso-font-kerning: 0pt;">All threads have terminated.</span><span lang="EN-US" style="font-size: 9.0pt; font-family: Consolas; mso-font-kerning: 0pt;"><o:p></o:p></span></p>
+<p class="MsoNormal"><span lang="EN-US" style="font-size: 9.0pt;"><o:p>&nbsp;</o:p></span></p></div><div id="MySignature"></div>
+        <div class="clear"></div>
+        <div id="blog_post_info_block">
+        <div id="blog_post_info">
+        </div>
+        <div class="clear"></div>
+        <div id="post_next_prev"></div>
+    </div>
+</div>
+    <ul class="postmetadata">
+        <li class="icon_cat" id="BlogPostCategory"></li>
+        <li class="icon_bullet" id="EntryTag"></li>
+    </ul>
+</div>
+<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=80995,cb_entryId=2131719,cb_blogApp=currentBlogApp,cb_blogUserGuid='cc6cd4de-5a08-e011-ac81-842b2b196315',cb_entryCreatedDate='2011/8/9 9:17:00';loadViewCount(cb_entryId);</script>
+<script type="text/javascript">
+    var m = window.__blog.postRendered;
+    if (m) { m(__$("post")); }
+</script>
+<script type="text/javascript">
+    var m = window.__blog.postRenderPosts;
+    if (m) { m(); }
+</script>
+<a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = true;var googletag = googletag || {};googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type='text/javascript'>
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') +'//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+    })();
+</script>
+<script type='text/javascript'>
+    try {
+        googletag.cmd.push(function () {
+            googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id='div-gpt-ad-1346480159711-0' style='width:300px; height:250px;'>
+    <script type='text/javascript'>
+    try{
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="blog_news_kb"></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    $.ajax({ url: 'http://counter.cnblogs.com/blog/post/' + cb_entryId, type: 'get', dataType: 'script', cache: true });
+});
+</script>
+</div>
+
+        </div>
+
+        <script type="text/javascript">
+            var m = window.__blog.contentRendered;
+            if (m) { m(__$("content")); }
+        </script>
+
+        <div id="sidebar">
+            
+<div id="about">
+<div>
+<h2 id="about_title">About</h2>
+<div id="about_body">
+<div id="blog-news"></div>
+<script type="text/javascript">loadBlogNews();</script>
+</div>
+</div>
+</div>
+
+            <script type="text/javascript">
+                var m = window.__blog.aboutRendered;
+                if (m) { m(__$("about")); }
+            </script>
+            
+<div id="mySearchWrapper">
+    <div id="mySearch">
+        <input type="image" src="/skins/Minyx2_Lite/images/btnsearch.gif" id="btnZzk"  class="submit" onclick="zzk_go();return false;"/>
+        <label class="lb_search"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="keyword" /></label>
+    </div>
+</div>
+
+            <script type="text/javascript">
+                var m = window.__blog.searchFormRendered;
+                if (m) { m(__$("searchform")); }
+            </script>
+            <div id="sideMain">
+            </div>
+            <div id="sideRight">
+            </div>
+            <div id="sideLeft">
+            </div>
+            
+                <div id="sideContainer">
+                </div>
+                <script type="text/javascript">
+                    $.ajax({
+                        url: '/' + currentBlogApp + '/mvc/blog/Minyx2_Lite_SideColumn.aspx',
+                        data: '{}',
+                        type: 'post',
+                        dataType: 'text',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data) {
+                                $("#sideContainer").html(data);
+                                loadBlogDefaultCalendar();
+                                loadBlogSideBlocks();
+                                var m = window.__blog.sideContainerRendered;
+                                if (m) { m(__$("sideContainer")); }
+                                window.__blog.sidebar.__layout();
+                            }
+                        }
+                    });
+
+                </script>
+            
+        </div>
+
+        <script type="text/javascript">
+            var m = window.__blog.sidebarRendered;
+            if (m) { m(__$("sidebar")); }
+        </script>
+
+        <div id="footer">
+            
+<p id="logoFoot">
+    <a href="http://www.spiga.com.mx/" title="Agencia Interactiva Spiga">www.spiga.com.mx</a>
+</p>
+<div class="footText">
+<p>
+Copyright &copy;2014 Rollen Holt
+</p>
+<p>
+<a href="http://www.cnblogs.com">博客园</a>
+</p>
+</div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var m = window.__blog.wrapperRendered;
+        if (m) { m(__$("wrapper")); }
+    </script>
+
+</div>
+<script type="text/javascript">
+    var m = window.__blog.containerRendered;
+    if (m) { m(__$("container")); }
+</script>
+</body>
+</html>
