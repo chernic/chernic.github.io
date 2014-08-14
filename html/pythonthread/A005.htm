@@ -1,0 +1,788 @@
+﻿<!DOCTYPE html PUBLIC
+ "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Python / Python几种并发实现方案的性能比较  | Elias的个人主页</title>
+	<link rel='stylesheet' href='http://www.elias.cn/pub/skins/glossyhue/style.css' type='text/css' />
+	<link rel='stylesheet' href='http://www.elias.cn/pub/skins/glossyhue/color-blue/color.css' type='text/css' />
+	<!--HTMLHeader--><style type='text/css'><!--
+span.anchor {
+	float: left;
+	font-size: 10px;
+	margin-left: -10px;
+	width: 10px;
+    position:relative; top:-0.1em;
+	text-align: center;
+}
+span.anchor a { text-decoration: none; }
+span.anchor a:hover { text-decoration: underline; }
+ol.toc { text-indent:-20px; list-style: none; }
+ol.toc ol.toc { text-indent:-40px; }
+div.tocfloat { font-size: smaller; margin-bottom: 10px;
+    border-top: 1px dotted #555555; border-bottom: 1px dotted #555555;
+    padding-top: 5px; padding-bottom: 5px; 
+    width: 38%; float: right; margin-left: 10px; clear: right;
+    margin-right:-13px; padding-right: 13px; padding-left: 13px;
+    background-color: #eeeeee; }
+div.toc { font-size: smaller; 
+    padding: 4px; border: 1px dotted #cccccc;
+    background: #f7f7f7;
+    margin-bottom: 10px; }
+div.footnote { 
+  width: 160px; 
+  border-bottom: 1px solid blue;
+  margin-bottom: 0.5em;
+}
+p.footnote {
+  text-indent: -1em;
+  margin-right: 3em;
+  margin-left: 3em;
+  margin-top: 0px;
+  margin-bottom: 0.5em;
+  font-size: smaller;
+}
+a.footnote {
+  font-size: smaller;
+}
+.todo-form { border: none; }
+.todo-form tr td { border: none; font-weight: plain; text-align: left; padding: 4px; }
+.todo-form tr td.heading { text-align: right; width: 140px; padding-right: 6px; }
+table.todo-list { border: 2px solid #ccc; }
+table.todo-list tr.row1 { background-color: #eee; color: #555; }
+table.todo-list tr.row1 td { border-bottom: 2px solid #ccc; }
+table.todo-list tr:last-child.row1 td { border-bottom: none; }
+table.todo-list th { background-color: #ddd; padding: 3px; font-weight: normal; border: 1px solid #ccc; color: #444; }
+table.todo-list tr td { color: #666; }
+table.todo-simple-list { margin-left: 0px; }
+table.todo-simple-list tr td { border: none; padding: 4px; }
+.todo-category-text { color: #666; border-bottom: 1px solid #ccc; }
+.todo-description-text { color: #444; }
+.todo-overdue-text { color: #f66; border-bottom: 1px solid #ccc; }
+.todo-completed-text { color: #446600; border-bottom: 1px solid #ccc; }
+.todo-legend { text-align: center; color: #555; font-size: smaller; }
+  td.auth-none { background: #ffffff; text-align: center; }
+  td.auth-site { background: #d0ffd0; text-align: center; }
+  td.auth-group { background: #80e880; text-align: center; }
+  td.auth-page { background: #00c000; text-align: center; }
+
+div.sectionedit { float:right;font-size:smaller;}
+.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+
+  table.markup { border:2px dotted #ccf; width:90%; }
+  td.markup1, td.markup2 { padding-left:10px; padding-right:10px; }
+  table.vert td.markup1 { border-bottom:1px solid #ccf; }
+  table.horiz td.markup1 { width:23em; border-right:1px solid #ccf; }
+  table.markup caption { text-align:left; }
+  div.faq p, div.faq pre { margin-left:2em; }
+  div.faq p.question { margin:1em 0 0.75em 0; font-weight:bold; }
+   
+    .frame 
+      { border:1px solid #cccccc; padding:4px; background-color:#f9f9f9; }
+    .lfloat { float:left; margin-right:0.5em; }
+    .rfloat { float:right; margin-left:0.5em; }
+a.varlink { text-decoration:none; }
+/**
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ */
+.python .de1, .python .de2 {font-family: monospace; font-weight: normal;}
+.python  {font-family:monospace;}
+.python .imp {font-weight: bold; color: red;}
+.python li, .python .li1 {font-family: monospace; color: black; font-weight: normal;}
+.python .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.python .li2 {font-weight: bold;}
+.python .kw1 {color: #ff7700;font-weight:bold;}
+.python .kw2 {color: #008000;}
+.python .kw3 {color: #dc143c;}
+.python .kw4 {color: #0000cd;}
+.python .co1 {color: #808080; font-style: italic;}
+.python .coMULTI {color: #808080; font-style: italic;}
+.python .es0 {color: #000099; font-weight: bold;}
+.python .br0 {color: black;}
+.python .sy0 {color: #66cc66;}
+.python .st0 {color: #483d8b;}
+.python .nu0 {color: #ff4500;}
+.python .me1 {color: black;}
+.python span.xtra { display:block; }
+
+.sourceblocklink {
+  text-align: right;
+  font-size: smaller;
+}
+.sourceblocktext {
+  padding: 0.5em;
+  border: 1px solid #808080;
+  color: #000000;
+  background-color: #f1f0ed;
+}
+.sourceblocktext div {
+  font-family: monospace;
+  font-size: small;
+  line-height: 1;
+  height: 1%;
+}
+.sourceblocktext div.head,
+.sourceblocktext div.foot {
+  font: italic medium serif;
+  padding: 0.5em;
+}
+
+--></style><link rel="alternate" type="application/rss+xml" 
+  title="Elias的个人主页" href="http://www.elias.cn?n=Site.AllRecentChanges&amp;action=rss" />
+<link rel="alternate" type="application/atom+xml" title="Elias的个人主页"
+  href="http://www.elias.cn?n=Site.AllRecentChanges&amp;action=atom" /><link rel="shortcut icon" href="http://www.elias.cn/pub/favicon.ico" type="image/x-icon" />  <meta name='robots' content='index,follow' />
+<script type="text/javascript">
+function toggle(obj) {
+    var elstyle = document.getElementById(obj).style;
+    var text    = document.getElementById(obj + "tog");
+    if (elstyle.display == 'none') {
+        elstyle.display = 'block';
+        text.innerHTML = "hide";
+    } else {
+        elstyle.display = 'none';
+        text.innerHTML = "show";
+    }
+}
+</script>
+</head>
+
+<body>
+	<div id="page">
+		<div id="header">
+			<!--PageHeaderFmt-->
+			<div id="siteheader">
+				<h1 class='sitetitle'><a class='urllink' href='http://www.elias.cn' rel='nofollow'>Elias的个人主页</a></h1>
+<div class="sitetag" >
+</div>
+
+			</div>
+			<!--/PageHeaderFmt-->
+
+			<!--PageTabsFmt-->
+			<div id="nav">
+				<ul><li><a class='wikilink' href='http://www.elias.cn/Profiles/Elias'>关于我</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Main/MyIdea'>我的观点</a>
+</li><li><strong> <a target='_blank'  class='urllink' href='http://blog.elias.cn/' rel='nofollow'>我的Blog</a> </strong> <span  style='display: none;'><a class='urllink' href='http://www.elias.cn/kolias/' rel='nofollow'>'</a></span>
+</li><li><strong> <a target='_blank'  class='urllink' href='https://twitter.com/EliasCn' rel='nofollow'>我的Twitter</a> </strong>
+</li><li><a class='wikilink' href='http://www.elias.cn/PmWiki/PmWiki'>PmWiki</a>
+</li></ul>
+
+			</div>
+			<!--/PageTabsFmt-->
+		</div>
+
+		<div id="sidebar">
+			<!--PageSearchFmt-->
+			<form id="searchform" action='http://www.elias.cn' method="get">
+			<fieldset>
+				<input class="hidden" type='hidden' name='n' value='Python.PyConcurrency' />
+				<input class="hidden" type='hidden' name='action' value='search' />
+				<input id="searchfield" type='text' name='q' value='' />
+				<input id="searchbutton" type='submit' name="searchbutton" value='搜索' />
+			</fieldset>
+			</form>
+			<!--/PageSearchFmt-->
+
+			<!--PageRightFmt-->
+			<ul><li><a class='wikilink' href='http://www.elias.cn/Main/HomePage'>首页</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Main/WikiSandbox'>测试用的沙盘页</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Site/AllRecentChanges'>最近所有更新</a> (<a class='wikilink' href='http://www.elias.cn/Site/AllRecentChanges?action=rss'>RSS</a>)
+<ul><li><a class='wikilink' href='http://www.elias.cn/Site/AllRecentChangesShort'>最近所有更新（简洁）</a>
+</li></ul></li><li><strong> <a class='wikilink' href='http://www.elias.cn/En/HomePage'>English Version</a> </strong>
+</li></ul><p class='vspace sidehead'> <a class='wikilink' href='http://www.elias.cn/Main/QuickList'>快速链接</a>
+</p><ul><li><a class='wikilink' href='http://www.elias.cn/Elias/ToDo'>我的待办事项（加密）</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Python/HomePage'>Python编程资料</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/IPhone/Dev'>iOS 开发经验笔记</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Linux/DebianLinux'>Debian Gnu/Linux</a>
+</li></ul><p class='vspace sidehead'> 内容分类
+</p><ul><li><a class='wikilink' href='http://www.elias.cn/MyProject/HomePage'>我的项目玩具</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/ComUse/HomePage'>计算机使用</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Linux/HomePage'>Linux经验</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Mac/HomePage'>使用Mac系统</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/IPhone/HomePage'>iPhone经验</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Develop/HomePage'>编程玩吧</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Research/HomePage'>也搞点科研</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Other/HomePage'>生活和娱乐</a>
+</li></ul><p class='vspace sidehead'> <a target='_blank'  class='urllink' href='http://www.pmwiki.org' rel='nofollow'>PmWiki系统</a>
+</p><ul><li><a class='wikilink' href='http://www.elias.cn/Main/PmWiki'>我的PmWiki经验</a>
+</li><li><a class='wikilink' href='http://www.elias.cn/Main/Log'>本站维护记录</a>
+</li></ul><p class='vspace sidehead'> 友情链接
+</p><ul><li><a target='_blank'  class='urllink' href='http://alsofly.org/' rel='nofollow'>飞的主页</a>
+</li><li><a target='_blank'  class='urllink' href='http://www.pmichaud.com/' rel='nofollow'>pm教授</a>
+</li><li><a target='_blank'  class='urllink' href='http://arithboy.org/wiki/' rel='nofollow'>王昭个人主页</a>
+</li><li><a target='_blank'  class='urllink' href='http://www.zoomquiet.org/' rel='nofollow'>ZoomQuiet.org</a>
+</li><li><a target='_blank'  class='urllink' href='http://www.cbsr.ia.ac.cn/users/zzx/Chinese.html' rel='nofollow'>张兆翔个人主页</a>
+</li></ul><p class='vspace'  style='text-align: right;'> <span style='font-size:83%'><a class='wikilink' href='http://www.elias.cn/Site/SideBar?action=edit'>edit SideBar</a></span>
+</p>
+
+			<!--/PageRightFmt-->
+		</div>
+
+		<div id="content">
+			<div id="pagelead">
+				<div class="pageactions">
+					<!--PageActionFmt-->
+					<ul><li class='login'><a accesskey='l'  rel='nofollow'  class='wikilink' href='http://www.elias.cn/Python/PyConcurrency?action=login'>Login</a>
+</li><li class='browse'><a accesskey=''  class='selflink' href='http://www.elias.cn/Python/PyConcurrency'>查看</a>
+</li><li class='edit'><a accesskey='e'  rel='nofollow'  class='wikilink' href='http://www.elias.cn/Python/PyConcurrency?action=edit'>编辑</a>
+</li><li class='diff'><a accesskey='h'  rel='nofollow'  class='wikilink' href='http://www.elias.cn/Python/PyConcurrency?action=diff'>记录</a>
+</li><li class='print'><a accesskey=''  rel='nofollow'  class='wikilink' href='http://www.elias.cn/Python/PyConcurrency?action=print'>打印</a>
+</li><li class='backlinks'> <a accesskey='b'  rel='nofollow'  class='wikilink' href='http://www.elias.cn/Python/PyConcurrency?action=search&amp;q=link=Python.PyConcurrency'>Backlinks</a>
+</li></ul>
+
+					<!--/PageActionFmt-->
+				</div>
+
+				<div class="pageheader">
+					<!--PageTitleGroupFmt-->
+					<a href='http://www.elias.cn/Python' class='pagegroup'>Python</a>
+					<!--/PageTitleGroupFmt-->
+					<!--PageTitleFmt-->
+					<h1><a href='http://www.elias.cn/Python/PyConcurrency'>Python几种并发实现方案的性能比较</a></h1>
+					<!--/PageTitleFmt-->
+				</div>
+
+			</div>
+
+			<!--PageText-->
+<div id='wikitext'>
+<div class='vspace'></div><div  style='margin-top: 0px;' class='tocfloat'><p  style='margin-top: 0px;'><a name='toc' id='toc'></a><b>On this page...</b> (<a id="tocidtog" href="javascript:toggle('tocid');">hide</a>)</p><ol  style='margin-top: 0px;' class='toc' id='tocid'><li  style='margin-top: 0px;'>1.&ensp;<a href='#toc1'> 前言</a></li><li  style='margin-top: 0px;'>2.&ensp;<a href='#toc2'> 实验方案</a><ol  style='margin-top: 0px;' class='toc'><li  style='margin-top: 0px;'>2.1&ensp;<a href='#toc3'> 硬件平台</a></li><li  style='margin-top: 0px;'>2.2&ensp;<a href='#toc4'> 软件平台</a></li></ol></li><li  style='margin-top: 0px;'>3.&ensp;<a href='#toc5'> 实验过程及结果</a><ol  style='margin-top: 0px;' class='toc'><li  style='margin-top: 0px;'>3.1&ensp;<a href='#toc6'> Stackless Python的实验结果</a></li><li  style='margin-top: 0px;'>3.2&ensp;<a href='#toc7'> 使用thread模块的实验结果</a></li><li  style='margin-top: 0px;'>3.3&ensp;<a href='#toc8'> 使用threading模块配合Queue模块的实验结果</a></li><li  style='margin-top: 0px;'>3.4&ensp;<a href='#toc9'> 使用processing模块配合Queue模块的实验结果</a></li><li  style='margin-top: 0px;'>3.5&ensp;<a href='#toc10'> greenlet模块的实验结果</a></li><li  style='margin-top: 0px;'>3.6&ensp;<a href='#toc11'> eventlet模块的实验结果</a></li></ol></li><li  style='margin-top: 0px;'>4.&ensp;<a href='#toc12'> 结论与分析</a><ol  style='margin-top: 0px;' class='toc'><li  style='margin-top: 0px;'>4.1&ensp;<a href='#toc13'> Stackless Python</a></li><li  style='margin-top: 0px;'>4.2&ensp;<a href='#toc14'> Python线程</a></li><li  style='margin-top: 0px;'>4.3&ensp;<a href='#toc15'> Python进程</a></li><li  style='margin-top: 0px;'>4.4&ensp;<a href='#toc16'> greenlet超轻量级方案</a></li></ol></li><li  style='margin-top: 0px;'>5.&ensp;<a href='#toc17'> 实验代码</a><ol  style='margin-top: 0px;' class='toc'><li  style='margin-top: 0px;'>5.1&ensp;<a href='#toc18'> ring_no_io_slp.py</a></li><li  style='margin-top: 0px;'>5.2&ensp;<a href='#toc19'> ring_no_io_thread.py</a></li><li  style='margin-top: 0px;'>5.3&ensp;<a href='#toc20'> ring_no_io_queue.py</a></li><li  style='margin-top: 0px;'>5.4&ensp;<a href='#toc21'> ring_no_io_proc.py</a></li><li  style='margin-top: 0px;'>5.5&ensp;<a href='#toc22'> ring_no_io_greenlet.py</a></li><li  style='margin-top: 0px;'>5.6&ensp;<a href='#toc23'> ring_no_io_eventlet.py</a></li></ol></li></ol></div>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_1'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=1&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h2  style='margin-top: 0px;'><a name='toc1' id='toc1'></a>1.&ensp; 前言</h2>
+<p>偶然看到<a class='urllink' href='http://muharem.wordpress.com/2007/07/31/erlang-vs-stackless-python-a-first-benchmark/' rel='nofollow'>Erlang vs. Stackless python: a first benchmark</a>，对Erlang和Stackless Python的并发处理性能进行了实验比较，基本结论认为二者有比较相近的性能。我看完产生的问题是，Stackless Python与Python的其他并发实现机制性能又会有多大区别呢，比如线程和进程。因此我采用与这篇文章相同的办法来对Stackless Python、普通Python的thread模块、普通Python的threading模块、普通Python的processing模块这四种并发实现方案进行了性能实验，并将实验过程和基本结果记录在这里。
+</p>
+<p class='vspace'>后来看到了基于greenlet实现的高性能网络框架<a class='urllink' href='http://wiki.secondlife.com/wiki/Eventlet/Documentation' rel='nofollow'>Eventlet</a>，因而更新了实验方案，将greenlet也加入了比较，虽然greenlet并非是一种真正意义上的并发处理，而是在单个线程下对程序块进行切换轮流执行。
+</p>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_2'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=2&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h2  style='margin-top: 0px;'><a name='toc2' id='toc2'></a>2.&ensp; 实验方案</h2>
+<p>实验方案与<a class='urllink' href='http://muharem.wordpress.com/2007/07/31/erlang-vs-stackless-python-a-first-benchmark/' rel='nofollow'>Erlang vs. Stackless python: a first benchmark</a>是相同的，用每种方案分别给出如下问题的实现，记录完成整个处理过程的总时间来作为评判性能的依据：
+</p><ol><li>由n个节点组成一个环状网络，在上面传送共m个消息。
+</li><li>将每个消息（共m个），逐个发送给1号节点。
+</li><li>第1到n-1号节点在接收到消息后，都转发给下一号节点。
+</li><li>第n号节点每次收到消息后，不再继续转发。
+</li><li>当m个消息都从1号逐个到达第n号节点时，认为全部处理结束。
+</li></ol><div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_3'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=3&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc3' id='toc3'></a>2.1&ensp; 硬件平台</h3>
+<p>Macbook Pro 3,1上的Vmware Fusion 1.0虚拟机中，注意这里给虚拟机只启用了cpu的单个核心：
+</p><ul><li>原始Cpu：Core 2 Duo，2.4 <span class='wikiword'>GHz</span>，2核心，4 MB L2 缓存，总线速度800 <span class='wikiword'>MHz</span>
+</li><li>分配给虚拟机的内存：796M
+</li></ul><p class='vspace'>（单个CPU，还能比较并发吗？）
+</p><div class='sectionedit'><a name='sPython.PyConcurrency_4'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=4&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc4' id='toc4'></a>2.2&ensp; 软件平台</h3>
+<p>Vmware Fusion 1.0下的Debian etch：
+</p><ul><li>原始Python：Debian发行版自带Python 2.4.4
+</li><li>Python 2.4.4 Stackless 3.1b3 060516
+</li><li>processing-0.52-py2.4-linux-i686.egg
+</li><li>原始Python下的greenlet实现：<a class='urllink' href='http://codespeak.net/py/dist/index.html' rel='nofollow'>py lib 0.9.2</a>
+</li></ul><div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_5'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=5&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h2  style='margin-top: 0px;'><a name='toc5' id='toc5'></a>3.&ensp; 实验过程及结果</h2>
+<p>各方案的实现代码见<a href='#Code'>后文</a>。实验时使用time指令记录每次运行的总时间，选用的都是不做任何输出的no_io实现（Python的print指令还是挺耗资源的，如果不注释掉十有八九得影响测试结果），每次执行时设定n=300，m=10000（<a class='urllink' href='http://muharem.wordpress.com/2007/07/31/erlang-vs-stackless-python-a-first-benchmark/' rel='nofollow'>Erlang vs. Stackless python: a first benchmark</a>文章中认为n可以设置为300，m则可以取10000到90000之间的数值分别进行测试）。
+</p>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_6'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=6&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc6' id='toc6'></a>3.1&ensp; Stackless Python的实验结果</h3>
+<div  style='background-color: #eeeeff; border: 2px dotted blue;' > 
+<pre class='escaped'>real	0m1.651s
+user	0m1.628s
+sys	0m0.020s</pre>
+</div>
+<p class='vspace'>即使将m扩大到30000，实验结果仍然很突出：
+</p><div  style='background-color: #eeeeff; border: 2px dotted blue;' > 
+<pre class='escaped'>real	0m4.749s
+user	0m4.716s
+sys	0m0.028s</pre>
+</div>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_7'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=7&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc7' id='toc7'></a>3.2&ensp; 使用thread模块的实验结果</h3>
+<div  style='background-color: #eeeeff; border: 2px dotted blue;' > 
+<pre class='escaped'>real	1m13.009s
+user	0m2.476s
+sys	0m59.028s</pre>
+</div>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_8'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=8&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc8' id='toc8'></a>3.3&ensp; 使用threading模块配合Queue模块的实验结果</h3>
+<p>不太稳定，有时候这样：
+</p><div  style='background-color: #eeeeff; border: 2px dotted blue;' > 
+<pre class='escaped'>real	1m9.222s
+user	0m34.418s
+sys	0m34.622s</pre>
+</div>
+<p class='vspace'>也有时这样：
+</p><div  style='background-color: #eeeeff; border: 2px dotted blue;' > 
+<pre class='escaped'>real	2m14.016s
+user	0m6.644s
+sys	2m7.260s</pre>
+</div>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_9'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=9&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc9' id='toc9'></a>3.4&ensp; 使用processing模块配合Queue模块的实验结果</h3>
+<div  style='background-color: #eeeeff; border: 2px dotted blue;' > 
+<pre class='escaped'>real	3m43.539s
+user	0m15.345s
+sys	3m27.953s</pre>
+</div>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_10'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=10&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc10' id='toc10'></a>3.5&ensp; greenlet模块的实验结果</h3>
+<div  style='background-color: #eeeeff; border: 2px dotted blue;' > 
+<pre class='escaped'>real	0m9.225s
+user	0m0.644s
+sys	0m8.581s</pre>
+</div>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_11'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=11&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc11' id='toc11'></a>3.6&ensp; eventlet模块的实验结果</h3>
+<p>注意！eventlet 的这个实验结果是后来增补的，硬件平台没变，但是是直接在 OSX 自带 Python 2.5 环境下执行出来的，同时系统中还有 Firefox 等很多程序也在争夺系统资源。因此只能作为大致参考，不能与其他几组数据作直接对比。（其中 eventlet 的版本是 0.9.5）
+</p>
+<div class='vspace'></div><div  style='background-color: #eeeeff; border: 2px dotted blue;' > 
+<pre class='escaped'>real    0m21.610s
+user    0m20.713s
+sys     0m0.215s</pre>
+</div>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_12'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=12&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h2  style='margin-top: 0px;'><a name='toc12' id='toc12'></a>4.&ensp; 结论与分析</h2>
+<div class='sectionedit'><a name='sPython.PyConcurrency_13'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=13&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc13' id='toc13'></a>4.1&ensp; Stackless Python</h3>
+<p>毫无疑问，Stackless Python几乎有匪夷所思的并发性能，比其他方案快上几十倍，而且借助Stackless Python提供的channel机制，实现也相当简单。也许这个结果向我们部分揭示了沈仙人基于Stackless Python实现的<a class='urllink' href='http://code.google.com/p/eurasia/' rel='nofollow'>Eurasia3</a>能够提供相当于c语言效果的恐怖并发性能的原因。
+</p>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_14'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=14&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc14' id='toc14'></a>4.2&ensp; Python线程</h3>
+<p>从道理上来讲，thread模块似乎应该和threading提供基本相同的性能，毕竟threading只是对thread的一种封装嘛，后台机制应该是一致的。或许threading由于本身类实例维护方面的开销，应该会比直接用thread慢一点。从实验结果来看，二者性能也确实差不多。只是不大明白为何threading方案的测试结果不是很稳定，即使对其他方案的测试运行多次，误差也不会像threading这么飘。从代码实现体验来说，用threading配合Queue比直接用thread实在是轻松太多了，并且出错的机会也要少很多。
+</p>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_15'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=15&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc15' id='toc15'></a>4.3&ensp; Python进程</h3>
+<p>processing模块给出的进程方案大致比thread线程要慢一倍，并且这是在我特意调整虚拟机给它预备了足够空闲内存、避免使用交换分区的情况下取得的（特意分给虚拟机700多M内存就是为了这个）。而其他方案仅仅占用数M内存，完全无需特意调大可用内存总量。当然，如果给虚拟机多启用几个核心的话，processing也许会占上点便宜，毕竟目前thread模块是不能有效利用多cpu资源的（经实验，Stackless Python在开启双核的情况下表现的性能和单核是一样的，说明也是不能有效利用多cpu）。因此一种比较合理的做法是根据cpu的数量，启用少量几个进程，而在进程内部再开启线程进行实际业务处理，这也是目前Python社区推荐的有效利用多cpu资源的办法。好在processing配合其自身提供的Queue模块，编程体验还是比较轻松的。
+</p>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_16'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=16&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc16' id='toc16'></a>4.4&ensp; greenlet超轻量级方案</h3>
+<p>基于greenlet的实现则性能仅次于Stackless Python，大致比Stackless Python慢一倍，比其他方案快接近一个数量级。其实greenlet不是一种真正的并发机制，而是在同一线程内，在不同函数的执行代码块之间切换，实施“你运行一会、我运行一会”，并且在进行切换时必须指定何时切换以及切换到哪。greenlet的接口是比较简单易用的，但是使用greenlet时的思考方式与其他并发方案存在一定区别。线程/进程模型在大逻辑上通常从并发角度开始考虑，把能够并行处理的并且值得并行处理的任务分离出来，在不同的线程/进程下运行，然后考虑分离过程可能造成哪些互斥、冲突问题，将互斥的资源加锁保护来保证并发处理的正确性。greenlet则是要求从避免阻塞的角度来进行开发，当出现阻塞时，就显式切换到另一段没有被阻塞的代码段执行，直到原先的阻塞状况消失以后，再人工切换回原来的代码段继续处理。因此，greenlet本质是一种合理安排了的串行，实验中greenlet方案能够得到比较好的性能表现，主要也是因为通过合理的代码执行流程切换，完全避免了死锁和阻塞等情况（执行带屏幕输出的ring_greenlet.py我们会看到脚本总是一个一个地处理消息，把一个消息在环上从头传到尾之后，再开始处理下一个消息）。因为greenlet本质是串行，因此在没有进行显式切换时，代码的其他部分是无法被执行到的，如果要避免代码长时间占用运算资源造成程序假死，那么还是要将greenlet与线程/进程机制结合使用（每个线程、进程下都可以建立多个greenlet，但是跨线程/进程时greenlet之间无法切换或通讯）。
+</p>
+<p class='vspace'>Stackless则比较特别，对很多资源从底层进行了并发改造，并且提供了channel等更适合“并发”的通讯机制实现，使得资源互斥冲突的可能性大大减小，并发性能自然得以提高。粗糙来讲，greenlet是“阻塞了我就先干点儿别的，但是程序员得明确告诉greenlet能先干点儿啥以及什么时候回来”；Stackless则是“东西我已经改造好了，你只要用我的东西，并发冲突就不用操心，只管放心大胆地并发好了”。greenlet应该是学习了Stackless的上下文切换机制，但是对底层资源没有进行适合并发的改造。并且实际上greenlet也没有必要改造底层资源的并发性，因为它本质是串行的单线程，不与其他并发模型混合使用的话是无法造成对资源的并发访问的。
+</p>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_17'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=17&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h4  style='margin-top: 0px;'> greenlet 封装后的 eventlet 方案</h4>
+<p>eventlet 是基于 greenlet 实现的面向网络应用的并发处理框架，提供“线程”池、队列等与其他 Python 线程、进程模型非常相似的 api，并且提供了对 Python 发行版自带库及其他模块的超轻量并发适应性调整方法，比直接使用 greenlet 要方便得多。并且这个解决方案源自著名虚拟现实游戏“第二人生”，可以说是久经考验的新兴并发处理模型。其基本原理是调整 Python 的 socket 调用，当发生阻塞时则切换到其他 greenlet 执行，这样来保证资源的有效利用。需要注意的是：
+</p><ul><li>eventlet 提供的函数只能对 Python 代码中的 socket 调用进行处理，而不能对模块的 C 语言部分的 socket 调用进行修改。对后者这类模块，仍然需要把调用模块的代码封装在 Python 标准线程调用中，之后利用 eventlet 提供的适配器实现 eventlet 与标准线程之间的协作。
+</li><li>再有，虽然 eventlet 把 api 封装成了非常类似标准线程库的形式，但两者的实际并发执行流程仍然有明显区别。在没有出现 I/O 阻塞时，除非显式声明，否则当前正在执行的 eventlet 永远不会把 cpu 交给其他的 eventlet，而标准线程则是无论是否出现阻塞，总是由所有线程一起争夺运行资源。所有 eventlet 对 I/O 阻塞无关的大运算量耗时操作基本没有什么帮助。
+</li></ul><p class='vspace'>在性能测试结果方面，eventlet 消耗的运行时间大致是 greenlet 方案的 3 到 5 倍，而 Python 标准线程模型的 thread 方式消耗的运行时间大致是 eventlet 测试代码的 8 到 10 倍。其中前者可能是因为我们在 eventlet 的测试代码中，使用队列机制来完成所有的消息传递，而队列上的访问互斥保护可能额外消耗了一些运算资源。总体而言，eventlet 模型的并发性能虽然比 Stackless Python 和直接使用 greenlet 有一定差距，但仍然比标准线程模型有大约一个数量级的优势，这也就不奇怪近期很多强调并发性能的网络服务器实现采取 eventlet 、线程、进程三者组合使用的实现方案。
+</p>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_18'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=18&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h2  style='margin-top: 0px;'><a name='toc17' id='toc17'></a>5.&ensp; <a name='Code' id='Code'></a>实验代码</h2>
+<p>实验代码下载：
+</p><ul><li><a class='urllink' href='http://www.elias.cn/uploads/Develop/py_concurrency_v3.tar' rel='nofollow'>版本3 下载</a>：增加了 eventlet 方案的实验代码。
+</li><li><a class='urllink' href='http://www.elias.cn/uploads/Develop/py_concurrency_v2.tar' rel='nofollow'>版本2 下载</a>：增加了 greenlet 方案的实验代码。
+</li><li><a class='urllink' href='http://www.elias.cn/uploads/Develop/py_concurrency.tar' rel='nofollow'>版本1 下载</a>：包括 Stackless Python 、 thread 、 threading 、 processing 四种方案的实验代码。
+</li></ul><p class='vspace'>为方便阅读，将实验中用到的几个脚本的代码粘贴如下，其中Stackless Python方案的代码实现直接取自<a class='urllink' href='http://muharem.wordpress.com/2007/07/31/erlang-vs-stackless-python-a-first-benchmark/' rel='nofollow'>Erlang vs. Stackless python: a first benchmark</a>：
+</p>
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_19'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=19&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc18' id='toc18'></a>5.1&ensp; ring_no_io_slp.py</h3>
+
+<div class='sourceblock ' id='sourceblock1'>
+  <div class='sourceblocktext'><div class="python"><ol><li class="li1"><div class="de1"><span class="co1">#!/Library/Frameworks/Python.framework/Versions/2.5/bin/python</span></div></li>
+<li class="li1"><div class="de1"><span class="co1"># encoding: utf-8</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> <span class="kw3">sys</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> stackless <span class="kw1">as</span> SL</div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> run_benchmark<span class="br0">&#40;</span>n, m<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="co1"># print(&quot;&gt;&gt; Python 2.5.1, stackless 3.1b3 here (N=%d, M=%d)!\n&quot; % (n, m))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; firstP = cin = SL.<span class="me1">channel</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> s <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span><span class="nu0">1</span>, n<span class="br0">&#41;</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cout = SL.<span class="me1">channel</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># # print(&quot;*&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; t = SL.<span class="me1">tasklet</span><span class="br0">&#40;</span>loop<span class="br0">&#41;</span><span class="br0">&#40;</span>seqn, cin, cout<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cin = cout</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s+<span class="nu0">1</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># # print(&quot;$&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; t = SL.<span class="me1">tasklet</span><span class="br0">&#40;</span>mloop<span class="br0">&#41;</span><span class="br0">&#40;</span>seqn, cin<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> r <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span>m-<span class="nu0">1</span>, -<span class="nu0">1</span>, -<span class="nu0">1</span><span class="br0">&#41;</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># # print(&quot;+ sending Msg# &nbsp;%d&quot; % r)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; firstP.<span class="me1">send</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; SL.<span class="me1">schedule</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> loop<span class="br0">&#40;</span>s, cin, cout<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; r = cin.<span class="me1">receive</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cout.<span class="me1">send</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;: Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;* Proc: &lt;%s&gt;, Seq#: %s, Msg#: terminate!&quot; % (pid(), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> mloop<span class="br0">&#40;</span>s, cin<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; r = cin.<span class="me1">receive</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;&gt; Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;@ Proc: &lt;%s&gt;, Seq#: %s, ring terminated.&quot; % (pid(), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> pid<span class="br0">&#40;</span><span class="br0">&#41;</span>: <span class="kw1">return</span> <span class="kw3">repr</span><span class="br0">&#40;</span>SL.<span class="me1">getcurrent</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span>.<span class="me1">split</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#91;</span>-<span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="nu0">2</span>:-<span class="nu0">1</span><span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2"><span class="kw1">if</span> __name__ == <span class="st0">'__main__'</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; run_benchmark<span class="br0">&#40;</span><span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span>, <span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+</ol></div></div>
+  <div class='sourceblocklink'><a href='http://www.elias.cn/Python/PyConcurrency?action=sourceblock&amp;num=1' type='text/plain'>[Get Code]</a></div>
+</div>
+
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_20'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=20&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc19' id='toc19'></a>5.2&ensp; ring_no_io_thread.py</h3>
+
+<div class='sourceblock ' id='sourceblock2'>
+  <div class='sourceblocktext'><div class="python"><ol><li class="li1"><div class="de1"><span class="co1">#!/Library/Frameworks/Python.framework/Versions/2.5/bin/python</span></div></li>
+<li class="li1"><div class="de1"><span class="co1"># encoding: utf-8</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> <span class="kw3">sys</span>, <span class="kw3">time</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> <span class="kw3">thread</span></div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1">SLEEP_TIME = <span class="nu0">0.0001</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> run_benchmark<span class="br0">&#40;</span>n, m<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="co1"># print(&quot;&gt;&gt; Python 2.5.1, stackless 3.1b3 here (N=%d, M=%d)!\n&quot; % (n, m))</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; locks = <span class="br0">&#91;</span><span class="kw3">thread</span>.<span class="me1">allocate_lock</span><span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="kw1">for</span> i <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span>n<span class="br0">&#41;</span><span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; firstP = cin = <span class="br0">&#91;</span><span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; cin_lock_id = <span class="nu0">0</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> s <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span><span class="nu0">1</span>, n<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; cout = <span class="br0">&#91;</span><span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cout_lock_id = s</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;*&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">thread</span>.<span class="me1">start_new_thread</span><span class="br0">&#40;</span>loop, <span class="br0">&#40;</span>seqn, locks, cin, cin_lock_id, cout, cout_lock_id<span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cin = cout</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; cin_lock_id = cout_lock_id</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s+<span class="nu0">1</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;$&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">thread</span>.<span class="me1">start_new_thread</span><span class="br0">&#40;</span>mloop, <span class="br0">&#40;</span>seqn, locks, cin, cin_lock_id<span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">for</span> r <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span>m-<span class="nu0">1</span>, -<span class="nu0">1</span>, -<span class="nu0">1</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;+ sending Msg# &nbsp;%d&quot; % r)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; lock = locks<span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">acquire</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; firstP.<span class="me1">append</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">release</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">time</span>.<span class="me1">sleep</span><span class="br0">&#40;</span>SLEEP_TIME<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">try</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">time</span>.<span class="me1">sleep</span><span class="br0">&#40;</span>SLEEP_TIME<span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">except</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> loop<span class="br0">&#40;</span>s, locks, cin, cin_lock_id, cout, cout_lock_id<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; lock = locks<span class="br0">&#91;</span>cin_lock_id<span class="br0">&#93;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">acquire</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="kw2">len</span><span class="br0">&#40;</span>cin<span class="br0">&#41;</span> <span class="sy0">&gt;</span> <span class="nu0">0</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; r = cin.<span class="me1">pop</span><span class="br0">&#40;</span><span class="nu0">0</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">release</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">release</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">time</span>.<span class="me1">sleep</span><span class="br0">&#40;</span>SLEEP_TIME<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">continue</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; lock = locks<span class="br0">&#91;</span>cout_lock_id<span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">acquire</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; cout.<span class="me1">append</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">release</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;: Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;* Proc: &lt;%s&gt;, Seq#: %s, Msg#: terminate!&quot; % (pid(), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> mloop<span class="br0">&#40;</span>s, locks, cin, cin_lock_id<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; lock = locks<span class="br0">&#91;</span>cin_lock_id<span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">acquire</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> <span class="kw2">len</span><span class="br0">&#40;</span>cin<span class="br0">&#41;</span> <span class="sy0">&gt;</span> <span class="nu0">0</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; r = cin.<span class="me1">pop</span><span class="br0">&#40;</span><span class="nu0">0</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">release</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; lock.<span class="me1">release</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">time</span>.<span class="me1">sleep</span><span class="br0">&#40;</span>SLEEP_TIME<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">continue</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;&gt; Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;@ Proc: &lt;%s&gt;, Seq#: %s, ring terminated.&quot; % (pid(), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw3">thread</span>.<span class="me1">interrupt_main</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> pid<span class="br0">&#40;</span><span class="br0">&#41;</span>: <span class="kw1">return</span> <span class="kw3">thread</span>.<span class="me1">get_ident</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">if</span> __name__ == <span class="st0">'__main__'</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; run_benchmark<span class="br0">&#40;</span><span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span>, <span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+</ol></div></div>
+  <div class='sourceblocklink'><a href='http://www.elias.cn/Python/PyConcurrency?action=sourceblock&amp;num=2' type='text/plain'>[Get Code]</a></div>
+</div>
+
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_21'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=21&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc20' id='toc20'></a>5.3&ensp; ring_no_io_queue.py</h3>
+
+<div class='sourceblock ' id='sourceblock3'>
+  <div class='sourceblocktext'><div class="python"><ol><li class="li1"><div class="de1"><span class="co1">#!/Library/Frameworks/Python.framework/Versions/2.5/bin/python</span></div></li>
+<li class="li1"><div class="de1"><span class="co1"># encoding: utf-8</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> <span class="kw3">sys</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> <span class="kw3">threading</span>, <span class="kw3">Queue</span></div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> run_benchmark<span class="br0">&#40;</span>n, m<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="co1"># print(&quot;&gt;&gt; Python 2.5.1, stackless 3.1b3 here (N=%d, M=%d)!\n&quot; % (n, m))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; firstP = cin = <span class="kw3">Queue</span>.<span class="kw3">Queue</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> s <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span><span class="nu0">1</span>, n<span class="br0">&#41;</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cout = <span class="kw3">Queue</span>.<span class="kw3">Queue</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;*&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; t = Loop<span class="br0">&#40;</span>seqn, cin, cout<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; t.<span class="me1">setDaemon</span><span class="br0">&#40;</span><span class="kw2">False</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; t.<span class="me1">start</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cin = cout</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s+<span class="nu0">1</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;$&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; t = MLoop<span class="br0">&#40;</span>seqn, cin<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; t.<span class="me1">setDaemon</span><span class="br0">&#40;</span><span class="kw2">False</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; t.<span class="me1">start</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> r <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span>m-<span class="nu0">1</span>, -<span class="nu0">1</span>, -<span class="nu0">1</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;+ sending Msg# &nbsp;%d&quot; % r)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; firstP.<span class="me1">put</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">class</span> Loop<span class="br0">&#40;</span><span class="kw3">threading</span>.<span class="me1">Thread</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">def</span> <span class="kw4">__init__</span><span class="br0">&#40;</span><span class="kw2">self</span>, s, cin, cout<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">threading</span>.<span class="me1">Thread</span>.<span class="kw4">__init__</span><span class="br0">&#40;</span><span class="kw2">self</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw2">self</span>.<span class="me1">cin</span> = cin</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw2">self</span>.<span class="me1">cout</span> = cout</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw2">self</span>.<span class="me1">s</span> = s</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">def</span> run<span class="br0">&#40;</span><span class="kw2">self</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; r = <span class="kw2">self</span>.<span class="me1">cin</span>.<span class="me1">get</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw2">self</span>.<span class="me1">cout</span>.<span class="me1">put</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="co1"># print(&quot;: Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), self.s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="co1"># print(&quot;* Proc: &lt;%s&gt;, Seq#: %s, Msg#: terminate!&quot; % (pid(), self.s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">class</span> MLoop<span class="br0">&#40;</span><span class="kw3">threading</span>.<span class="me1">Thread</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">def</span> <span class="kw4">__init__</span><span class="br0">&#40;</span><span class="kw2">self</span>, s, cin<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw3">threading</span>.<span class="me1">Thread</span>.<span class="kw4">__init__</span><span class="br0">&#40;</span><span class="kw2">self</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw2">self</span>.<span class="me1">cin</span> = cin</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw2">self</span>.<span class="me1">s</span> = s</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">def</span> run<span class="br0">&#40;</span><span class="kw2">self</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; r = <span class="kw2">self</span>.<span class="me1">cin</span>.<span class="me1">get</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;&gt; Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), self.s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;@ Proc: &lt;%s&gt;, Seq#: %s, ring terminated.&quot; % (pid(), self.s))</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> pid<span class="br0">&#40;</span><span class="br0">&#41;</span>: <span class="kw1">return</span> <span class="kw3">threading</span>.<span class="me1">currentThread</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">if</span> __name__ == <span class="st0">'__main__'</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; run_benchmark<span class="br0">&#40;</span><span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span>, <span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+</ol></div></div>
+  <div class='sourceblocklink'><a href='http://www.elias.cn/Python/PyConcurrency?action=sourceblock&amp;num=3' type='text/plain'>[Get Code]</a></div>
+</div>
+
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_22'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=22&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc21' id='toc21'></a>5.4&ensp; ring_no_io_proc.py</h3>
+
+<div class='sourceblock ' id='sourceblock4'>
+  <div class='sourceblocktext'><div class="python"><ol><li class="li1"><div class="de1"><span class="co1">#!/Library/Frameworks/Python.framework/Versions/2.5/bin/python</span></div></li>
+<li class="li1"><div class="de1"><span class="co1"># encoding: utf-8</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> <span class="kw3">sys</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> processing, <span class="kw3">Queue</span></div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> run_benchmark<span class="br0">&#40;</span>n, m<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="co1"># print(&quot;&gt;&gt; Python 2.5.1, stackless 3.1b3 here (N=%d, M=%d)!\n&quot; % (n, m))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; firstP = cin = processing.<span class="kw3">Queue</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> s <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span><span class="nu0">1</span>, n<span class="br0">&#41;</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cout = processing.<span class="kw3">Queue</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;*&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; p = processing.<span class="me1">Process</span><span class="br0">&#40;</span>target = loop, args = <span class="br0">&#91;</span>seqn, cin, cout<span class="br0">&#93;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; p.<span class="me1">start</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; cin = cout</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s+<span class="nu0">1</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;$&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; p = processing.<span class="me1">Process</span><span class="br0">&#40;</span>target = mloop, args = <span class="br0">&#91;</span>seqn, cin<span class="br0">&#93;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; p.<span class="me1">start</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> r <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span>m-<span class="nu0">1</span>, -<span class="nu0">1</span>, -<span class="nu0">1</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;+ sending Msg# &nbsp;%d&quot; % r)</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; firstP.<span class="me1">put</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; p.<span class="me1">join</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2"><span class="kw1">def</span> loop<span class="br0">&#40;</span>s, cin, cout<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; r = cin.<span class="me1">get</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cout.<span class="me1">put</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="co1"># print(&quot;: Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="co1"># print(&quot;* Proc: &lt;%s&gt;, Seq#: %s, Msg#: terminate!&quot; % (pid(), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="kw1">break</span></div></li>
+<li class="li2"><div class="de2"><span class="kw1">def</span> mloop<span class="br0">&#40;</span>s, cin<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; r = cin.<span class="me1">get</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;&gt; Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), s, r))</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;@ Proc: &lt;%s&gt;, Seq#: %s, ring terminated.&quot; % (pid(), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2"><span class="kw1">def</span> pid<span class="br0">&#40;</span><span class="br0">&#41;</span>: <span class="kw1">return</span> processing.<span class="me1">currentProcess</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">if</span> __name__ == <span class="st0">'__main__'</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; run_benchmark<span class="br0">&#40;</span><span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span>, <span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+</ol></div></div>
+  <div class='sourceblocklink'><a href='http://www.elias.cn/Python/PyConcurrency?action=sourceblock&amp;num=4' type='text/plain'>[Get Code]</a></div>
+</div>
+
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_23'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=23&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc22' id='toc22'></a>5.5&ensp; ring_no_io_greenlet.py</h3>
+
+<div class='sourceblock ' id='sourceblock5'>
+  <div class='sourceblocktext'><div class="python"><ol><li class="li1"><div class="de1"><span class="co1">#!/Library/Frameworks/Python.framework/Versions/2.5/bin/python</span></div></li>
+<li class="li1"><div class="de1"><span class="co1"># encoding: utf-8</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> <span class="kw3">sys</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">from</span> py.<span class="me1">magic</span> <span class="kw1">import</span> greenlet</div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> run_benchmark<span class="br0">&#40;</span>n, m<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="co1"># print(&quot;&gt;&gt; Python 2.5.1, stackless 3.1b3 here (N=%d, M=%d)!\n&quot; % (n, m))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; glets = <span class="br0">&#91;</span>greenlet.<span class="me1">getcurrent</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> s <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span><span class="nu0">1</span>, n<span class="br0">&#41;</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; glets.<span class="me1">append</span><span class="br0">&#40;</span>greenlet<span class="br0">&#40;</span>loop<span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;*&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s+<span class="nu0">1</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; glets.<span class="me1">append</span><span class="br0">&#40;</span>greenlet<span class="br0">&#40;</span>mloop<span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;$&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; glets<span class="br0">&#91;</span>-<span class="nu0">1</span><span class="br0">&#93;</span>.<span class="me1">switch</span><span class="br0">&#40;</span>seqn, glets<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> r <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span>m-<span class="nu0">1</span>, -<span class="nu0">1</span>, -<span class="nu0">1</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;+ sending Msg# &nbsp;%d&quot; % r)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; glets<span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span>.<span class="me1">switch</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> loop<span class="br0">&#40;</span>s, glets<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; previous = glets<span class="br0">&#91;</span>s - <span class="nu0">1</span><span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; next = glets<span class="br0">&#91;</span>s + <span class="nu0">1</span><span class="br0">&#93;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">if</span> s <span class="sy0">&gt;</span> <span class="nu0">1</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; r = previous.<span class="me1">switch</span><span class="br0">&#40;</span>s - <span class="nu0">1</span>, glets<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; r = previous.<span class="me1">switch</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;: Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(&quot;loop&quot;, s), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;* Proc: &lt;%s&gt;, Seq#: %s, Msg#: terminate!&quot; % (pid(&quot;loop&quot;, s), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; next.<span class="me1">switch</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; r = previous.<span class="me1">switch</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; next.<span class="me1">switch</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> mloop<span class="br0">&#40;</span>s, glets<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; previous = glets<span class="br0">&#91;</span>s - <span class="nu0">1</span><span class="br0">&#93;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; r = previous.<span class="me1">switch</span><span class="br0">&#40;</span>s - <span class="nu0">1</span>, glets<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;&gt; Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(&quot;mloop&quot;, s), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;@ Proc: &lt;%s&gt;, Seq#: %s, ring terminated.&quot; % (pid(&quot;mloop&quot;, s), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; r = previous.<span class="me1">switch</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li2"><div class="de2"><span class="kw1">def</span> pid<span class="br0">&#40;</span>func, s<span class="br0">&#41;</span>: <span class="kw1">return</span> <span class="st0">&quot;&lt;&lt;%s(Greenlet-%d, started)&gt;&gt;&quot;</span> <span class="sy0">%</span> <span class="br0">&#40;</span>func, s<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">if</span> __name__ == <span class="st0">'__main__'</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; run_benchmark<span class="br0">&#40;</span><span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span>, <span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+</ol></div></div>
+  <div class='sourceblocklink'><a href='http://www.elias.cn/Python/PyConcurrency?action=sourceblock&amp;num=5' type='text/plain'>[Get Code]</a></div>
+</div>
+
+<div class='vspace'></div><div class='sectionedit'><a name='sPython.PyConcurrency_24'></a><a href='http://www.elias.cn/Python/PyConcurrency?action=edit&amp;s=24&amp;auto=y&amp;from=Python.PyConcurrency'>(Edit Section &#x2193;)</a></div>
+<h3  style='margin-top: 0px;'><a name='toc23' id='toc23'></a>5.6&ensp; ring_no_io_eventlet.py</h3>
+
+<div class='sourceblock ' id='sourceblock6'>
+  <div class='sourceblocktext'><div class="python"><ol><li class="li1"><div class="de1"><span class="co1">#!/Library/Frameworks/Python.framework/Versions/2.5/bin/python</span></div></li>
+<li class="li1"><div class="de1"><span class="co1"># encoding: utf-8</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> <span class="kw3">sys</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">import</span> eventlet</div></li>
+<li class="li2"><div class="de2">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> run_benchmark<span class="br0">&#40;</span>n, m<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="co1"># print(&quot;&gt;&gt; Python 2.5.1, stackless 3.1b3 here (N=%d, M=%d)!\n&quot; % (n, m))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; firstP = cin = eventlet.<span class="kw3">Queue</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> s <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span><span class="nu0">1</span>, n<span class="br0">&#41;</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cout = eventlet.<span class="kw3">Queue</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;*&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; eventlet.<span class="me1">spawn_n</span><span class="br0">&#40;</span>loop, seqn, cin, cout<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; cin = cout</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; seqn = s+<span class="nu0">1</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;$&gt; s = %d&quot; % (seqn, ))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">for</span> r <span class="kw1">in</span> <span class="kw2">xrange</span><span class="br0">&#40;</span>m-<span class="nu0">1</span>, -<span class="nu0">1</span>, -<span class="nu0">1</span><span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;+ sending Msg# &nbsp;%d&quot; % r)</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; firstP.<span class="me1">put</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; mloop<span class="br0">&#40;</span>seqn, cin<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> loop<span class="br0">&#40;</span>s, cin, cout<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; r = cin.<span class="me1">get</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; cout.<span class="me1">put</span><span class="br0">&#40;</span>r<span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;: Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;* Proc: &lt;%s&gt;, Seq#: %s, Msg#: terminate!&quot; % (pid(), s))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> mloop<span class="br0">&#40;</span>s, cin<span class="br0">&#41;</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; <span class="kw1">while</span> <span class="kw2">True</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; r = cin.<span class="me1">get</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">if</span> r <span class="sy0">&gt;</span> <span class="nu0">0</span>: </div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;&gt; Proc: &lt;%s&gt;, Seq#: %s, Msg#: %s ..&quot; % (pid(), s, r))</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">pass</span></div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">else</span>:</div></li>
+<li class="li1"><div class="de1">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1"># print(&quot;@ Proc: &lt;%s&gt;, Seq#: %s, ring terminated.&quot; % (pid(), s))</span></div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="kw1">break</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">def</span> pid<span class="br0">&#40;</span><span class="br0">&#41;</span>: <span class="kw1">return</span> eventlet.<span class="me1">greenthread</span>.<span class="me1">getcurrent</span><span class="br0">&#40;</span><span class="br0">&#41;</span></div></li>
+<li class="li1"><div class="de1">&nbsp;</div></li>
+<li class="li1"><div class="de1"><span class="kw1">if</span> __name__ == <span class="st0">'__main__'</span>:</div></li>
+<li class="li2"><div class="de2">&nbsp; &nbsp; run_benchmark<span class="br0">&#40;</span><span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">1</span><span class="br0">&#93;</span><span class="br0">&#41;</span>, <span class="kw2">int</span><span class="br0">&#40;</span><span class="kw3">sys</span>.<span class="me1">argv</span><span class="br0">&#91;</span><span class="nu0">2</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span></div></li>
+</ol></div></div>
+  <div class='sourceblocklink'><a href='http://www.elias.cn/Python/PyConcurrency?action=sourceblock&amp;num=6' type='text/plain'>[Get Code]</a></div>
+</div>
+
+</div>
+
+		</div>
+
+		<div id="footer">
+			<!--PageFooterFmt-->
+				<div class="footer-section">
+					<p>Page last modified on 2014 年 03 月 11 日, 05:33 下午 　　　 （京ICP备10013669号，<a class='urllink' href='http://rashost.com/' rel='nofollow'>瑞豪开源提供VPS</a>）
+</p>
+
+				</div>
+				<div class="footer-section">
+					
+				</div>
+				<div class="footer-about">
+					
+				</div>
+			<!--/PageFooterFmt-->
+			<hr class="clear" />
+		</div>
+
+	</div>
+
+	<div id="credits">
+		<div class="alignleft">
+			<a style="color:#7A9299;" href="http://www.ndesign-studio.com/resources/wp-themes/glossyblue/">GlossyBlue</a> theme adapted by <a href="http://solidgone.org/Skins/">David Gilbert</a>
+		</div>
+		<div class="alignright">
+			Powered by <a href="http://pmwiki.com/">PmWiki</a>
+		</div>
+	</div>
+<!--HTMLFooter-->
+</body>
+</html>
