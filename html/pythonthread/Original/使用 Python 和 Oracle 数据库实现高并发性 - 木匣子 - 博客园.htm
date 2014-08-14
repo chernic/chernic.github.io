@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>使用 Python 和 Oracle 数据库实现高并发性 - 木匣子 - 博客园</title>
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=vVKakOZtmmmI9PttuB8cajJQIPwEqvGelvnOjnc3uik1"/>
+<link id="MainCss" type="text/css" rel="stylesheet" href="/skins/kubrick/bundle-kubrick.css?v=OiqDPM1Ab9AWkK1r2VMe6BNe9Mt6UeNbGjv2wlBQqGA1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/hzhida/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/hzhida/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/hzhida/wlwmanifest.xml"/>
+<script src="http://common.cnblogs.com/script/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'hzhida', cb_enable_mathjax=false;</script>
+<script src="/bundles/blog-common.js?v=5SljHjvFayhSwYEpPGn3hGjzMUiUy8_LhBNYFY8TdeA1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+
+<div id="header">
+    
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/hzhida/">木匣子</a></h1>
+<p id="tagline">尽人事，听天命。</p>
+</div>
+<div id="wrapper">
+<div id="main">
+    
+
+	<div class="post">
+		<h2>
+			<a id="cb_post_title_url" href="http://www.cnblogs.com/hzhida/archive/2012/08/09/2630191.html">使用 Python 和 Oracle 数据库实现高并发性</a>
+		</h2>
+		<div class="postText"><div id="cnblogs_post_body"><p>随着趋势发展的核心转向更多而不是更快发展，最大限度地提高并发性的重要性日益凸显。并发性使得编程模式发生了新的转变，可以编写异步代码，从而将多个任务分散到一组线程或进程中并行工作。如果您不是编程新手并且很熟悉 C 或 C++，您可能已经对线程和进程有所了解，并且知道它们之间的区别。在进行并发编程时，线程提供了进程的轻量级替代物，在大多数情况下多线程较多进程更受青睐。因此，本文将讨论如何通过多线程来实现并发性。</p>
+<p>与很多其他编程语言一样，在使用多 CPU 计算机时将占用大量 CPU 的任务分散到 Python 中的多个线程中（可以使用 Python 标准库中的多进程模块实现）可以提高性能。对于单处理器计算机，这样确实可以并行运行多个操作，而不是只能在任务间切换且在任何指定时间只能执行一个任务。相反，在将多线程的 Python 程序移到一个多 CPU 计算机时，由于全局解释器锁 (GIL) 的原因您不会注意到任何性能提升，Python 使用 GIL 保护内部数据结构，确保在一次只有一个线程运行 CPython 虚拟机。</p>
+<p>但是，您可能仍然有兴趣向支持数据库的 Python 程序中添加线程以加快其速度。关键是 Python 与之交互的底层数据库很可能安装在并行处理提交的查询的高性能服务器上。这意味着您可以从提交多个查询到数据库服务器并在单独的线程中并行进行的操作中受益，而不是在一个线程中一个接一个地按顺序发出查询。</p>
+<p>要注意的是：尽管利用任务自身的并行性可以显著提升应用程序性能，但是我们必须认识到，不是所有任务都可并行执行。例如，在客户请求的操作（例如转账）完成之前，您无法向客户发出确认电子邮件。很显然，此类任务必须按特定顺序执行。</p>
+<p>另外，构建多线程代码时还要记住，某些并行运行的线程可能同时尝试更改共享的对象，这可能导致数据丢失、数据残缺，甚至损坏正在更改的对象。要避免此问题，应该控制对共享对象的访问，使得一个线程一次只能使用一个此类对象。幸运的是，利用 Python 可以实施一个锁定机制来同步对共享对象的访问（利用线程模块中的锁定工具）。</p>
+<p>使用锁定的缺点是损失了可扩展性。设计可扩展性时，不要忘记，对一个线程内的某个资源进行锁定将使该资源在所有其他正在运行的线程和进程中不可用，直至该锁定被释放为止。因此，要确保高效的资源管理，不应过多地使用锁定，尽可能避免锁定，如果需要使用锁定也要尽可能早地释放该锁定。</p>
+<p>幸运的是，当您处理存储在 Oracle 数据库中的资源时不必担心锁定。这是因为，在并发环境中对共享数据提供访问时，Oracle 数据库将使用其自身的后台锁定机制。因此，通常较好的做法是将共享数据存储在 Oracle 数据库中，从而由 Oracle 数据库处理并发性问题。</p>
+<p>异步执行操作也是实现可扩展性和受益于并发性的较好方式。在异步编程中，阻塞代码排队等待稍后单独的线程完成，从而确保您的应用程序可以继续执行其他任务。使用异步框架（如 Twisted）可以极大地简化构建异步应用程序的任务。</p>
+<p>本文将简单介绍如何使用 Python 和 Oracle 数据库构建并发应用程序，描述如何使用 Python 代码利用线程与 Oracle 数据库交互，并解释如何将 SQL 查询并行提交到数据库服务器而不是依次处理。您还将了解如何让 Oracle 数据库处理并发性问题以及如何利用 Python 事件驱动的框架 Twisted。</p>
+<h3>Python 中的多线程编程</h3>
+<p>线程是并行处理中的一个非常有用的特性。如果您的一个程序正在执行耗时的操作并且可以将其分成若干个独立的任务并行执行，那么使用线程可以帮助您构建更加高效、快速的代码。多线程的另一个有趣的用处是可以提高应用程序的响应能力 &mdash; 在后台执行耗时操作的同时，主程序仍然可以做出响应。</p>
+<p>当长时间运行的 SQL 语句彼此并无关联并且可以并行执行时，将这些语句封装到 Python 的不同线程中是不错的做法。例如，如果 Web 页面将初始的 SQL 查询并行提交到数据库服务器而不是按顺序处理它们（使它们一个接一个地排队等待），则可显著减少 Web 页面的加载时间。</p>
+<p>当您需要将某些大对象 (LOB) 上载到数据库时，也会发现线程很有用。以并行方式执行此操作不仅可以减少将 LOB 上载到数据库所需的整体时间，还可以在后台进行并行上载的同时保持程序主线程的响应能力。</p>
+<p>假设您需要将几个二进制大对象 (BLOB) 上载到数据库并将其保存到 blob_tab 表（您可能已经在自定义数据库模式中创建了该表），如下所示：</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>CREATE TABLE blob_tab(
+   id NUMBER PRIMARY KEY,
+   blobdoc BLOB
+);
+
+CREATE SEQUENCE blob_seq;
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>首先，我们来了解一下如何不利用线程将 BLOB 一个接一个地存储到 blob_tab 表中。以下 Python 脚本可以完成该任务，永久保存分别使用文件名和 URL 获得的两个输入图像。该示例假设您已经在 usr/pswd 自定义数据库模式中创建了 blob_tab 表和 blob_seq 序列：</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>#File: singlethread.py
+#Storing BLOBs in a single thread sequentially, one after another
+
+import cx_Oracle
+from urllib import urlopen
+
+inputs = []
+#if you?ˉre a Windows user, the path could be 'c:/temp/figure1.bmp'
+inputs.append(open('/tmp/figure1.bmp', 'rb'))
+inputs.append(urlopen('http://localhost/mypictures/figure2.bmp', 'rb'))
+#obtaining a connection and predefining a memory area for a BLOB
+dbconn = cx_Oracle.connect('usr', 'pswd', '127.0.0.1/XE')
+dbconn.autocommit = True
+cur = dbconn.cursor()
+cur.setinputsizes(blobdoc=cx_Oracle.BLOB)
+#executing INSERT statements saving BLOBs to the database
+for input in inputs:
+   blobdoc = input.read()
+   cur.execute("INSERT INTO blob_tab (ID, BLOBDOC) VALUES(blob_seq.NEXTVAL, :blobdoc)", {'blobdoc':blobdoc})
+   input.close()
+dbconn.close()
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>尽管获取和存储 figure1.bmp 和 figure2.bmp 的任务在此处一个接一个地进行，但是，您可能已经猜到，这些任务实际上并不存在顺序上的先后关联性。因此，您可以重构上述代码，使其在单个线程中读取和存储每个图像，从而通过并行处理提升性能。在这种特殊的情况下值得一提的是，您不必协调并行运行的线程，从而可以极大地简化编码。</p>
+<p>以下示例显示了如何利用面向对象的方法重新编写上述脚本以使用线程。具体来说，该示例说明了如何从 threading 模块扩展 Thread 类，针对特定任务对其进行自定义。</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>#File: multithread.py
+#Storing BLOBs in separate threads in parallel
+
+import cx_Oracle
+import threading
+from urllib import urlopen
+
+#subclass of threading.Thread
+class AsyncBlobInsert(threading.Thread):
+  def __init__(self, cur, input):
+    threading.Thread.__init__(self)
+    self.cur = cur
+    self.input = input
+  def run(self):
+    blobdoc = self.input.read()
+    self.cur.execute("INSERT INTO blob_tab (ID, BLOBDOC) VALUES(blob_seq.NEXTVAL, :blobdoc)", {'blobdoc':blobdoc})
+    self.input.close()
+    self.cur.close()
+#main thread starts here
+inputs = []
+inputs.append(open('/tmp/figure1.bmp', 'rb'))
+inputs.append(urlopen('http://localhost/_figure2.bmp', 'rb'))
+dbconn = cx_Oracle.connect('usr', 'pswd', '127.0.0.1/XE',threaded=True)
+dbconn.autocommit = True
+for input in inputs:
+   cur = dbconn.cursor()
+   cur.setinputsizes(blobdoc=cx_Oracle.BLOB)
+   th = AsyncBlobInsert(cur, input)
+   th.start()
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>在上述代码中，注意 threaded 属性的使用，该属性作为参数传递到 cx_Oracle.connect 方法。通过将其设置为 true，您指示 Oracle 数据库使用 OCI_THREADED 模式（又称为 threaded 模式），从而指明应用程序正在多线程环境中运行。请注意，在此处针对单线程应用程序使用 threaded 模式并不是一种好的做法。根据 cx_Oracle 文档，在单线程应用程序中将 threaded 参数设置为 true 将使性能下降 10% 到 15%。</p>
+<p>在本示例中，您将在两个线程间共享一个连接，但是将为每个线程创建一个单独的游标对象。此处，读取 BLOB 然后将其插入数据库的操作是在 threading.Thread 标准 Python 类中 AsyncBlobInsert 自定义子类的改写的 run 方法中实现的。因此，要在单独的线程中开始上载 BLOB，您只需创建一个 AsyncBlobInsert 实例，然后调用其 start 方法。</p>
+<p>这里要讨论一个与脚本有关的问题。执行时，它不会等到正在启动的线程完成 &mdash; 启动子线程后主线程将结束，不会等到子线程完成。如果您并不希望这样而是希望程序仅在所有线程都完成后再结束，那么您可以在脚本末尾调用每个 AsyncBlobInsert 实例的 join 方法。这将阻塞主线程，使其等待子线程的完成。对前面的脚本进行修改，使其等待 for 循环中启动的所有线程完成，如下所示：</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>...
+th = []
+for i, input in enumerate(inputs):
+   cur = dbconn.cursor()
+   cur.setinputsizes(blobdoc=cx_Oracle.BLOB)
+   th.append(AsyncBlobInsert(cur, input))
+   th[i].start()
+#main thread waits until all child threads are done
+for t in th:
+   t.join()
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>下一节中提供了需要强制主线程等待子线程完成的示例。</p>
+<h3>同步对共享资源的访问</h3>
+<p>前面的示例显示了一个多线程的 Python 应用程序，该程序处理几个彼此并无关联的任务，因此很容易分离并放到不同的线程中进行并行处理。但是在实际中，您经常需要处理彼此相互关联的操作，并且需要在某个时刻进行同步。</p>
+<p>作为单个进程的一部分，线程共享相同的全局内存，因此可以通过共享资源（如变量、类实例、流和文件）在彼此之间传递信息。但是，这种在线程间交换信息的简单方法是有条件的 &mdash; 当修改的对象可以同时在另一线程中访问和/或修改时，您确实要非常谨慎。因此，如果能够避免冲突，使用一个机制来同步对共享数据的访问，这将是很有用的。</p>
+<p>为帮助解决这一问题，Python 允许您指定锁定，然后可以由某个线程取得该锁定以确保对该线程中您所使用的数据结构进行独占访问。Threading 模块附带有 Lock 方法，您可以使用该方法指定锁定。但是请注意，使用 threading.Lock 方法指定的锁定最初处于未锁定状态。要锁定一个分配的锁，您需要显式调用该锁定对象的 acquire 方法。之后，可以对需要锁定的对象执行操作。例如，当向线程中的 stdout 标准输出流进行写入时，您可能需要使用锁，以免其他使用 stdout 的线程发生重叠。进行此操作后，您需要使用锁定对象的 release 方法释放该锁，以使释放的数据结构可用于其他线程中的进一步处理。</p>
+<p>关于锁定要注意的是，它们并不绑定到单个线程。在一个线程中指定的锁，可以由另一个线程获得，并由第三个线程释放。以下脚本例举了实际操作中的一个简单的锁。此处，为在子线程中进行使用，您在主线程中指定了一个锁，在向 DOM 文档写入之前获得它，然后立即释放。</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>#File: synchmultithread.py
+#Using locks for synchronization in a multithreaded script
+
+import sys
+import cx_Oracle
+import threading
+from xml.dom.minidom import parseString
+from urllib import urlopen
+
+#subclass of threading.Thread
+class SynchThread(threading.Thread):
+   def __init__(self, cur, query, dom):
+     threading.Thread.__init__(self)
+     self.cur = cur
+     self.query = query[1]
+     self.tag = query[0]
+     self.dom = dom
+   def run(self):
+     self.cur.execute(self.query)
+     rslt = self.cur.fetchone()[0]
+     self.cur.close()
+     mutex.acquire()
+     sal = self.dom.getElementsByTagName('salary')[0]
+     newtag = self.dom.createElement(self.tag)
+     newtext = self.dom.createTextNode('%s'%rslt)
+     newtag.appendChild(newtext)
+     sal.appendChild(newtag)
+     mutex.release()
+#main thread starts here
+domdoc = parseString('&lt;employees&gt;&lt;salary/&gt;&lt;/employees&gt;')
+dbconn = cx_Oracle.connect('hr', 'hr', '127.0.0.1/XE',threaded=True)
+mutex = threading.Lock()
+queries = {}
+queries['avg'] = "SELECT AVG(salary) FROM employees"
+queries['max'] = "SELECT MAX(salary) FROM employees"
+th = []
+for i, query in enumerate(queries.items()):
+   cur = dbconn.cursor()
+   th.append(SynchThread(cur, query, domdoc))
+   th[i].start()
+#forcing the main thread to wait until all child threads are done
+for t in th:
+   t.join()
+#printing out the result xml document
+domdoc.writexml(sys.stdout)
+
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>在上面的脚本中，您首先在主线程中创建了一个文档对象模型 (DOM) 文档对象，然后在并行运行的子线程中修改该文档，添加包含从数据库获取的信息的标签。此处，您将针对 HR 演示模式中的 employees 表使用了两个简单的查询。为避免在向 DOM 对象并行写入期间发生冲突，您需要在每个子线程中获取在主线程中指定的锁。一个子线程获得该锁后，另一个子线程将无法修改此处处理的 DOM 对象，直至第一个线程释放该锁。</p>
+<p>然后，您可以使用主线程同步在各子线程中对 DOM 对象所做的更新，在主线程中调用每个子线程对象的 join 方法。之后，您可以在主流中对 DOM 文档对象进行进一步处理。在该特定示例中，您只是将其写入 stdout 标准输出流。</p>
+<p>因此，您可能已经注意到，此处展示的示例实际上并没有讨论如何锁定数据库访问操作，例如，发出查询或针对并行线程中的同一数据库表进行更新。实际上，Oracle 数据库有自己的强大锁定机制，可确保并发环境中的数据完整性。而您的任务是正确使用这些机制。下一节中，我们将讨论如何利用 Oracle 数据库特性控制对共享数据的并发访问，从而让数据库处理并发性问题。</p>
+<h3>使 Oracle 数据库管理并发性</h3>
+<p>如上所述，当对存储在 Oracle 数据库中的共享数据进行访问或操作时，您不必在 Python 代码中手动实施资源锁定。为解决并发性问题，Oracle 数据库根据事务概念在后台使用不同类型的锁和多版本并发性控制系统。在实际操作中，这意味着，您只需考虑如何正确利用事务以确保正确访问、更新或更改数据库数据。具体来说，您必须谨慎地在自动提交事务模式和手动提交事务模式之间做出选择，将多个 SQL 语句组合到一个事务中时也需小心仔细。最后，必须避免发生并发事务间的破坏性交互。</p>
+<p>在这里，需要记住的是，您在 Python 代码中使用的事务与连接而非游标相关联，这意味着您可以轻松地按照逻辑将使用不同游标但通过相同连接执行的语句组合到一个事务中。但是，如果您希望实施两个并发事务，则需要创建两个不同的连接对象。</p>
+<p>在前面的&ldquo;Python 中的多线程编程&rdquo;一节中讨论的多线程示例中，您将连接对象的 autocommit 模式设置为 true，从而指示 cx_Oracle 模块在每个 INSERT 语句后隐式执行 COMMIT。在这种特定情况下，使用自动提交模式是合理的，因为这样可以避免子线程和主线程间的同步，从而可以在主线程中手动执行 COMMIT，如下所示：</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>...
+#main thread waits until all child threads are done
+for t in th:
+   t.join()
+#and then issues a commit
+dbconn.commit()
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>但是，在有些情况下，您需要用到上述方案。考虑以下示例。假设您在两个并行线程中分别执行以下两个操作。在一个线程中，您将采购订单文档保存到数据库中，包括订单详细信息。在另一个线程中，您对包含该订单中涉及产品的相关信息的表进行修改，更新可供购买的产品数量。</p>
+<p>很显然，上述两个操作必须封装到一个事务中。为此，您必须关闭 autocommit 模式，该模式为默认模式。此外，您还将需要使用主线程同步并行线程，然后显式执行 COMMIT，如上述代码段所示。</p>
+<p>虽然上述方案可以轻松实现，但在实际中，您可能最希望在数据库中实施第二个操作，即更新可供购买的产品的数量，将 BEFORE INSERT 触发器放到存储订单详细信息的表上，这样它可以自动更新包含相关产品信息的表中的相应记录。这将简化 Python 端的代码并消除编写多线程 Python 脚本的需求，让 Oracle 数据库来处理数据完整性问题。实际上，如果在放入 details 表的 BEFORE INSERT 触发器中更新产品表时出现问题，Oracle 数据库将自动回滚将新行插入到 details 表的操作。在 Python 端，需要进行的操作仅是将用于保存订单详细信息的所有 INSERT 封装到一个事务中，如下所示：</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>...
+dbconn = cx_Oracle.connect('hr', 'hr', '127.0.0.1/XE',threaded=True)
+dbconn.autocommit = False
+cur = dbconn.cursor()
+...
+for detail in details:
+   id = detail['id']
+   quantity = person['quantity']
+   cur.execute("INSERT INTO details(id, quantity) VALUES(:id, :quantity)", {'id':id, 'quantity':quantity})
+dbconn.commit()
+...
+
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>使用 Python 事件驱动的框架 Twisted</h3>
+<p>Twisted 提供了一种不增加复杂性的编码事件驱动应用程序的好方法，使 Python 中的多线程编程更加简单、安全。Twisted 并发性模式基于无阻塞调用概念。您调用一个函数来请求某些数据并指定一个在请求数据就绪时调用的回调函数。而于此同时，程序可以继续执行其他任务。</p>
+<p>twisted.enterprise.adbapi 模块是一个异步封装程序，可用于任何 DB-API 兼容的 Python 模块，使您可以以无阻塞模式执行数据库相关任务。例如，使用它，您的应用程序不必等待数据的连接建立或查询完成，而是并行执行其他任务。本节将介绍几个与 Oracle 数据库交互的 Twisted 应用程序的简单示例。</p>
+<p>Twisted 不随 Python 提供，需要下载并在装有 Python 的系统中安装。您可以从 Twisted Matrix Labs Web 站点&nbsp;<a href="http://twistedmatrix.com/" target="_blank">http://twistedmatrix.com</a>&nbsp;下载适合您 Python 版本的 Twisted 安装程序包。下载程序包之后，只需在 Twisted 设置向导中进行几次点击即可完成安装，安装大约需要一分钟的时间。</p>
+<p>Twisted 是一个事件驱动的框架，因此，其事件循环一旦启动即持续运行，直到事件完成。在 Twisted 中，事件循环使用名为 reactor 的对象进行实施。使用 reactor.run 方法启动 Twisted 事件循环，使用 reactor.stop 停止该循环。而另一个名为 Deferred 的 Twisted 对象用于管理回调。以下是简化了的现实中的 Twisted 事件循环和回调示例。__name__ 测试用于确保解决方案将仅在该模块作为主脚本调用但不导入时（即，必须从命令行、使用 IDLE Python GUI 或通过单击图标调用该解决方案）运行。</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>#File: twistedsimple.py
+#A simple example of a Twisted app
+
+from twisted.internet import reactor
+from twisted.enterprise import adbapi
+
+def printResult(rslt):
+   print rslt[0][0]
+   reactor.stop()
+
+if __name__ == "__main__":
+   dbpool = adbapi.ConnectionPool('cx_Oracle', user='hr', password ='hr', dsn='127.0.0.1/XE')
+   empno = 100
+   deferred = dbpool.runQuery("SELECT last_name FROM employees WHERE employee_id = :empno", {'empno':empno})
+   deferred.addCallback(printResult)
+   reactor.run()
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>请注意，twisted.enterprise.adbapi 模块基于标准 DB-API 接口构建，并在后台使用您在调用 adbapi.ConnectionPool 方法时指定的 Python 数据库模块。甚至您在指定 adbapi.ConnectionPool 输入参数时可以使用的一组关键字也取决于您使用的数据库模块类型。</p>
+<p>尽管与不同的 Python 数据库模块结合使用时语法上有一些不同，但是通过 twisted.enterprise.adbapi，您可以编写异步代码，从而可以在后台安全处理数据库相关任务的同时，继续执行您的程序流。以下示例展示了一个以异步方式查询数据库的简单 Twisted Web 应用程序。该示例假设您已经创建了 blob_tab 表并为其填充了数据（如本文开始部分&ldquo;Python 中的多线程编程&rdquo;一节中所述）。</p>
+<table border="1" cellspacing="0" cellpadding="7">
+<tbody>
+<tr>
+<td>
+<pre>#File: twistedTCPServer.py
+#Querying database asynchronously with Twisted
+
+from twisted.web import resource, server
+from twisted.internet import reactor
+from twisted.enterprise import adbapi
+
+class BlobLoads(resource.Resource):
+    def __init__(self, dbconn):
+        self.dbconn = dbconn
+        resource.Resource.__init__(self)
+    def _getBlobs(self, txn, query):
+        txn.execute(query)
+        return txn.fetchall()
+    def render_GET(self, request):
+        query = "select id, blobdoc from blob_tab"
+        self.dbconn.runInteraction(self._getBlobs, query).addCallback(
+            self._writeBlobs, request).addErrback(
+            self._exception, request)
+        return server.NOT_DONE_YET
+    def _writeBlobs(self, results, request):
+        request.write("""
+        &lt;html&gt;
+        &lt;head&gt;&lt;title&gt;BLOBs manipulating&lt;/title&gt;&lt;/head&gt;
+        &lt;body&gt;
+          &lt;h2&gt;Writing BLOBs from the database to your disk&lt;/h2&gt;
+         """)
+        for id, blobdoc in results:
+          request.write("&lt;i&gt;/tmp/picture%s.bmp&lt;/i&gt;&lt;br/&gt;" % id)
+          blob = blobdoc.read()
+          output = open("/tmp/picture%s.bmp" % id, 'wb')
+          output.write(blob)
+          output.close()
+   
+        request.write("""
+        &lt;p&gt;Operation completed&lt;/p&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        """)
+        request.finish( )
+    def _exception(self, error, request):
+        request.write("Error obtaining BLOBs: %s" % error.getErrorMessage())
+        request.write("""
+        &lt;p&gt;Could not complete operation&lt;/p&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+        """)
+        request.finish( )
+
+class SiteResource(resource.Resource):
+    def __init__(self, dbconn):
+        resource.Resource.__init__(self)
+        self.putChild('', BlobLoads(dbconn))
+
+if __name__ == "__main__":
+    dbconn = adbapi.ConnectionPool('cx_Oracle', user='usr', password ='pswd', dsn='127.0.0.1/XE')
+    site = server.Site(SiteResource(dbconn))
+    print "Listening on port 8000"
+    reactor.listenTCP(8000, site)
+    reactor.run()
+
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>执行时，该脚本在端口 8000 启动 TCP 服务器监听。接受客户端连接后，该脚本将下载 blob_tab 数据库中存储的所有图像，并将其作为单独的文件存储在 /tmp 文件夹中，然后将相应的消息发送回客户端。要测试应用程序，您需要运行脚本，然后将浏览器指向&nbsp;<a href="http://localhost:8000/" target="_blank">http://localhost:8000</a>。</p>
+<p>关于上述代码最应注意的是，它在继续执行程序流的前提下，以无阻塞模式运行针对数据库发出的查询。要确保它以此方式工作，可以在对 runInteraction 的调用（runInteraction 指示 Twisted 依次对 _getBlobs 和 _writeBlobs 进行异步调用）下插入一些代码以增强 render_GET 方法。新插入的代码应使用 request.write 方法将一些内容发送回客户端，这样您可以看到，该输出出现在客户端浏览器的 _writeBlobs 中生成该输出之前。</p>
+<h3>结论</h3>
+<p>当下，并发性在数据密集型应用程序中频繁使用。高效使用并发性是提升应用程序性能的关键所在。编写并发应用程序最高效的一种方法是使用多线程。但是，正如您在本文中所了解到的，由于全局解释器锁 (GIL) 的原因，Python 中的多线程化对多处理器计算机没有任何好处 (GIL)。但是，当将其用于开发数据库密集型代码以及异步、事件驱动的代码时，您仍然可以受益于多线程。</p>
+<p>本文是并发性之路的良好起点，为您提供了有价值的背景信息，有助于决策如何充分利用并发性来设计支持 Oracle 数据库的 Python 应用程序。</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+</div>
+		<p class="postfoot">
+			posted on <span id="post-date">2012-08-09 14:07</span> <a href='http://www.cnblogs.com/hzhida/'>木匣子</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="http://i.cnblogs.com/EditPosts.aspx?postid=2630191" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2630191);return false;">收藏</a>
+		</p>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=108757,cb_entryId=2630191,cb_blogApp=currentBlogApp,cb_blogUserGuid='0563152e-d057-e111-aa3f-842b2b196315',cb_entryCreatedDate='2012/8/9 14:07:00';loadViewCount(cb_entryId);</script>
+	
+	<a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = true;var googletag = googletag || {};googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type='text/javascript'>
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') +'//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+    })();
+</script>
+<script type='text/javascript'>
+    try {
+        googletag.cmd.push(function () {
+            googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id='div-gpt-ad-1346480159711-0' style='width:300px; height:250px;'>
+    <script type='text/javascript'>
+    try{
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="blog_news_kb"></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    $.ajax({ url: 'http://counter.cnblogs.com/blog/post/' + cb_entryId, type: 'get', dataType: 'script', cache: true });
+});
+</script>
+</div>
+    
+</div>
+<div id="rightmenu">
+    
+        
+<h3>公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+
+        
+<h3>导航</h3>
+<ul>
+			<li><a id="MyLinks1_HomeLink" href="http://www.cnblogs.com/">博客园</a></li>
+			<li><a id="MyLinks1_MyHomeLink" href="http://www.cnblogs.com/hzhida/">首页</a></li>
+			<li><a id="MyLinks1_NewPostLink" rel="nofollow" href="http://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+			<li><a id="MyLinks1_ContactLink" accesskey="9" rel="nofollow" href="http://space.cnblogs.com/msg/send/%e6%9c%a8%e5%8c%a3%e5%ad%90">联系</a></li>
+			<li><a id="MyLinks1_Syndication" href="http://www.cnblogs.com/hzhida/rss">订阅</a><a id="MyLinks1_XMLLink" href="http://www.cnblogs.com/hzhida/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>
+			<li><a id="MyLinks1_Admin" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+        <div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+        
+<h3>统计</h3>
+	<ul>
+		<li>随笔 - 190
+		<li>文章 - 0
+		<li>评论 - 18
+		<li>引用 - 0
+	</li>
+</ul>
+        <div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+    
+</div>
+</div>
+<div class="clear"></div>
+
+<div id="footer">
+	Powered by: 
+	<a id="Footer1_Hyperlink3" NAME="Hyperlink1" href="http://www.cnblogs.com/" style="font-family:Verdana;font-size:12px;">博客园</a>	Copyright &copy; 木匣子
+</div>
+
+</body>
+</html>
