@@ -1,0 +1,664 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Python实现线程池 - Python - language - ITeye论坛</title>
+    <meta name="description" content="最近在做一些文本处理方面的事情，考虑到程序利用并发性可以提高执行效率（不纠结特殊反例），于是入围的Idea如使用多进程或多线程达到期望的目� ..." />
+    <meta name="keywords" content="Python language" />
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link href="/rss/board/language" rel="alternate" title="ITeye论坛" type="application/rss+xml" />
+    <link rel="search" type="application/opensearchdescription+xml" href="/open_search.xml" title="ITeye" />
+    <link href="http://www.iteye.com/stylesheets/forum.css?1406686577" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://www.iteye.com/javascripts/application.js?1358214518" type="text/javascript"></script>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-535605-1']);
+  _gaq.push(['_setDomainName', 'iteye.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+      <link href="http://www.iteye.com/javascripts/syntaxhighlighter/SyntaxHighlighter.css?1348819953" media="screen" rel="stylesheet" type="text/css" />
+  <script src="http://www.iteye.com/javascripts/syntaxhighlighter/shCoreCommon.js?1325907333" type="text/javascript"></script>
+<script src="http://www.iteye.com/javascripts/hotkey.js?1324994303" type="text/javascript"></script>
+  <script src="http://www.iteye.com/javascripts/code_favorites.js?1358214518" type="text/javascript"></script>
+          <script src="http://www.iteye.com/javascripts/dragdrop.js?1324994303" type="text/javascript"></script>
+          </head>
+  <body>
+    <div id="page">
+      <div id="header">
+        <div class="clearfix"><div id="user_nav">
+      <a href="/login" class="welcome" title="登录">您还未登录 !</a>
+    <a href="/login">登录</a>
+    <a href="/signup" class="nobg">注册</a>
+  </div>
+</div>
+        <div class="clearfix">
+          <div id="branding">
+            <a href="http://www.iteye.com"><img alt="ITeye-最棒的软件开发交流社区" src="http://www.iteye.com/images/logo.gif?1324994303" title="ITeye-最棒的软件开发交流社区" /></a>
+          </div>
+          <div id="gg"><IFRAME SRC="/iframe_ggbd/942" SCROLLING=no WIDTH=728 HEIGHT=90 FRAMEBORDER=0></IFRAME></div>
+        </div>
+      </div>
+
+      <div id="content" class="clearfix">
+        <div id="main">
+          
+
+
+
+          
+
+<div class="h-entry" style='display:none'>
+  <a href="http://cleverdeng.iteye.com" class="p-author" target="_blank">jeffreydan</a>
+</div>
+
+
+<div class="clearfix">
+  <div class="crumbs">
+    <a href="/forums">论坛首页</a> <span class="arrow">&rarr;</span>
+    <a href="/forums/board/language">编程语言技术论坛</a> <span class="arrow">&rarr;</span>
+    <h1>Python实现线程池</h1>
+  </div>
+</div>
+
+
+  <div id="forum_tag_list">
+    <a href="/forums/board/language">全部</a>
+          <a href='/forums/tag/Ruby'>Ruby</a>
+          <a href='/forums/tag/Python'>Python</a>
+          <a href='/forums/tag/PHP'>PHP</a>
+          <a href='/forums/tag/Flash'>Flash</a>
+          <a href='/forums/tag/C++'>C++</a>
+          <a href='/forums/tag/.net'>.net</a>
+              <a href="/forums/tag/Rails">Rails</a>
+          <a href="/forums/tag/Flex">Flex</a>
+          <a href="/forums/tag/C">C</a>
+          <a href="/forums/tag/C%23">C#</a>
+          <a href="/forums/tag/Windows">Windows</a>
+      </div>
+
+
+<div class="actions">
+  <div class="buttons"></div>
+  <div class="wrapper">
+    <div id="forum_recommended_f4"><!--AdForward Begin:-->
+<script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=iteye|forums|banner3&db=csdnim&border=0&local=yes&js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script>
+<!--AdForward End--></div>
+    
+    <div class="info">浏览 5922 次</div>
+  </div>
+</div>
+
+
+
+<table id="forum_main" cellspacing="1">
+  <thead>
+    <tr>
+      <th colspan="2" class="topic_title">
+        <div class="wrapper"><span class='locked'>锁定老帖子</span> <a href="/topic/938193">主题：Python实现线程池</a></div>
+        <div id='topic_rate_box'>精华帖 (0) :: 良好帖 (0) :: 新手帖 (0) :: 隐藏帖 (0)</div>
+      </th>
+    </tr>
+    <tr>
+      <td class="first_col">作者</td>
+      <td class="last_col">正文
+      
+      </td>
+    </tr>
+  </thead>
+  <tbody id="posts">
+    <tr id="1942511">
+  <td class="postauthor">
+    <ul>
+      <li class="name">jeffreydan</li>
+      <li>等级: <img src="/images/star1.gif" alt="一星会员" title="一星会员"/></li>
+      <li><a href='http://cleverdeng.iteye.com' target='_blank'><img alt="jeffreydan的博客" class="logo" src="http://www.iteye.com/upload/logo/user/481217/7b6cc956-a906-396c-b016-82b70d50339c.jpg?1305346791" title="jeffreydan的博客: CleverDeng时光 - 记录、分享......" width="" /></a></li>
+      <li>性别: <img src="/images/icon_minigender_1.gif" title="男"/></li>      <li>文章: 10</li>
+      <li>积分: 100</li>
+      <li>来自: 北京</li>
+      <li><img src='/images/status/offline.gif'/></li>
+    </ul>
+  </td>
+  <td class="postcontent">
+    <div class="postactions">
+      <div class="description">
+        &nbsp;&nbsp;
+        发表时间：2011-03-02&nbsp;&nbsp;
+        最后修改：2011-05-03
+      </div>
+      <div class="links">
+        
+        
+          
+          
+        
+      </div>
+    </div>
+    <div class="postbody clearfix">
+      
+        
+              <script type="text/javascript">
+      var hunters = ["\u003Ca href='/jobs/2509' target='_blank' style='color:#000;'\u003E\u003Cspan style='font-weight:bold;'\u003E\u4e0a\u6d77: \u003C/span\u003E Junior Product Manager\u003C/a\u003E","\u003Ca href='/jobs/1848' target='_blank' style='color:#000;'\u003E\u003Cspan style='font-weight:bold;'\u003E\u5317\u4eac: \u003C/span\u003E ITeye\u7f51\u7ad9\u8bda\u8058\u793e\u533a\u7f16\u8f91\u003C/a\u003E","\u003Ca href='/jobs/2507' target='_blank' style='color:#000;'\u003E\u003Cspan style='font-weight:bold;'\u003E\u5317\u4eac: \u003C/span\u003E \u3010\u5317\u4eac\u3011\u6570\u636e\u5206\u6790\u9ad8\u7ea7\u5de5\u7a0b\u5e08/\u7ecf\u7406\u003C/a\u003E","\u003Ca href='/jobs/2508' target='_blank' style='color:#000;'\u003E\u003Cspan style='font-weight:bold;'\u003E\u4e0a\u6d77: \u003C/span\u003E Senior Software Engineer\u003C/a\u003E","\u003Ca href='/jobs/2506' target='_blank' style='color:#000;'\u003E\u003Cspan style='font-weight:bold;'\u003E\u5317\u4eac: \u003C/span\u003E \u3010\u5317\u4eac\u3011\u6e38\u620f\u516c\u53f8\u8bda\u9080php\u5f00\u53d1\u5de5\u7a0b\u5e08\u003C/a\u003E"]
+      var hunter_id = Math.ceil(Math.random() * hunters.length) - 1;
+      if(hunter_id == -1) hunter_id = 0;
+    </script>
+    <div id="hunter_recommended" style="background:#fff;border: 1px solid #ccc; padding: 4px;margin-bottom: 10px;">
+      <span id="hunters_nav" style="margin-right:5px;">
+        <a href="#" onclick="hunter_id <= 0 ? hunter_id = hunters.length - 1 : hunter_id--; $('hunters').update(hunters[hunter_id]);return false;" style="border:1px solid #ccc;padding: 0 3px;size: 13px;text-decoration: none;">&lt;</a>
+        <a href="#" onclick="hunter_id >= hunters.length - 1 ? hunter_id = 0 : hunter_id++; $('hunters').update(hunters[hunter_id]);return false;" style="border:1px solid #ccc;padding: 0 3px;size :13px;text-decoration: none;">&gt;</a>
+      </span>
+      猎头职位: <span id="hunters"></span>
+      <script type="text/javascript">$('hunters').update(hunters[hunter_id]);</script>
+    </div>
+
+        
+      
+                                            <div id="related_topics">相关文章: <span class="close"><a href="#" onclick="$('related_topics').hide();if($('hunter_recommended')){$('hunter_recommended').style.width='780px'};if($('topic_tags')){$('topic_tags').style.width='790px'};return false;" title="关闭">&nbsp;</a></span>
+              <ul>
+                                  <li><a href='http://www.iteye.com/topic/1116020' title='学完线程,摸索着写了个线程池,有待完善' target='_blank'>学完线程,摸索着写了个线程池,有待完善</a></li>
+                                  <li><a href='http://www.iteye.com/topic/1116585' title='MongoDB 内存解析 python' target='_blank'>MongoDB 内存解析 python</a></li>
+                                  <li><a href='http://www.iteye.com/topic/369895' title='设计Python数据库连接池1-对象的循环引用问题' target='_blank'>设计Python数据库连接池1-对象的循环引用问题</a></li>
+                              </ul>
+              <br/><span>推荐群组: <a href="http://hllvm.group.iteye.com" target="_blank">高级语言虚拟机</a></span>
+              <br/><a href="/wiki/topic/938193" target="_blank">更多相关推荐</a>
+            </div>
+            <script type="text/javascript">
+              document.observe("dom:loaded", function() {
+                if($('hunter_recommended')) {
+                  $('hunter_recommended').setStyle({cssFloat: 'left', width: '557px'})
+                }
+                if($('topic_tags')) {
+                  $('topic_tags').setStyle({width: '567px'})
+                }
+                new Draggable("related_topics");
+              });
+            </script>
+                          
+          <div id="topic_tags" class="news_tag">
+                          <a href="/forums/tag/Python">Python</a>
+                      </div>
+        
+      
+      <p>最近在做一些文本处理方面的事情，考虑到程序利用并发性可以提高执行效率（不纠结特殊反例），于是入围的Idea如使用多进程或多线程达到期望的目标，对于进程或线程的创建是有代价的，那么我们是否可以实现一个线程池来达到已创建的线程反复使用从而使代价降低到最小呢？<br>
+当然可以，要想创建一个线程池，那么必须得有个容器来模拟“池”，在Python中，队列这样的数据结构就可以帮我们解决“池”这个问题，然而随之引来的
+多线程之间数据处理同步问题，好在Python中有个Queue模块帮我们解决了这一棘手的问题，那么我们就可以实现一个线程池的雏形了。</p>
+<pre class="python" name="code"># !/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+import Queue
+import threading
+import time
+
+class WorkManager(object):
+    def __init__(self, work_num=1000,thread_num=2):
+        self.work_queue = Queue.Queue()
+        self.threads = []
+        self.__init_work_queue(work_num)
+        self.__init_thread_pool(thread_num)
+
+    """
+        初始化线程
+    """
+    def __init_thread_pool(self,thread_num):
+        for i in range(thread_num):
+            self.threads.append(Work(self.work_queue))
+
+    """
+        初始化工作队列
+    """
+    def __init_work_queue(self, jobs_num):
+        for i in range(jobs_num):
+            self.add_job(do_job, i)
+
+    """
+        添加一项工作入队
+    """
+    def add_job(self, func, *args):
+        self.work_queue.put((func, list(args)))#任务入队，Queue内部实现了同步机制
+
+    """
+        等待所有线程运行完毕
+    """   
+    def wait_allcomplete(self):
+        for item in self.threads:
+            if item.isAlive():item.join()
+
+class Work(threading.Thread):
+    def __init__(self, work_queue):
+        threading.Thread.__init__(self)
+        self.work_queue = work_queue
+        self.start()
+
+    def run(self):
+        #死循环，从而让创建的线程在一定条件下关闭退出
+        while True:
+            try:
+                do, args = self.work_queue.get(block=False)#任务异步出队，Queue内部实现了同步机制
+                do(args)
+                self.work_queue.task_done()#通知系统任务完成
+            except:
+                break
+
+#具体要做的任务
+def do_job(args):
+    time.sleep(0.1)#模拟处理时间
+    print threading.current_thread(), list(args)
+
+if __name__ == '__main__':
+    start = time.time()
+    work_manager =  WorkManager(10000, 10)#或者work_manager =  WorkManager(10000, 20)
+    work_manager.wait_allcomplete()
+    end = time.time()
+    print "cost all time: %s" % (end-start)</pre>
+<p> 2次开启不同的线程数运行结果如下：</p>
+<pre class="python" name="code">#work_manager =  WorkManager(10000, 10)
+cost all time: 100.641790867(单位：秒)
+#work_manager =  WorkManager(10000, 20)
+cost all time：50.5233478546(单位：秒)</pre>
+<p> 上面实现了线程池的雏形，展现了基本原理，当然要想成为通用的API需要做很多的工作，希望本文能够起到抛砖引玉的效果。</p>
+    </div>
+    
+
+          <div id="topic_copyright">声明：ITeye文章版权属于作者，受法律保护。没有作者书面许可不得转载。 </div>
+      <div id="forum_recommended_f5"><span>推荐链接</span><ul><li><!--AdForward Begin:-->
+<script type="text/javascript" ads-src="http://csdnim.allyes.com/main/s?user=iteye|forums|banner4&db=csdnim&border=0&local=yes&js=ie" src="http://creatim.allyes.com.cn/td/AllyesDeliver.min.js" charset="gbk"></script>
+<!--AdForward End--></li></ul></div>
+              <div id="forum_recommended_f0"><IFRAME SRC="/iframe_ggbd/155" SCROLLING=no WIDTH=728 HEIGHT=90 FRAMEBORDER=0></IFRAME></div>
+        </td>
+  </tr>
+  <tr>
+    <td class="postauthor"><a href="#">返回顶楼</a></td>
+    <td class="postcontent">
+      <div class="icons">
+        <a href='http://cleverdeng.iteye.com' class='icon_www' title='浏览作者的博客'>&nbsp;</a>
+        <a href='http://cleverdeng.iteye.com/blog/profile' class='icon_profile' title='浏览作者资料'>&nbsp;</a>
+        <a href="http://my.iteye.com/messages/new?message%5Breceiver_name%5D=jeffreydan" class="icon_pm" title="发送站内短信">&nbsp;</a>
+        <a href='http://cleverdeng.iteye.com/blog/guest_book' class='icon_guestbook' title='给作者留言'>&nbsp;</a>
+        <a href="http://my.iteye.com/feed?subscription%5Bsubscribed_user_name%5D=jeffreydan" class="icon_rss" onclick="var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var s = document.createElement('input'); s.setAttribute('type', 'hidden'); s.setAttribute('name', 'authenticity_token'); s.setAttribute('value', '9njLfvjE7GBhGTKuGJP/jZocMaleu71iueuj/WmUtLI='); f.appendChild(s);f.submit();return false;" title="关注作者">&nbsp</a>
+              </div>
+                    </td>
+</tr>
+<tr class="sep2"><td colspan="2"></td></tr>
+<tr id="1964176">
+  <td class="postauthor">
+    <ul>
+      <li class="name">passionke</li>
+      <li>等级: 初级会员</li>
+      <li><a href='http://passionke.iteye.com' target='_blank'><img alt="passionke的博客" class="logo" src="http://www.iteye.com/upload/logo/user/605464/a425ef95-fc8f-3130-b214-f9e321ae04b6.jpg?1323833544" title="passionke的博客: " width="" /></a></li>
+      <li>性别: <img src="/images/icon_minigender_1.gif" title="男"/></li>      <li>文章: 77</li>
+      <li>积分: 0</li>
+      <li>来自: 杭州</li>
+      <li><img src='/images/status/offline.gif'/></li>
+    </ul>
+  </td>
+  <td class="postcontent">
+    <div class="postactions">
+      <div class="description">
+        &nbsp;&nbsp;
+        发表时间：2011-03-10&nbsp;&nbsp;
+        
+      </div>
+      <div class="links">
+        
+        
+          
+          
+          
+        
+      </div>
+    </div>
+    <div class="postbody clearfix">
+      
+      
+      这个&nbsp; 太长了吧～<br />其实我还是怀念flex框架下的“多线程”式写法<br /><br />就是开num事件，然后在事件结束后判断是否满足运行完毕的条件<br />如果是就跳出 如果不是 再来一轮<br /><br />可惜在线程中，似乎没有线程析构的说法<br />也就是当线程完毕的时候 我们是拿不到信号的 （while 轮询？ 不好）<br />看到过一个简易版本的线程池&nbsp; 哪个简单干净 利于理解
+    </div>
+    
+
+            </td>
+  </tr>
+  <tr>
+    <td class="postauthor"><a href="#">返回顶楼</a></td>
+    <td class="postcontent">
+      <div class="icons">
+        <a href='http://passionke.iteye.com' class='icon_www' title='浏览作者的博客'>&nbsp;</a>
+        <a href='http://passionke.iteye.com/blog/profile' class='icon_profile' title='浏览作者资料'>&nbsp;</a>
+        <a href="http://my.iteye.com/messages/new?message%5Breceiver_name%5D=passionke" class="icon_pm" title="发送站内短信">&nbsp;</a>
+        <a href='http://passionke.iteye.com/blog/guest_book' class='icon_guestbook' title='给作者留言'>&nbsp;</a>
+        <a href="http://my.iteye.com/feed?subscription%5Bsubscribed_user_name%5D=passionke" class="icon_rss" onclick="var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var s = document.createElement('input'); s.setAttribute('type', 'hidden'); s.setAttribute('name', 'authenticity_token'); s.setAttribute('value', '9njLfvjE7GBhGTKuGJP/jZocMaleu71iueuj/WmUtLI='); f.appendChild(s);f.submit();return false;" title="关注作者">&nbsp</a>
+                  <a href="#1964176" title="passionke回帖:Python实现线程池">回帖地址</a>
+              </div>
+                        <div id='post_rate_box_1964176' class='post_rate_box'><a href='#' onclick='return false;' class='good' title='好'>0</a> <a href='#' onclick='return false;' class='hidden' title='差'>0</a> 请登录后投票</div>              </td>
+</tr>
+<tr class="sep2"><td colspan="2"></td></tr>
+<tr id="1964831">
+  <td class="postauthor">
+    <ul>
+      <li class="name">simomo</li>
+      <li>等级: 初级会员</li>
+      <li><a href='http://simomo.iteye.com' target='_blank'><img alt="simomo的博客" class="logo" src="http://www.iteye.com/images/user-logo.gif?1324994303" title="simomo的博客: 冷眼" width="" /></a></li>
+      <li>性别: <img src="/images/icon_minigender_1.gif" title="男"/></li>      <li>文章: 11</li>
+      <li>积分: 50</li>
+      <li>来自: 郑州</li>
+      <li><img src='/images/status/offline.gif'/></li>
+    </ul>
+  </td>
+  <td class="postcontent">
+    <div class="postactions">
+      <div class="description">
+        &nbsp;&nbsp;
+        发表时间：2011-03-11&nbsp;&nbsp;
+        
+      </div>
+      <div class="links">
+        
+        
+          
+          
+          
+        
+      </div>
+    </div>
+    <div class="postbody clearfix">
+      
+      
+      <p> 最近做一个项目，也需要用到一个线程池，所以找了一个老外的开源项目中用的线程池代码，总共有 task， workthread， threadpool三大部分。不太清楚的是你说的queue是什么lib？<br></p>
+<pre class="python" name="code">import threading
+
+class WorkerTask(object):
+    """A task to be performed by the ThreadPool."""
+
+    def __init__(self, function, args=(), kwargs={}):
+        self.function = function
+        self.args = args
+        self.kwargs = kwargs
+
+    def __call__(self):
+        self.function(*self.args, **self.kwargs)
+
+
+class WorkerThread(threading.Thread):
+    """A thread managed by a thread pool."""
+
+    def __init__(self, pool):
+        threading.Thread.__init__(self)
+        self.setDaemon(True)
+        self.pool = pool
+        self.busy = False
+        self._started = False
+        self._event = None
+
+    def work(self):
+        if self._started is True:
+            if self._event is not None and not self._event.isSet():
+                self._event.set()
+        else:
+            self._started = True
+            self.start()
+
+    def run(self):
+        while True:
+            self.busy = True
+            while len(self.pool._tasks) &gt; 0:
+                try:
+                    task = self.pool._tasks.pop()
+                    task()
+                except IndexError:
+                    # Just in case another thread grabbed the task 1st.
+                    pass
+
+            # Sleep until needed again
+            self.busy = False
+            if self._event is None:
+                self._event = threading.Event()
+            else:
+                self._event.clear()
+            self._event.wait()
+
+class ThreadPool(object):
+    """Executes queued tasks in the background."""
+
+    def __init__(self, max_pool_size=10):
+        self.max_pool_size = max_pool_size
+        self._threads = []
+        self._tasks = [] 
+
+    def _addTask(self, task):
+        self._tasks.append(task)
+
+        worker_thread = None
+        for thread in self._threads:
+            if thread.busy is False:
+                worker_thread = thread
+                break
+
+        if worker_thread is None and len(self._threads) &lt;= self.max_pool_size:
+            worker_thread = WorkerThread(self)
+            self._threads.append(worker_thread)
+
+        if worker_thread is not None:
+            worker_thread.work()
+
+    def addTask(self, function, args=(), kwargs={}):
+        self._addTask(WorkerTask(function, args, kwargs))
+
+class GlobalThreadPool(object):
+    """ThreadPool Singleton class."""
+
+    _instance = None
+
+    def __init__(self):
+        """Create singleton instance """
+
+        if GlobalThreadPool._instance is None:
+            # Create and remember instance
+            GlobalThreadPool._instance = ThreadPool()
+
+    def __getattr__(self, attr):
+        """ Delegate get access to implementation """
+        return getattr(self._instance, attr)
+
+    def __setattr__(self, attr, val):
+        """ Delegate set access to implementation """
+        return setattr(self._instance, attr, val)
+</pre>
+ 
+<p> </p>
+    </div>
+    
+
+            </td>
+  </tr>
+  <tr>
+    <td class="postauthor"><a href="#">返回顶楼</a></td>
+    <td class="postcontent">
+      <div class="icons">
+        <a href='http://simomo.iteye.com' class='icon_www' title='浏览作者的博客'>&nbsp;</a>
+        <a href='http://simomo.iteye.com/blog/profile' class='icon_profile' title='浏览作者资料'>&nbsp;</a>
+        <a href="http://my.iteye.com/messages/new?message%5Breceiver_name%5D=simomo" class="icon_pm" title="发送站内短信">&nbsp;</a>
+        <a href='http://simomo.iteye.com/blog/guest_book' class='icon_guestbook' title='给作者留言'>&nbsp;</a>
+        <a href="http://my.iteye.com/feed?subscription%5Bsubscribed_user_name%5D=simomo" class="icon_rss" onclick="var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var s = document.createElement('input'); s.setAttribute('type', 'hidden'); s.setAttribute('name', 'authenticity_token'); s.setAttribute('value', '9njLfvjE7GBhGTKuGJP/jZocMaleu71iueuj/WmUtLI='); f.appendChild(s);f.submit();return false;" title="关注作者">&nbsp</a>
+                  <a href="#1964831" title="simomo回帖:Python实现线程池">回帖地址</a>
+              </div>
+                        <div id='post_rate_box_1964831' class='post_rate_box'><a href='#' onclick='return false;' class='good' title='好'>0</a> <a href='#' onclick='return false;' class='hidden' title='差'>0</a> 请登录后投票</div>              </td>
+</tr>
+<tr class="sep2"><td colspan="2"></td></tr>
+<tr id="1965854">
+  <td class="postauthor">
+    <ul>
+      <li class="name">mathgl</li>
+      <li>等级: 初级会员</li>
+      <li><a href='http://mathgl.iteye.com' target='_blank'><img alt="mathgl的博客" class="logo" src="http://www.iteye.com/images/user-logo.gif?1324994303" title="mathgl的博客: mathgl" width="" /></a></li>
+      <li>性别: <img src="/images/icon_minigender_1.gif" title="男"/></li>      <li>文章: 1101</li>
+      <li>积分: 50</li>
+      <li>来自: HK</li>
+      <li><img src='/images/status/offline.gif'/></li>
+    </ul>
+  </td>
+  <td class="postcontent">
+    <div class="postactions">
+      <div class="description">
+        &nbsp;&nbsp;
+        发表时间：2011-03-11&nbsp;&nbsp;
+        
+      </div>
+      <div class="links">
+        
+        
+          
+          
+          
+        
+      </div>
+    </div>
+    <div class="postbody clearfix">
+      
+      
+      <div class="quote_title">simomo 写道</div>
+<div class="quote_div">
+<p> 最近做一个项目，也需要用到一个线程池，所以找了一个老外的开源项目中用的线程池代码，总共有 task， workthread， threadpool三大部分。不太清楚的是你说的queue是什么lib？</p>
+<pre class="python" name="code">
+</pre>
+ 
+<p> </p>
+</div>
+<p>应该是2.5之后新增的 标准库的那个Queue...2.6后 multipleprocessing里面也有一个。不过那个是给多进程用的。。。</p>
+    </div>
+    
+
+            </td>
+  </tr>
+  <tr>
+    <td class="postauthor"><a href="#">返回顶楼</a></td>
+    <td class="postcontent">
+      <div class="icons">
+        <a href='http://mathgl.iteye.com' class='icon_www' title='浏览作者的博客'>&nbsp;</a>
+        <a href='http://mathgl.iteye.com/blog/profile' class='icon_profile' title='浏览作者资料'>&nbsp;</a>
+        <a href="http://my.iteye.com/messages/new?message%5Breceiver_name%5D=mathgl" class="icon_pm" title="发送站内短信">&nbsp;</a>
+        <a href='http://mathgl.iteye.com/blog/guest_book' class='icon_guestbook' title='给作者留言'>&nbsp;</a>
+        <a href="http://my.iteye.com/feed?subscription%5Bsubscribed_user_name%5D=mathgl" class="icon_rss" onclick="var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;var s = document.createElement('input'); s.setAttribute('type', 'hidden'); s.setAttribute('name', 'authenticity_token'); s.setAttribute('value', '9njLfvjE7GBhGTKuGJP/jZocMaleu71iueuj/WmUtLI='); f.appendChild(s);f.submit();return false;" title="关注作者">&nbsp</a>
+                  <a href="#1965854" title="mathgl回帖:Python实现线程池">回帖地址</a>
+              </div>
+                        <div id='post_rate_box_1965854' class='post_rate_box'><a href='#' onclick='return false;' class='good' title='好'>0</a> <a href='#' onclick='return false;' class='hidden' title='差'>0</a> 请登录后投票</div>              </td>
+</tr>
+<tr class="sep2"><td colspan="2"></td></tr>
+
+  </tbody>
+</table>
+
+
+<div class="actions">
+  <div class="buttons"></div>
+  <div class="wrapper"></div>
+</div>
+
+<div>
+  <div class="crumbs">
+    <a href="/forums">论坛首页</a> <span class="arrow">&rarr;</span>
+    <a href="/forums/board/language">编程语言技术版</a>
+    <br/><br/>跳转论坛:<select id="forum_urlname" name="forum[urlname]" onchange="window.location='/forums/board/'+this.value"><option value="mobile">移动开发技术</option>
+<option value="web">Web前端技术</option>
+<option value="Java">Java企业应用</option>
+<option value="language" selected="selected">编程语言技术</option>
+<option value="Tech">综合技术</option>
+<option value="New">入门技术</option>
+<option value="Job">招聘求职</option>
+<option value="Life">海阔天空</option></select>
+    
+  </div>
+
+  
+</div>
+
+<div style="display:none">
+  <form action="/posts/rate" id="post_rate_form" method="post" onsubmit="new Ajax.Request('/posts/rate', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="9njLfvjE7GBhGTKuGJP/jZocMaleu71iueuj/WmUtLI=" /></div>
+    <input type="hidden" id="post_rate_id" name="id"/>
+    <input type="hidden" id="post_rate_type" name="type"/>
+  </form></div>
+
+<script type="text/javascript">
+  function processComment() {
+    fix_image_size($$('div.postbody img'), 760);
+    
+    $$('#forum_main > #posts > tr[id]').each(function(tr){
+      var post_id = tr.id;
+      $$("#"+post_id+" pre[name=code]").each(function(pre, index){
+        var location = window.location;
+        source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+        source_url += "#" + post_id;
+        pre.writeAttribute('codeable_type', 'Post');
+        pre.writeAttribute('codeable_id', post_id);
+        pre.writeAttribute('source_url', source_url);
+        pre.writeAttribute('pre_index', index);
+        pre.writeAttribute('title', 'Python实现线程池');
+      });
+    });
+  }
+
+  dp.SyntaxHighlighter.HighlightAll('code', true, true);
+  processComment();
+  code_favorites_init();
+
+  function rate_post(id, type) {
+    Element.update('post_rate_box_' + id, '提交中...');
+    new Ajax.Request('/posts/rate', {asynchronous:true, evalScripts:true, parameters:{"id":id, "type":type}});
+  }
+
+  function rate_topic(type) {
+    Element.update('topic_rate_box', '提交中...');
+    new Ajax.Request('/topics/rate', {asynchronous:true, evalScripts:true, parameters:{"id":938193, "type":type}});
+  }
+</script>
+
+
+
+        </div>
+        <div id="nav">
+  <div class="wrapper">
+    <ul>
+            <li><a href="http://www.iteye.com/">首页</a></li>
+      <li><a href="http://www.iteye.com/news">资讯</a></li>
+      <li><a href="http://www.iteye.com/magazines">精华</a></li>
+      <li><a href="http://www.iteye.com/forums" class='selected'>论坛</a></li>
+      <li><a href="http://www.iteye.com/ask">问答</a></li>
+      <li><a href="http://www.iteye.com/blogs">博客</a></li>
+      <li><a href="http://www.iteye.com/blogs/subjects">专栏</a></li>
+      <li><a href="http://www.iteye.com/groups">群组</a></li>
+      <li><a target="_blank" href="http://job.iteye.com/iteye">招聘</a></li>
+      <li class="last"><a href="http://www.iteye.com/search">搜索</a></li>
+    </ul>
+  </div>
+</div>
+      </div>
+      <div id="footer">
+  <div id="site_nav">
+    <ul>
+      <li><a href="/index/service">广告服务</a></li>
+      <li><a href="http://webmaster.iteye.com">ITeye黑板报</a></li>
+      <li><a href="/index/contactus">联系我们</a></li>
+      <li class="last"><a href="/index/friend_links">友情链接</a></li>
+    </ul>
+  </div>
+  <div id="copyright">
+    &copy; 2003-2014 ITeye.com.    [ <a href="http://www.miibeian.gov.cn">京ICP证110151号</a>  京公网安备110105010620 ]<br/>
+    百联优力(北京)投资有限公司  版权所有<br />
+  </div>
+</div>
+
+    </div>
+    <script type="text/javascript">
+  document.write("<img src='http://stat.iteye.com/?url="+ encodeURIComponent(document.location.href) + "&referrer=" + encodeURIComponent(document.referrer) + "&user_id=' width='0' height='0' />");
+</script>
+
+<script src="http://csdnimg.cn/pubfooter/js/tracking.js?version=20130923164150" type="text/javascript"></script>
+
+  </body>
+</html>
