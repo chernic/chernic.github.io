@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>线程池的研究及实现 - 糖拌咸鱼 - 博客园</title>
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=vVKakOZtmmmI9PttuB8cajJQIPwEqvGelvnOjnc3uik1"/>
+<link id="MainCss" type="text/css" rel="stylesheet" href="/skins/SimpleBlue/bundle-SimpleBlue.css?v=g1Ly_5CnmgosFgcSP2WTmRocMrlS6IO9yhcnMXW9dOA1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/coser/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/coser/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/coser/wlwmanifest.xml"/>
+<script src="http://common.cnblogs.com/script/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'coser', cb_enable_mathjax=false;</script>
+<script src="/bundles/blog-common.js?v=5SljHjvFayhSwYEpPGn3hGjzMUiUy8_LhBNYFY8TdeA1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+		
+<!--done-->
+<div class="title"><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/coser/">糖拌咸鱼</a></div>
+<div class="subtitle">记录学习的点点滴滴~</div>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li id="nav_sitehome"><a id="MyLinks1_HomeLink" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li id="nav_myhome"><a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/coser/">首页</a></li>
+<li id="nav_q"><a class="menu" href="http://q.cnblogs.com/">博问</a></li>
+<li id="nav_ing"><a class="menu" href="http://home.cnblogs.com/ing/">闪存</a></li>
+<li id="nav_newpost"><a id="MyLinks1_NewPostLink" class="menu" rel="nofollow" href="http://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li id="nav_contact"><a id="MyLinks1_ContactLink" class="menu" rel="nofollow" href="http://space.cnblogs.com/msg/send/%e7%b3%96%e6%8b%8c%e5%92%b8%e9%b1%bc">联系</a></li>
+<li id="nav_rss"><a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/coser/rss">订阅</a>
+<!--<a id="MyLinks1_XMLLink" class="aHeaderXML" href="http://www.cnblogs.com/coser/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li id="nav_admin"><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+
+		<div class="blogStats">
+			
+			
+<!--done-->
+随笔-107&nbsp;
+文章-0&nbsp;
+评论-124&nbsp;
+
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+
+<!--done-->
+<div id="topics">
+	<div class = "post">
+		<h1 class = "postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="http://www.cnblogs.com/coser/archive/2012/03/10/2389264.html">线程池的研究及实现</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><p><span style="font-size: 14pt;"><strong>什么是线程池？</strong></span></p>
+<p>诸如web服务器、数据库服务器、文件服务器和邮件服务器等许多服务器应用都面向处理来自某些远程来源的大量短小的任务。构建服务器应用程序的一个过于简单的模型是：每当一个请求到达就创建一个新的服务对象，然后在新的服务对象中为请求服务。但当有大量请求并发访问时，服务器不断的创建和销毁对象的开销很大。所以提高服务器效率的一个手段就是尽可能减少创建和销毁对象的次数，特别是一些很耗资源的对象创建和销毁，这样就引入了&ldquo;池&rdquo;的概念，&ldquo;池&rdquo;的概念使得人们可以定制一定量的资源，然后对这些资源进行复用，而不是频繁的创建和销毁。</p>
+<p>线程池是预先创建线程的一种技术。线程池在还没有任务到来之前，创建一定数量的线程，放入空闲队列中。这些线程都是处于睡眠状态，即均为启动，不消耗CPU，而只是占用较小的内存空间。当请求到来之后，缓冲池给这次请求分配一个空闲线程，把请求传入此线程中运行，进行处理。当预先创建的线程都处于运行状态，即预制线程不够，线程池可以自由创建一定数量的新线程，用于处理更多的请求。当系统比较闲的时候，也可以通过移除一部分一直处于停用状态的线程。</p>
+<p><span style="font-size: 14pt;"><strong>线程池的注意事项</strong></span></p>
+<p>虽然线程池是构建多线程应用程序的强大机制，但使用它并不是没有风险的。在使用线程池时需注意线程池大小与性能的关系，注意并发风险、死锁、资源不足和线程泄漏等问题。</p>
+<p>（1）线程池大小。多线程应用并非线程越多越好，需要根据系统运行的软硬件环境以及应用本身的特点决定线程池的大小。一般来说，如果代码结构合理的话，线程数目与CPU 数量相适合即可。如果线程运行时可能出现阻塞现象，可相应增加池的大小；如有必要可采用自适应算法来动态调整线程池的大小，以提高CPU 的有效利用率和系统的整体性能。</p>
+<p>（2）并发错误。多线程应用要特别注意并发错误，要从逻辑上保证程序的正确性，注意避免死锁现象的发生。</p>
+<p>（3）线程泄漏。这是线程池应用中一个严重的问题，当任务执行完毕而线程没能返回池中就会发生线程泄漏现象。</p>
+<p><span style="font-size: 14pt;"><strong>简单线程池的设计</strong></span></p>
+<p>一个典型的线程池，应该包括如下几个部分：<br />1、线程池管理器（ThreadPool），用于启动、停用，管理线程池<br />2、工作线程（WorkThread），线程池中的线程<br />3、请求接口（WorkRequest），创建请求对象，以供工作线程调度任务的执行<br />4、请求队列（RequestQueue）,用于存放和提取请求<br />5、结果队列（ResultQueue）,用于存储请求执行后返回的结果</p>
+<p>线程池管理器，通过添加请求的方法（putRequest）向请求队列（RequestQueue）添加请求，这些请求事先需要实现请求接口，即传递工作函数、参数、结果处理函数、以及异常处理函数。之后初始化一定数量的工作线程，这些线程通过轮询的方式不断查看请求队列（RequestQueue），只要有请求存在，则会提取出请求，进行执行。然后，线程池管理器调用方法（poll）查看结果队列（resultQueue）是否有值，如果有值，则取出，调用结果处理函数执行。通过以上讲述，不难发现，这个系统的核心资源在于请求队列和结果队列，工作线程通过轮询requestQueue获得人物，主线程通过查看结果队列，获得执行结果。因此，对这个队列的设计，要实现线程同步，以及一定阻塞和超时机制的设计，以防止因为不断轮询而导致的过多cpu开销。在本文中，将会用python语言实现，python的Queue，就是很好的实现了对线程同步机制。</p>
+<p align="center"><img src="http://images.cnblogs.com/cnblogs_com/coser/201203/201203101634554504.jpeg" alt="" /></p>
+<p><span style="font-size: 14pt;"><strong>使用Python实现：</strong></span></p>
+<div class="cnblogs_code">
+<pre><span style="color: #008000;">#</span><span style="color: #008000;">-*-encoding:utf-8-*-</span><span style="color: #008000;"><br /></span><span style="color: #800000;">'''</span><span style="color: #800000;"><br />Created on 2012-3-9<br />@summary: 线程池<br />@contact: mailto:zhanglixinseu@gmail.com<br />@author: zhanglixin<br /></span><span style="color: #800000;">'''</span><br /><span style="color: #0000ff;">import</span> sys<br /><span style="color: #0000ff;">import</span> threading<br /><span style="color: #0000ff;">import</span> Queue<br /><span style="color: #0000ff;">import</span> traceback<br /><br /><span style="color: #008000;">#</span><span style="color: #008000;"> 定义一些Exception，用于自定义异常处理</span><span style="color: #008000;"><br /></span><br /><span style="color: #0000ff;">class</span> NoResultsPending(Exception):<br />    <span style="color: #800000;">"""</span><span style="color: #800000;">All works requests have been processed</span><span style="color: #800000;">"""</span><br />    <span style="color: #0000ff;">pass</span><br /><br /><span style="color: #0000ff;">class</span> NoWorkersAvailable(Exception):<br />    <span style="color: #800000;">"""</span><span style="color: #800000;">No worket threads available to process remaining requests.</span><span style="color: #800000;">"""</span><br />    <span style="color: #0000ff;">pass</span><br /><br /><span style="color: #0000ff;">def</span> _handle_thread_exception(request, exc_info):<br />    <span style="color: #800000;">"""</span><span style="color: #800000;">默认的异常处理函数，只是简单的打印</span><span style="color: #800000;">"""</span><br />    traceback.print_exception(*exc_info)<br /><br /><span style="color: #008000;">#</span><span style="color: #008000;">classes </span><span style="color: #008000;"><br /></span><br /><span style="color: #0000ff;">class</span> WorkerThread(threading.Thread):<br />    <span style="color: #800000;">"""</span><span style="color: #800000;">后台线程，真正的工作线程，从请求队列(requestQueue)中获取work，<br />    并将执行后的结果添加到结果队列(resultQueue)</span><span style="color: #800000;">"""</span><br />    <span style="color: #0000ff;">def</span> <span style="color: #800080;">__init__</span>(self,requestQueue,resultQueue,poll_timeout=5,**kwds):<br />        threading.Thread.<span style="color: #800080;">__init__</span>(self,**kwds)<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">设置为守护进行</span><span style="color: #800000;">'''</span><br />        self.setDaemon(True)<br />        self._requestQueue = requestQueue<br />        self._resultQueue = resultQueue<br />        self._poll_timeout = poll_timeout<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">设置一个flag信号，用来表示该线程是否还被dismiss,默认为false</span><span style="color: #800000;">'''</span><br />        self._dismissed = threading.Event()<br />        self.start()<br />        <br />    <span style="color: #0000ff;">def</span> run(self):<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">每个线程尽可能多的执行work，所以采用loop，<br />        只要线程可用，并且requestQueue有work未完成，则一直loop</span><span style="color: #800000;">'''</span><br />        <span style="color: #0000ff;">while</span> True:<br />            <span style="color: #0000ff;">if</span> self._dismissed.is_set():<br />                <span style="color: #0000ff;">break</span><br />            <span style="color: #0000ff;">try</span>:<br />                <span style="color: #800000;">'''</span><span style="color: #800000;"><br />                Queue.Queue队列设置了线程同步策略，并且可以设置timeout。<br />                一直block，直到requestQueue有值，或者超时<br />                </span><span style="color: #800000;">'''</span><br />                request = self._requestQueue.get(True,self._poll_timeout)<br />            <span style="color: #0000ff;">except</span> Queue.Empty:<br />                <span style="color: #0000ff;">continue</span><br />            <span style="color: #0000ff;">else</span>:<br />                <span style="color: #800000;">'''</span><span style="color: #800000;">之所以在这里再次判断dimissed，是因为之前的timeout时间里，很有可能，该线程被dismiss掉了</span><span style="color: #800000;">'''</span><br />                <span style="color: #0000ff;">if</span> self._dismissed.is_set():<br />                    self._requestQueue.put(request)<br />                    <span style="color: #0000ff;">break</span><br />                <span style="color: #0000ff;">try</span>:<br />                    <span style="color: #800000;">'''</span><span style="color: #800000;">执行callable，讲请求和结果以tuple的方式放入requestQueue</span><span style="color: #800000;">'''</span><br />                    result = request.callable(*request.args,**request.kwds)<br />                    <span style="color: #0000ff;">print</span> self.getName()<br />                    self._resultQueue.put((request,result))<br />                <span style="color: #0000ff;">except</span>:<br />                    <span style="color: #800000;">'''</span><span style="color: #800000;">异常处理</span><span style="color: #800000;">'''</span><br />                    request.exception = True<br />                    self._resultQueue.put((request,sys.exc_info()))<br />    <br />    <span style="color: #0000ff;">def</span> dismiss(self):<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">设置一个标志，表示完成当前work之后，退出</span><span style="color: #800000;">'''</span><br />        self._dismissed.set()<br /><br /><br /><span style="color: #0000ff;">class</span> WorkRequest:<br />    <span style="color: #800000;">'''</span><span style="color: #800000;"><br />    @param callable_:，可定制的，执行work的函数<br />    @param args: 列表参数<br />    @param kwds: 字典参数<br />    @param requestID: id<br />    @param callback: 可定制的，处理resultQueue队列元素的函数<br />    @param exc_callback:可定制的，处理异常的函数 <br />    </span><span style="color: #800000;">'''</span><br />    <span style="color: #0000ff;">def</span> <span style="color: #800080;">__init__</span>(self,callable_,args=None,kwds=None,requestID=None,<br />                 callback=None,exc_callback=_handle_thread_exception):<br />        <span style="color: #0000ff;">if</span> requestID == None:<br />            self.requestID = id(self)<br />        <span style="color: #0000ff;">else</span>:<br />            <span style="color: #0000ff;">try</span>:<br />                self.requestID = hash(requestID)<br />            <span style="color: #0000ff;">except</span> TypeError:<br />                <span style="color: #0000ff;">raise</span> TypeError(<span style="color: #800000;">"</span><span style="color: #800000;">requestId must be hashable</span><span style="color: #800000;">"</span>)    <br />        self.exception = False<br />        self.callback = callback<br />        self.exc_callback = exc_callback<br />        self.callable = callable_<br />        self.args = args <span style="color: #0000ff;">or</span> []<br />        self.kwds = kwds <span style="color: #0000ff;">or</span> {}<br />        <br />    <span style="color: #0000ff;">def</span> <span style="color: #800080;">__str__</span>(self):<br />        <span style="color: #0000ff;">return</span> <span style="color: #800000;">"</span><span style="color: #800000;">WorkRequest id=%s args=%r kwargs=%r exception=%s</span><span style="color: #800000;">"</span> % \<br />            (self.requestID,self.args,self.kwds,self.exception)<br />            <br /><span style="color: #0000ff;">class</span> ThreadPool:<br />    <span style="color: #800000;">'''</span><span style="color: #800000;"><br />    @param num_workers:初始化的线程数量<br />    @param q_size,resq_size: requestQueue和result队列的初始大小<br />    @param poll_timeout: 设置工作线程WorkerThread的timeout，也就是等待requestQueue的timeout<br />    </span><span style="color: #800000;">'''</span><br />    <span style="color: #0000ff;">def</span> <span style="color: #800080;">__init__</span>(self,num_workers,q_size=0,resq_size=0,poll_timeout=5):<br />        self._requestQueue = Queue.Queue(q_size)<br />        self._resultQueue = Queue.Queue(resq_size)<br />        self.workers = []<br />        self.dismissedWorkers = []<br />        self.workRequests = {} <span style="color: #008000;">#</span><span style="color: #008000;">设置个字典，方便使用</span><span style="color: #008000;"><br /></span>        self.createWorkers(num_workers,poll_timeout)<br /><br />    <span style="color: #0000ff;">def</span> createWorkers(self,num_workers,poll_timeout=5):<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">创建num_workers个WorkThread,默认timeout为5</span><span style="color: #800000;">'''</span><br />        <span style="color: #0000ff;">for</span> i <span style="color: #0000ff;">in</span> range(num_workers):<br />            self.workers.append(WorkerThread(self._requestQueue,self._resultQueue,poll_timeout=poll_timeout))                           <br />    <br />    <span style="color: #0000ff;">def</span> dismissWorkers(self,num_workers,do_join=False):<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">停用num_workers数量的线程，并加入dismiss_list</span><span style="color: #800000;">'''</span><br />        dismiss_list = []<br />        <span style="color: #0000ff;">for</span> i <span style="color: #0000ff;">in</span> range(min(num_workers,len(self.workers))):<br />            worker = self.workers.pop()<br />            worker.dismiss()<br />            dismiss_list.append(worker)<br />        <span style="color: #0000ff;">if</span> do_join :<br />            <span style="color: #0000ff;">for</span> worker <span style="color: #0000ff;">in</span> dismiss_list:<br />                worker.join()<br />        <span style="color: #0000ff;">else</span>:<br />            self.dismissedWorkers.extend(dismiss_list)<br />    <br />    <span style="color: #0000ff;">def</span> joinAllDismissedWorkers(self):<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">join 所有停用的thread</span><span style="color: #800000;">'''</span><br />        <span style="color: #008000;">#</span><span style="color: #008000;">print len(self.dismissedWorkers)</span><span style="color: #008000;"><br /></span>        <span style="color: #0000ff;">for</span> worker <span style="color: #0000ff;">in</span> self.dismissedWorkers:<br />            worker.join()<br />        self.dismissedWorkers = []<br />    <br />    <span style="color: #0000ff;">def</span> putRequest(self,request ,block=True,timeout=None):<br />        <span style="color: #0000ff;">assert</span> isinstance(request,WorkRequest)<br />        <span style="color: #0000ff;">assert</span> <span style="color: #0000ff;">not</span> getattr(request,<span style="color: #800000;">'</span><span style="color: #800000;">exception</span><span style="color: #800000;">'</span>,None)<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">当queue满了，也就是容量达到了前面设定的q_size,它将一直阻塞，直到有空余位置，或是timeout</span><span style="color: #800000;">'''</span><br />        self._requestQueue.put(request, block, timeout)<br />        self.workRequests[request.requestID] = request<br />        <br />    <span style="color: #0000ff;">def</span> poll(self,block = False):<br />        <span style="color: #0000ff;">while</span> True:<br />            <span style="color: #0000ff;">if</span> <span style="color: #0000ff;">not</span> self.workRequests:<br />                <span style="color: #0000ff;">raise</span> NoResultsPending<br />            <span style="color: #0000ff;">elif</span> block <span style="color: #0000ff;">and</span> <span style="color: #0000ff;">not</span> self.workers:<br />                <span style="color: #0000ff;">raise</span> NoWorkersAvailable<br />            <span style="color: #0000ff;">try</span>:<br />                <span style="color: #800000;">'''</span><span style="color: #800000;">默认只要resultQueue有值，则取出，否则一直block</span><span style="color: #800000;">'''</span><br />                request , result = self._resultQueue.get(block=block)<br />                <span style="color: #0000ff;">if</span> request.exception <span style="color: #0000ff;">and</span> request.exc_callback:<br />                    request.exc_callback(request,result)<br />                <span style="color: #0000ff;">if</span> request.callback <span style="color: #0000ff;">and</span> <span style="color: #0000ff;">not</span> (request.exception <span style="color: #0000ff;">and</span> request.exc_callback):<br />                    request.callback(request,result)<br />                <span style="color: #0000ff;">del</span> self.workRequests[request.requestID]<br />            <span style="color: #0000ff;">except</span> Queue.Empty:<br />                <span style="color: #0000ff;">break</span><br />    <br />    <span style="color: #0000ff;">def</span> wait(self):<br />        <span style="color: #0000ff;">while</span> True:<br />            <span style="color: #0000ff;">try</span>:<br />                self.poll(True)<br />            <span style="color: #0000ff;">except</span> NoResultsPending:<br />                <span style="color: #0000ff;">break</span><br />    <br />    <span style="color: #0000ff;">def</span> workersize(self):<br />        <span style="color: #0000ff;">return</span> len(self.workers)<br />    <br />    <span style="color: #0000ff;">def</span> stop(self):<br />        <span style="color: #800000;">'''</span><span style="color: #800000;">join 所有的thread,确保所有的线程都执行完毕</span><span style="color: #800000;">'''</span><br />        self.dismissWorkers(self.workersize(),True)<br />        self.joinAllDismissedWorkers()</pre>
+</div>
+<p>测试代码：</p>
+<div class="cnblogs_code">
+<pre><span style="color: #008000;">#</span><span style="color: #008000;">Test a demo</span><span style="color: #008000;"><br /></span><br /><span style="color: #0000ff;">if</span> <span style="color: #800080;">__name__</span>==<span style="color: #800000;">'</span><span style="color: #800000;">__main__</span><span style="color: #800000;">'</span>:<br />    <span style="color: #0000ff;">import</span> random<br />    <span style="color: #0000ff;">import</span> time<br />    <span style="color: #0000ff;">import</span> datetime<br />    <span style="color: #0000ff;">def</span> do_work(data):<br />        time.sleep(random.randint(1,3))<br />        res = str(datetime.datetime.now()) + <span style="color: #800000;">"</span><span style="color: #800000;">"</span> +str(data)<br />        <span style="color: #0000ff;">return</span> res<br />    <br />    <span style="color: #0000ff;">def</span> print_result(request,result):<br />        <span style="color: #0000ff;">print</span> <span style="color: #800000;">"</span><span style="color: #800000;">---Result from request %s : %r</span><span style="color: #800000;">"</span> % (request.requestID,result)<br />    <br />    main = ThreadPool(3)<br />    <span style="color: #0000ff;">for</span> i <span style="color: #0000ff;">in</span> range(40):<br />        req = WorkRequest(do_work,args=[i],kwds={},callback=print_result)<br />        main.putRequest(req)<br />        <span style="color: #0000ff;">print</span> <span style="color: #800000;">"</span><span style="color: #800000;">work request #%s added.</span><span style="color: #800000;">"</span> % req.requestID<br />    <br />    <span style="color: #0000ff;">print</span> <span style="color: #800000;">'</span><span style="color: #800000;">-</span><span style="color: #800000;">'</span>*20, main.workersize(),<span style="color: #800000;">'</span><span style="color: #800000;">-</span><span style="color: #800000;">'</span>*20<br />    <br />    counter = 0<br />    <span style="color: #0000ff;">while</span> True:<br />        <span style="color: #0000ff;">try</span>:<br />            time.sleep(0.5)<br />            main.poll()<br />            <span style="color: #0000ff;">if</span>(counter==5):<br />                <span style="color: #0000ff;">print</span> <span style="color: #800000;">"</span><span style="color: #800000;">Add 3 more workers threads</span><span style="color: #800000;">"</span><br />                main.createWorkers(3)<br />                <span style="color: #0000ff;">print</span> <span style="color: #800000;">'</span><span style="color: #800000;">-</span><span style="color: #800000;">'</span>*20, main.workersize(),<span style="color: #800000;">'</span><span style="color: #800000;">-</span><span style="color: #800000;">'</span>*20<br />            <span style="color: #0000ff;">if</span>(counter==10):<br />                <span style="color: #0000ff;">print</span> <span style="color: #800000;">"</span><span style="color: #800000;">dismiss 2 workers threads</span><span style="color: #800000;">"</span><br />                main.dismissWorkers(2)<br />                <span style="color: #0000ff;">print</span> <span style="color: #800000;">'</span><span style="color: #800000;">-</span><span style="color: #800000;">'</span>*20, main.workersize(),<span style="color: #800000;">'</span><span style="color: #800000;">-</span><span style="color: #800000;">'</span>*20<br />            counter+=1<br />        <span style="color: #0000ff;">except</span> NoResultsPending:<br />            <span style="color: #0000ff;">print</span> <span style="color: #800000;">"</span><span style="color: #800000;">no pending results</span><span style="color: #800000;">"</span><br />            <span style="color: #0000ff;">break</span><br />    <br />    main.stop()<br />    <span style="color: #0000ff;">print</span> <span style="color: #800000;">"</span><span style="color: #800000;">Stop</span><span style="color: #800000;">"</span><br />    </pre>
+</div>
+<p><span style="font-size: 14pt;"><strong>参考文献：</strong></span><br />1、程序原型：Threadpool &mdash;&mdash;&nbsp;<a href="http://chrisarndt.de/projects/threadpool/">http://chrisarndt.de/projects/threadpool/</a><a href="http://chrisarndt.de/projects/threadpool/">&nbsp;</a></p>
+<p>2、王华,马亮,顾明.线程池技术研究与应用[J].计算机应用研究</p>
+<p>3、李昊,刘志镜.线程池技术的研究[J].现代电子技术</p>
+<p>4、赵海,李志蜀,韩学为,叶浩.线程池的优化设计[J].四川大学学报(自然科学版)</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt;">附:<strong>Python的多线程问题</strong></span></p>
+<div id="file-python-LC1" class="line">python 的GIL规定每个时刻只能有一个线程访问python虚拟机，所以你要用python的多线程来做计算是很不合算的，但是对于IO密集型的应用，例如网络交互来说，python的多线程还是非常给力的。</div>
+<div id="file-python-LC2" class="line">如果你是一个计算密集型的任务，非要用python来并行执行的话，有以下几个方法：</div>
+<div id="file-python-LC3" class="line">1 使用python的multiprocessing 模块，能够发挥多核的优势。</div>
+<div id="file-python-LC4" class="line">2 使用ironPython，但是这个只能在windows下用</div>
+<div id="file-python-LC5" class="line">3 使用pypy，这个可以实现真正的多线程。</div></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		</div>
+		<div class = "postDesc">posted @ <span id="post-date">2012-03-10 20:36</span> <a href='http://www.cnblogs.com/coser/'>糖拌咸鱼</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="http://i.cnblogs.com/EditPosts.aspx?postid=2389264" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2389264);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=73153,cb_entryId=2389264,cb_blogApp=currentBlogApp,cb_blogUserGuid='72008459-1190-df11-ba8f-001cf0cd104b',cb_entryCreatedDate='2012/3/10 20:36:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+<a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = true;var googletag = googletag || {};googletag.cmd = googletag.cmd || [];
+    fixPostBodyFormat();
+</script>
+<div id="ad_under_post_holder">
+<script type='text/javascript'>
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function () {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') +'//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+    })();
+</script>
+<script type='text/javascript'>
+    try {
+        googletag.cmd.push(function () {
+            googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1346480159711-0').addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();
+        });
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id='div-gpt-ad-1346480159711-0' style='width:300px; height:250px;'>
+    <script type='text/javascript'>
+    try{
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1346480159711-0'); });
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+</div>
+<div id="blog_news_kb"></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    $.ajax({ url: 'http://counter.cnblogs.com/blog/post/' + cb_entryId, type: 'get', dataType: 'script', cache: true });
+});
+</script>
+</div>
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="calendar"><div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script></div>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright &copy;2014 糖拌咸鱼
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+</body>
+</html>
