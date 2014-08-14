@@ -31,28 +31,6 @@
 
 <div id='OSC_Banner'><div class="wp998"><a href='http://www.oschina.net/' class='Logo' title='OSChina 开源中国'>开源中国</a>
 <h1><a href="/translate">技术翻译</a></h1>
-<dl>
-    <dt>已有文章 <em>1726</em> 篇</dt>
-	<dt>
-		当前位置：
-            <a href='/translate/list?type=2'>译文列表</a>&nbsp;&raquo;&nbsp;<a href='/translate/list/11?type=2'>编程语言技巧</a> , <a href="" class="deliver">投递原文</a>
-    		</dt>	
-</dl>
-<form action='http://www.oschina.net/search' class='search'>
-	<input type='hidden' name='scope' value='translate'/>
-	<input id='channel_q' type='text' name='q' value='' placeholder='在 1726 篇翻译的文章中搜索' class='TXT'/>
-    <button type='submit' class='BTN'>搜 索</button>
-</form>
-<script type="text/javascript">
-    $(document).ready(function(){
-        scrolltotop.offset(100,120);
-        scrolltotop.init();
-        $('.deliver').click(function(){
-            popup("/translate/deliver");
-            return false;
-        });
-    });
-</script>
 <div class='clear'></div></div></div>
 <div id="OSC_Screen">
 	<div id="OSC_Content" class='CenterDiv'>
@@ -1724,12 +1702,7 @@ function trim(str){
 <p>在多核机器上，我们期望多线程的代码使用额外的核，从而提高整体性能。不幸的是，主Python解释器（CPython）的内部并不是真正的多线程，是通过一个全局解释锁（GIL）来进行处理的。</p> 
 <p>GIL是必须的，因为Python解释器是非线程安全的。这意味着当从线程内尝试安全的访问Python对象的时候将有一个全局的强制锁。在任何时候，仅仅一个单一的线程能够获取Python对象或者C API。每100个字节的Python指令解释器将重新获取锁，这（潜在的）阻塞了I/0操作。因为锁，CPU密集型的代码使用线程库时，不会获得性能的提高，但是当它使用多处理库时，性能可以获得提高。</p></div></td>
     </tr>
-        <tr>
-        <td class="translater" valign="bottom">
-                        <a id='btn_show_other_32730' class="showOthers" href='javascript:show_other(32730,32745);'>其它翻译版本(1)</a>
-        </td>
-    </tr>
-    </table>
+</table>
 <div id='other_translate_32730' style='display:none;'>
 	<div style='text-align:center;margin:10px 0;'><img src='/img/loading.gif' alt='loading...' /><strong>正在加载...</strong></div>
 </div>
@@ -1744,12 +1717,7 @@ function trim(str){
 <p>许多程序，尤其是那些与网络通信或者数据输入/输出(I/O)相关的程序，都经常受到网络性能或者输入/输出(I/O)性能的限制。这样Python解释器就会等待哪些从诸如网络地址或者硬盘等“远端”数据源读写数据的函数调用返回。因此这样的数据访问比从本地内存或者CPU缓冲区读取数据要慢的多。</p> 
 <p>因此，如果许多数据源都是通过这种方式访问的，那么就有一种方式对这种数据访问进行性能提高，那就是对每个需要访问的数据项都产生一个线程 。</p></div></td>
     </tr>
-        <tr>
-        <td class="translater" valign="bottom">
-                        <a id='btn_show_other_32731' class="showOthers" href='javascript:show_other(32731,32753);'>其它翻译版本(1)</a>
-        </td>
-    </tr>
-    </table>
+</table>
 <div id='other_translate_32731' style='display:none;'>
 	<div style='text-align:center;margin:10px 0;'><img src='/img/loading.gif' alt='loading...' /><strong>正在加载...</strong></div>
 </div>
@@ -1771,12 +1739,7 @@ function trim(str){
 <p>下面的代码概述了线程库的接口，但是他不会比我们用单线程实现的速度更快。当我们对下面的代码用多处理库时，我们将看到它会显著的降低总的运行时间。</p> 
 <p>让我们检查一下代码是怎样工作的。首先我们导入threading库。然后我们创建一个带有三个参数的函数list_append。第一个参数count定义了创建列表的大小。第二个参数id是“工作”(用于我们输出debug信息到控制台)的ID。第三个参数out_list是追加随机数的列表。</p></div></td>
     </tr>
-        <tr>
-        <td class="translater" valign="bottom">
-                        <a id='btn_show_other_32733' class="showOthers" href='javascript:show_other(32733,32790);'>其它翻译版本(1)</a>
-        </td>
-    </tr>
-    </table>
+</table>
 <div id='other_translate_32733' style='display:none;'>
 	<div style='text-align:center;margin:10px 0;'><img src='/img/loading.gif' alt='loading...' /><strong>正在加载...</strong></div>
 </div>
@@ -1827,12 +1790,7 @@ user&nbsp;&nbsp;&nbsp;&nbsp;0m1.838s
 sys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0m0.161s</pre> 
 <p>注意user时间和sys时间相加大致等于real时间。这表明我们使用线程库没有获得性能的提升。我们期待real时间显著的降低。在并发编程的这些概念中分别被称为CPU时间和挂钟时间（wall-clock time） <br /> </p></div></td>
     </tr>
-        <tr>
-        <td class="translater" valign="bottom">
-                        <a id='btn_show_other_32734' class="showOthers" href='javascript:show_other(32734,32792);'>其它翻译版本(1)</a>
-        </td>
-    </tr>
-    </table>
+</table>
 <div id='other_translate_32734' style='display:none;'>
 	<div style='text-align:center;margin:10px 0;'><img src='/img/loading.gif' alt='loading...' /><strong>正在加载...</strong></div>
 </div>
