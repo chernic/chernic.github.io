@@ -72,11 +72,13 @@ EditHead()
 
 	for i in $(find . -name "List*.htm")
 	do
+		LastLine=$(grep -n "$HeadFlag" $i | cut  -d  ":"  -f  1 | tail -1)
 		TmpMd5=$(awk "!i++, /$HeadFlag/" $i | md5sum | cut -d ' ' -f1)
-		echo "OriMd5: $OriMd5"
-		echo "TmpMd5: $TmpMd5"
+		echo "  OriMd5: $OriMd5"
+		echo "  TmpMd5: $TmpMd5"
 		if [ ! $OriMd5 == $TmpMd5 ];then
-			echo "Happy That Our FileHead Update ^-^"
+			echo "Check 1:$LastLine Happy That Our FileHead Update ^-^"
+			sed -i "1,$LastLine d" $i
 			sed -i "
 			1{
 				x
@@ -91,7 +93,7 @@ EditHead()
 			}
 			" $i
 		else
-			echo "$HeadFile is the Same As $i"
+			echo "Check 1:$LastLine $HeadFile is the Same As $i"
 		fi
 	done
 }
