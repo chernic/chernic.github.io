@@ -54,6 +54,8 @@ LOG_INFO "Load Configures Done.\n"
 # v0.0.1(2014-8-22) : File Created
 # v0.1.0(2014-8-22) : EditHead() Done.
 
+BaseFile="Base.htm"
+
 HeadFlag="<!-- The End of Head -->"
 HeadFile="tmp/HeadFile.htm"
 HeadMD5="tmp/HeadFile.md5"
@@ -64,14 +66,16 @@ TailMD5="tmp/TailFile.md5"
 
 EditHead()
 {
-	awk "!i++, /$HeadFlag/" ListX > $HeadFile
+	awk "!i++, /$HeadFlag/" $BaseFile > $HeadFile
 	md5sum $HeadFile > $HeadMD5
 	OriMd5=$(cut -d ' ' -f1 $HeadMD5)
 
 	for i in $(find . -name "List*.htm")
 	do
 		TmpMd5=$(awk "!i++, /$HeadFlag/" $i | md5sum | cut -d ' ' -f1)
-		if [ ! $OriMd5==$TmpMd5 ];then
+		echo "OriMd5: $OriMd5"
+		echo "TmpMd5: $TmpMd5"
+		if [ ! $OriMd5 == $TmpMd5 ];then
 			echo "Happy That Our FileHead Update ^-^"
 			sed -i "
 			1{
