@@ -66,12 +66,14 @@ TailMD5="tmp/TailFile.md5"
 
 EditHead()
 {
+	sed -i "/^[[:space:]]*$/d" $BaseFile
 	awk "!i++, /$HeadFlag/" $BaseFile > $HeadFile
 	md5sum $HeadFile > $HeadMD5
 	OriMd5=$(cut -d ' ' -f1 $HeadMD5)
 
 	for i in $(find . -name "List*.htm")
 	do
+		sed -i "/^[[:space:]]*$/d" $i
 		LastLine=$(grep -n "$HeadFlag" $i | cut  -d  ":"  -f  1 | tail -1)
 		TmpMd5=$(awk "!i++, /$HeadFlag/" $i | md5sum | cut -d ' ' -f1)
 		echo "  OriMd5: $OriMd5"
