@@ -76,7 +76,6 @@ EditHead()
 		TmpMd5=$(awk "!i++, /$HeadFlag/" $i | md5sum | cut -d ' ' -f1)
 		echo "  OriMd5: $OriMd5"
 		echo "  TmpMd5: $TmpMd5"
-		sed -i "/^[[:space:]]*$/d" $i
 		if [ ! $OriMd5 == $TmpMd5 ];then
 			echo "Check 1:$LastLine Happy That Our FileHead Update ^-^"
 			sed -i "1,$LastLine d" $i
@@ -93,6 +92,8 @@ EditHead()
 		else
 			echo "Check 1:$LastLine $HeadFile is the Same As $i"
 		fi
+		# 之后执行,以免意外生成带有空行
+		sed -i "/^[[:space:]]*$/d" $i
 	done
 }
 
