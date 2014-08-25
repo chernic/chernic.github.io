@@ -53,6 +53,7 @@ LOG_INFO "Load Configures Done.\n"
 # Date : 2014-7-22
 # v0.0.1(2014-8-22) : File Created
 # v0.1.0(2014-8-22) : EditHead() Done.
+# v0.1.1(2014-8-25) : mkdir When tmp isnot Exited.
 
 BaseFile="$LOCAL_PATH/Base.htm"
 
@@ -68,7 +69,7 @@ EditHead()
 {
 	FilesSet=$1
 	
-	[ -d ./tmp ] && rm -f ./tmp/*
+	[ -d ./tmp ] && rm -f ./tmp/* || mkdir tmp
 	sed -i "/^[[:space:]]*$/d" $BaseFile
 	awk "!i++, /$HeadFlag/" $BaseFile > $HeadFile
 	md5sum $HeadFile > $HeadMD5

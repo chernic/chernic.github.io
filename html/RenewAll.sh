@@ -55,3 +55,4 @@ LOG_INFO "Load Configures Done.\n"
 
 ./pythonthread/Renew.sh
 ./XML/Renew.sh
+./CallCenter/Renew.sh
