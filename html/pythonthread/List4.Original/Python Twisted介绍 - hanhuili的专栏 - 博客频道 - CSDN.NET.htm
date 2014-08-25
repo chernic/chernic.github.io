@@ -1,0 +1,1070 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+     
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    
+<head>
+
+    <script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/46aae4d1e2371e4aa769798941cef698/allmobilize.min.js"></script>
+ <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+
+    <title>Python Twisted介绍 - hanhuili的专栏
+        - 博客频道 - CSDN.NET</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="原文链接：http://www.aosabook.org/en/twisted.html作者：Jessica McKellarTwisted是用Python实现的基于事件驱动的网络引擎框架。Twisted诞生于2000年初，在当时的网络游戏开发者看来，无论他们使用哪种语言，手中都鲜有可兼顾扩展性及跨平台的网络库。Twisted的作者试图在当时现有的环境下开发游戏，这一步走的非常艰难，他们迫" />
+    <script src="http://static.blog.csdn.net/scripts/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://static.blog.csdn.net/scripts/ad.js?v=1.1"></script>
+        <!--new top-->
+               <link rel="stylesheet" href="http://static.csdn.net/public/common/toolbar/css/index.css">        <!--new top-->
+
+    <link rel="Stylesheet" type="text/css" href="http://static.blog.csdn.net/skin/ink/css/style.css?v=1.1" />
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="/hanhuili/rss/list" />
+    <link rel="shortcut icon" href="http://csdnimg.cn/public/favicon.ico" />
+    <link type="text/css" rel="stylesheet" href="http://static.blog.csdn.net/scripts/SyntaxHighlighter/styles/blue_black.css" />
+ 
+
+
+</head>
+<body>
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="http://static.csdn.net/public/common/toolbar/js/html.js" type="text/javascript"></script>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/hanhuili">hanhuili的专栏</a></h2>
+            <h3></h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>
+                <li id="btnContents"><a href="http://blog.csdn.net/hanhuili?viewmode=contents"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_mulu'])">
+                    <img src="http://static.blog.csdn.net/images/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/hanhuili?viewmode=list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_zhaiyao'])">
+                    <img src="http://static.blog.csdn.net/images/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/hanhuili/rss/list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_RSS'])">
+                    <img src="http://static.blog.csdn.net/images/ico_rss.gif">订阅</span></a></li>                
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "hanhuili";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/hanhuili";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+                        <div class="ad_class">
+<div class="notice tracking-ad" data-mod='popu_3' > 
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/38514369"target="_blank">
+<font color=blue>7月推荐文章
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://bbs.csdn.net/topics/390863850">
+<font color=red>【限时活动】建专辑得大奖</font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://bbs.csdn.net/ask">
+<font color=blue>社区问答第九期：老罗的Android之旅
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://blog.csdn.net/blogdevteam/article/details/38657235"><font color=red>当青春遇上互联网，能否点燃你的创业梦
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://blog.csdn.net/blogdevteam/article/details/38418263">
+<font color=blue>推荐有礼--找出您心中的技术大牛
+</font></a>
+
+
+</div>                        </div>
+                        
+
+  
+<link href="http://static.blog.csdn.net/css/comment1.css" type="text/css" rel="stylesheet" />
+<link href="http://static.blog.csdn.net/css/style1.css" type="text/css" rel="stylesheet" />
+<script language='JavaScript' type='text/javascript' src='http://download.csdn.net/js/jquery.cookie.js'></script>
+<script type="text/javascript" src="http://csdnimg.cn/rabbit/search-service/main.js"></script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Repost"></span>
+
+
+    <h1>
+        <span class="link_title"><a href="/hanhuili/article/details/9389433">
+        Python Twisted介绍
+        </a></span>
+    </h1>
+</div>
+
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="/hanhuili/article/category/1727431" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">python</a> 
+        </span>
+    <span class="link_postdate">2013-07-20 11:29</span>
+    <span class="link_view" title="阅读次数">8853人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="#comments" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_pinglun'])">评论</a>(1)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shoucang']);collectArticle('Python Twisted介绍','9389433');return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="#report"  onclick="javascript:_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_jubao']);report(9389433,2);return false;" title="举报">举报</a></span>
+    
+</div>
+<div class="tag2box"><a href='http://www.csdn.net/tag/Python' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">Python</a><a href='http://www.csdn.net/tag/twisted' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">twisted</a><a href='http://www.csdn.net/tag/%e4%ba%8b%e4%bb%b6%e9%a9%b1%e5%8a%a8' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">事件驱动</a><a href='http://www.csdn.net/tag/%e7%bd%91%e7%bb%9c%e5%bc%95%e6%93%8e' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">网络引擎</a></div>
+
+  
+    
+<div id="article_content" class="article_content">
+
+<div class="post-text">
+<p>原文链接：<a target="_blank" href="http://www.aosabook.org/en/twisted.html">http://www.aosabook.org/en/twisted.html</a></p>
+<p>作者：Jessica McKellar</p>
+<p>Twisted是用Python实现的基于事件驱动的网络引擎框架。Twisted诞生于2000年初，在当时的网络游戏开发者看来，无论他们使用哪种语言，手中都鲜有可兼顾扩展性及跨平台的网络库。Twisted的作者试图在当时现有的环境下开发游戏，这一步走的非常艰难，他们迫切地需要一个可扩展性高、基于事件驱动、跨平台的网络开发框架，为此他们决定自己实现一个，并从那些之前的游戏和网络应用程序的开发者中学习，汲取他们的经验教训。</p>
+<p>Twisted支持许多常见的传输及应用层协议，包括TCP、UDP、SSL/TLS、HTTP、IMAP、SSH、IRC以及FTP。就像Python一样，Twisted也具有“内置电池”（batteries-included）的特点。Twisted对于其支持的所有协议都带有客户端和服务器实现，同时附带有基于命令行的工具，使得配置和部署产品级的Twisted应用变得非常方便。</p>
+<h2>21.1 为什么需要Twisted</h2>
+<p>2000年时，Twisted的作者Glyph正在开发一个名为Twisted Reality的基于文本方式的多人在线游戏。这个游戏采用Java开发，里面尽是一堆线程——每个连接就有3个线程处理。处理输入的线程会在读操作上阻塞，处理输出的线程将在一些写操作上阻塞，还有一个“逻辑”线程将在等待定时器超时或者事件入队列时休眠。随着玩家们在虚拟世界中移动并交互时，线程出现死锁，缓存被污染，程序中的加锁逻辑几乎从来就没对过——采用多线程使得整个软件变得复杂、漏洞百出而且极难扩展。</p>
+<p>为了寻求其他的解决方案，作者发现了Python，特别是Python中用于对流式对象比如socket和pipe进行多路I/O复用的select模块（UNIX规范第3版（SUSv3）描述了select）。那时，Java并没有提供操作系统的select接口或者任何其他的异步I/O API（针对非阻塞式I/O的包java.nio已经在J2SE 1.4中加入了，2002年发布）。通过用Python中的select模块快速搭建起游戏的原型，这迅速降低了程序的复杂度，并且比多线程版本要更加可靠。</p>
+<p>Glyph迅速转向了Python、select以及基于事件驱动的编程。他使用Python的select模块为游戏编写了客户端和服务器。但他想要的还不止于此。从根本上说，他希望能将网络行为转变为对游戏中的对象的方法调用。如果你能在游戏中收取邮件会怎样，就像Nethack mailer这种守护进程一样？如果游戏中的每位玩家都拥有一个主页呢？Glyph发现他需要优秀的IMAP以及HTTP客户端和服务器的Python实现，而这些都要采用select。</p>
+<p>他首先转向了Medusa，这是一个在90年代中期开发的平台，在这里可以采用Python中的asyncore模块来编写网络服务。asyncore是一个异步化处理socket的模块，在操作系统的select API之上构建了一个调度器和回调接口。</p>
+<p>这对于Glyph来说是个激动人心的发现，但Medusa有两个缺点：</p>
+<ol>
+<li>这个项目到2001年就不再维护了，那正是glyph开发Twisted Reality的时候。</li><li>asyncore只是对socket的一个薄封装层，应用程序的编写者仍然需要直接操作socket。这意味着程序可移植性的担子仍然落在程序员自己身上。此外，那时asyncore对Windows的支持还有问题，Glyph希望能在Windows上运行一个带有图形用户界面的客户端。</li></ol>
+<p>Glyph需要自己实现一个网络引擎平台，而且他意识到Twisted Reality已经打开了问题的大门，这和他的游戏一样有趣。</p>
+<p>随着时间的推移，Twisted Reality这个游戏就演化成了Twisted网络引擎平台。它可以做到当时Python中已有的网络平台所无法做到的事情：</p>
+<ul>
+<li>使用基于事件驱动的编程模型，而不是多线程模型。</li><li>跨平台：为主流操作系统平台暴露出的事件通知系统提供统一的接口。</li><li>“内置电池”的能力：提供流行的应用层协议实现，因此Twisted马上就可为开发人员所用。</li><li>符合RFC规范，已经通过健壮的测试套件证明了其一致性。</li><li>能很容易的配合多个网络协议一起使用。</li><li>可扩展。</li></ul>
+<h2>21.2 Twisted架构概览</h2>
+<p>Twisted是一个事件驱动型的网络引擎。由于事件驱动编程模型在Twisted的设计哲学中占有重要的地位，因此这里有必要花点时间来回顾一下究竟事件驱动意味着什么。</p>
+<p>事件驱动编程是一种编程范式，这里程序的执行流由外部事件来决定。它的特点是包含一个事件循环，当外部事件发生时使用回调机制来触发相应的处理。另外两种常见的编程范式是（单线程）同步以及多线程编程。</p>
+<p>让我们用例子来比较和对比一下单线程、多线程以及事件驱动编程模型。图21.1展示了随着时间的推移，这三种模式下程序所做的工作。这个程序有3个任务需要完成，每个任务都在等待I/O操作时阻塞自身。阻塞在I/O操作上所花费的时间已经用灰色框标示出来了。</p>
+<p><img src="http://www.aosabook.org/images/twisted/threading_models.png" alt="">图21.1 线程模型</p>
+<p>在单线程同步模型中，任务按照顺序执行。如果某个任务因为I/O而阻塞，其他所有的任务都必须等待，直到它完成之后它们才能依次执行。这种明确的执行顺序和串行化处理的行为是很容易推断得出的。如果任务之间并没有互相依赖的关系，但仍然需要互相等待的话这就使得程序不必要的降低了运行速度。</p>
+<p>在多线程版本中，这3个任务分别在独立的线程中执行。这些线程由操作系统来管理，在多处理器系统上可以并行处理，或者在单处理器系统上交错执行。这使得当某个线程阻塞在某个资源的同时其他线程得以继续执行。与完成类&#20284;功能的同步程序相比，这种方式更有效率，但程序员必须写代码来保护共享资源，防止其被多个线程同时访问。多线程程序更加难以推断，因为这类程序不得不通过线程同步机制如锁、可重入函数、线程局部存储或者其他机制来处理线程安全问题，如果实现不当就会导致出现微妙且令人痛不欲生的bug。</p>
+<p>在事件驱动版本的程序中，3个任务交错执行，但仍然在一个单独的线程控制中。当处理I/O或者其他昂贵的操作时，注册一个回调到事件循环中，然后当I/O操作完成时继续执行。回调描述了该如何处理某个事件。事件循环轮询所有的事件，当事件到来时将它们分配给等待处理事件的回调函数。这种方式让程序尽可能的得以执行而不需要用到额外的线程。事件驱动型程序比多线程程序更容易推断出行为，因为程序员不需要关心线程安全问题。</p>
+<p>当我们面对如下的环境时，事件驱动模型通常是一个好的选择：</p>
+<ol>
+<li>程序中有许多任务，而且…</li><li>任务之间高度独立（因此它们不需要互相通信，或者等待彼此）而且…</li><li>在等待事件到来时，某些任务会阻塞。</li></ol>
+<p>当应用程序需要在任务间共享可变的数据时，这也是一个不错的选择，因为这里不需要采用同步处理。</p>
+<p>网络应用程序通常都有上述这些特点，这使得它们能够很好的契合事件驱动编程模型。</p>
+<h3>重用已有的应用</h3>
+<p>在Twisted创建之前就已经有了许多针对多种流行的网络协议的客户端和服务器实现了。为什么Glyph不直接用Apache、IRCd、BIND、OpenSSH或者任何其他已有的应用，而要为Twisted从头开始重新实现各个协议的客户端和服务器呢？</p>
+<p>问题在于所有这些已有的实现都存在有从头写起的网络层代码，通常都是C代码。而应用层代码直接同网络层耦合在一起，这使得它们非常难以以库的形式来复用。当要一起使用这些组件时，如果希望在多个协议中暴露相同的数据，则它们必须以黑盒的形式来看待，这使得开发者根本没机会重用代码。此外，服务器和客户端的实现通常是分离的，彼此之间不共享代码。要扩展这些应用，维护跨平台的客户端-服务器兼容性的难度本不至于这么大。</p>
+<p>Twisted中的客户端和服务器是用Python开发的，采用了一致性的接口。这使得开发新的客户端和服务器变得很容易实现，可以在客户端和服务器之间共享代码，在协议之间共享应用逻辑，以及对某个实现的代码做测试。</p>
+<h3>Reactor模式</h3>
+<p>Twisted实现了设计模式中的反应堆（reactor）模式，这种模式在单线程环境中调度多个事件源产生的事件到它们各自的事件处理例程中去。</p>
+<p>Twisted的核心就是reactor事件循环。Reactor可以感知网络、文件系统以及定时器事件。它等待然后处理这些事件，从特定于平台的行为中抽象出来，并提供统一的接口，使得在网络协议栈的任何位置对事件做出响应都变得简单。</p>
+<p>基本上reactor完成的任务就是：</p>
+<pre class="prettyprint"><code><span class="kwd">while</span><span class="pln"> </span><span class="kwd">True</span><span class="pun">:</span><span class="pln">
+    timeout </span><span class="pun">=</span><span class="pln"> time_until_next_timed_event</span><span class="pun">()</span><span class="pln">
+    events </span><span class="pun">=</span><span class="pln"> wait_for_events</span><span class="pun">(</span><span class="pln">timeout</span><span class="pun">)</span><span class="pln">
+    events </span><span class="pun">&#43;=</span><span class="pln"> timed_events_until</span><span class="pun">(</span><span class="pln">now</span><span class="pun">())</span><span class="pln">
+    </span><span class="kwd">for</span><span class="pln"> </span><span class="kwd">event</span><span class="pln"> </span><span class="kwd">in</span><span class="pln"> events</span><span class="pun">:</span><span class="pln">
+        </span><span class="kwd">event</span><span class="pun">.</span><span class="pln">process</span><span class="pun">()</span></code></pre>
+<p>Twisted目前在所有平台上的默认reactor都是基于poll API的（UNIX规范第3版（SUSv3）中描述）。此外，Twisted还支持一些特定于平台的高容量多路复用API。这些reactor包括基于FreeBSD中kqueue机制的KQueue reactor，支持epoll接口的系统（目前是Linux 2.6）中的epoll reactor，以及基于Windows下的输入输出完成端口的IOCP reactor。</p>
+<p>在实现轮询的相关细节中，Twisted需要考虑的包括：</p>
+<ul>
+<li>网络和文件系统的限制</li><li>缓冲行为</li><li>如何检测连接丢失</li><li>出现错误时的返回&#20540;</li></ul>
+<p>Twisted的reactor实现同时也考虑了正确使用底层的非阻塞式API，并正确处理各种边界情况。由于Python中没有暴露出IOCP API，因此Twisted需要维护自己的实现。</p>
+<h3>管理回调链</h3>
+<p>回调是事件驱动编程模型中的基础，也是reactor通知应用程序事件已经处理完成的方式。随着程序规模不断扩大，基于事件驱动的程序需要同时处理事件处理成功和出错的情况，这使得程序变得越来越复杂。若没有注册一个合适的回调，程序就会阻塞，因为这个事件处理的过程绝不会发生。出现错误时需要通过应用程序的不同层次从网络栈向上传递回调链。</p>
+<p>下面是两段Python伪码，分别是同步和异步模式下获取URL的玩具代码。让我们相互比较一下这两个版本，看看基于事件驱动的程序有什么缺陷：</p>
+<p>以同步的方式获取URL：</p>
+<pre class="prettyprint"><code><span class="kwd">import</span><span class="pln"> getPage
+
+</span><span class="kwd">def</span><span class="pln"> processPage</span><span class="pun">(</span><span class="pln">page</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> page
+
+</span><span class="kwd">def</span><span class="pln"> logError</span><span class="pun">(</span><span class="pln">error</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> error
+
+</span><span class="kwd">def</span><span class="pln"> finishProcessing</span><span class="pun">(</span><span class="pln">value</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> </span><span class="str">&quot;Shutting down...&quot;</span><span class="pln">
+    </span><span class="kwd">exit</span><span class="pun">(</span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+
+url </span><span class="pun">=</span><span class="pln"> </span><span class="str">&quot;http://google.com&quot;</span><span class="pln">
+</span><span class="kwd">try</span><span class="pun">:</span><span class="pln">
+    page </span><span class="pun">=</span><span class="pln"> getPage</span><span class="pun">(</span><span class="pln">url</span><span class="pun">)</span><span class="pln">
+    processPage</span><span class="pun">(</span><span class="pln">page</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">except</span><span class="pln"> </span><span class="typ">Error</span><span class="pun">,</span><span class="pln"> e</span><span class="pun">:</span><span class="pln">
+    logError</span><span class="pun">(</span><span class="pln">error</span><span class="pun">)</span><span class="pln">
+</span><span class="kwd">finally</span><span class="pun">:</span><span class="pln">
+    finishProcessing</span><span class="pun">()</span></code></pre>
+<p>以异步的方式获取URL：</p>
+<pre class="prettyprint"><code><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">internet </span><span class="kwd">import</span><span class="pln"> reactor
+</span><span class="kwd">import</span><span class="pln"> getPage
+
+</span><span class="kwd">def</span><span class="pln"> processPage</span><span class="pun">(</span><span class="pln">page</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> page
+    finishProcessing</span><span class="pun">()</span><span class="pln">
+
+</span><span class="kwd">def</span><span class="pln"> logError</span><span class="pun">(</span><span class="pln">error</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> error
+    finishProcessing</span><span class="pun">()</span><span class="pln">
+
+</span><span class="kwd">def</span><span class="pln"> finishProcessing</span><span class="pun">(</span><span class="pln">value</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> </span><span class="str">&quot;Shutting down...&quot;</span><span class="pln">
+    reactor</span><span class="pun">.</span><span class="pln">stop</span><span class="pun">()</span><span class="pln">
+
+url </span><span class="pun">=</span><span class="pln"> </span><span class="str">&quot;http://google.com&quot;</span><span class="pln">
+</span><span class="com"># getPage takes: url, </span><span class="pln">
+</span><span class="com"># success callback, error callback</span><span class="pln">
+getPage</span><span class="pun">(</span><span class="pln">url</span><span class="pun">,</span><span class="pln"> processPage</span><span class="pun">,</span><span class="pln"> logError</span><span class="pun">)</span><span class="pln">
+
+reactor</span><span class="pun">.</span><span class="pln">run</span><span class="pun">()</span></code></pre>
+<p>在异步版的URL获取器中，reactor.run()启动reactor事件循环。在同步和异步版程序中，我们假定getPage函数处理获取页面的工作。如果获取成功就调用processPage，如果尝试获取页面时出现了Exception（异常），logError就得到调用。无论哪种情况，最后都要调用finishProcessing。</p>
+<p>异步版中的logError回调正对应于同步版中的try/except块。对processPage的回调对应于else块，无条件回调的finishProcessing就对应于finally块。</p>
+<p>在同步版中，代码结构直接显示出有一个try/except块，logError和processPage这两者间只会取其一调用一次，而finishProcessing总是会被调用一次。在异步版中需要由程序员自己负责正确调用成功和失败情况下的回调链。如果由于编程错误，在processPage或者logError的回调链之后没有调用finishProcessing，reactor事件循环将永远不会停止，程序就会卡住。</p>
+<p>这个玩具式的例子告诉我们在开发Twisted的头几年里这种复杂性令程序员感到非常沮丧。而Twisted应对这种复杂性的方式是新增一个称为Deferred（延迟）的对象。</p>
+<h4><strong>Deferreds</strong></h4>
+<p>Deferred对象以抽象化的方式表达了一种思想，即结果还尚不存在。它同样能够帮助管理产生这个结果所需要的回调链。当从函数中返回时，Deferred对象承诺在某个时刻函数将产生一个结果。返回的Deferred对象中包含所有注册到事件上的回调引用，因此在函数间只需要传递这一个对象即可，跟踪这个对象比单独管理所有的回调要简单的多。</p>
+<p>Deferred对象包含一对回调链，一个是针对操作成功的回调，一个是针对操作失败的回调。初始状态下Deferred对象的两条链都为空。在事件处理的过程中，每个阶段都为其添加处理成功的回调和处理失败的回调。当一个异步结果到来时，Deferred对象就被“激活”，那么处理成功的回调和处理失败的回调就可以以合适的方式按照它们添加进来的顺序依次得到调用。</p>
+<p>异步版URL获取器采用Deferred对象后的代码如下：</p>
+<pre class="prettyprint"><code><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">internet </span><span class="kwd">import</span><span class="pln"> reactor
+</span><span class="kwd">import</span><span class="pln"> getPage
+
+</span><span class="kwd">def</span><span class="pln"> processPage</span><span class="pun">(</span><span class="pln">page</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> page
+
+</span><span class="kwd">def</span><span class="pln"> logError</span><span class="pun">(</span><span class="pln">error</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> error
+
+</span><span class="kwd">def</span><span class="pln"> finishProcessing</span><span class="pun">(</span><span class="pln">value</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> </span><span class="str">&quot;Shutting down...&quot;</span><span class="pln">
+    reactor</span><span class="pun">.</span><span class="pln">stop</span><span class="pun">()</span><span class="pln">
+
+url </span><span class="pun">=</span><span class="pln"> </span><span class="str">&quot;http://google.com&quot;</span><span class="pln">
+deferred </span><span class="pun">=</span><span class="pln"> getPage</span><span class="pun">(</span><span class="pln">url</span><span class="pun">)</span><span class="pln"> </span><span class="com"># getPage returns a Deferred</span><span class="pln">
+deferred</span><span class="pun">.</span><span class="pln">addCallbacks</span><span class="pun">(</span><span class="pln">success</span><span class="pun">,</span><span class="pln"> failure</span><span class="pun">)</span><span class="pln">
+deferred</span><span class="pun">.</span><span class="pln">addBoth</span><span class="pun">(</span><span class="pln">stop</span><span class="pun">)</span><span class="pln">
+
+reactor</span><span class="pun">.</span><span class="pln">run</span><span class="pun">()</span></code></pre>
+<p>在这个版本中调用的事件处理函数与之前相同，但它们都注册到了一个单独的Deferred对象上，而不是分散在代码各处再以参数形式传递给getPage。</p>
+<p>Deferred对象创建时包含两个添加回调的阶段。第一阶段，addCallbacks将 processPage和logError添加到它们各自归属的回调链中。然后addBoth再将finishProcessing同时添加到这两个回调链上。用图解的方式来看，回调链应该如图21.2所示：</p>
+<p><img src="http://www.aosabook.org/images/twisted/deferred.png" alt="">图21.2 回调链</p>
+<p>Deferred对象只能被激活一次，如果试图重复激活将引发一个异常。这使得Deferred对象的语义相当接近于同步版中的try/except块。从而让异步事件的处理能更容易推断，避免由于针对单个事件的回调调用多了一个或少了一个而产生微妙的bug。</p>
+<p>理解Deferred对象对于理解Twisted程序的执行流是非常重要的。然而当使用Twisted为我们提供的针对网络协议的高层抽象时，通常情况下我们完全不需要直接使用Deferred对象。</p>
+<p>Deferred对象所包含的抽象概念是非常强大的，这种思想已经被许多其他的事件驱动平台所借用，包括jQuery、Dojo和Mochikit。</p>
+<h4><strong>Transports</strong></h4>
+<p>Transports代表网络中两个通信结点之间的连接。Transports负责描述连接的细节，比如连接是面向流式的还是面向数据报的，流控以及可靠性。TCP、UDP和Unix套接字可作为transports的例子。它们被设计为“满足最小功能单元，同时具有最大程度的可复用性”，而且从协议实现中分离出来，这让许多协议可以采用相同类型的传输。Transports实现了ITransports接口，它包含如下的方法：</p>
+<pre class="prettyprint"><code><span class="pln">write                   </span><span class="pun">以非阻塞的方式按顺序依次将数据写到物理连接上</span><span class="pln">
+writeSequence           </span><span class="pun">将一个字符串列表写到物理连接上</span><span class="pln">
+loseConnection          </span><span class="pun">将所有挂起的数据写入，然后关闭连接</span><span class="pln">
+getPeer                 </span><span class="pun">取得连接中对端的地址信息</span><span class="pln">
+getHost                 </span><span class="pun">取得连接中本端的地址信息</span></code></pre>
+<p>将transports从协议中分离出来也使得对这两个层次的测试变得更加简单。可以通过简单地写入一个字符串来模拟传输，用这种方式来检查。</p>
+<h4><strong>Protocols</strong></h4>
+<p>Protocols描述了如何以异步的方式处理网络中的事件。HTTP、DNS以及IMAP是应用层协议中的例子。Protocols实现了IProtocol接口，它包含如下的方法：</p>
+<pre class="prettyprint"><code><span class="pln">makeConnection               </span><span class="pun">在</span><span class="pln">transport</span><span class="pun">对象和服务器之间建立一条连接</span><span class="pln">
+connectionMade               </span><span class="pun">连接建立起来后调用</span><span class="pln">
+dataReceived                 </span><span class="pun">接收数据时调用</span><span class="pln">
+connectionLost               </span><span class="pun">关闭连接时调用</span></code></pre>
+<p>我们最好以一个例子来说明reactor、protocols以及transports这三者之间的关系。以下是完整的echo服务器和客户端的实现，首先来看看服务器部分：</p>
+<pre class="prettyprint"><code><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">internet </span><span class="kwd">import</span><span class="pln"> protocol</span><span class="pun">,</span><span class="pln"> reactor
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Echo</span><span class="pun">(</span><span class="pln">protocol</span><span class="pun">.</span><span class="typ">Protocol</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">def</span><span class="pln"> dataReceived</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> data</span><span class="pun">):</span><span class="pln">
+        </span><span class="com"># As soon as any data is received, write it back</span><span class="pln">
+        </span><span class="kwd">self</span><span class="pun">.</span><span class="pln">transport</span><span class="pun">.</span><span class="pln">write</span><span class="pun">(</span><span class="pln">data</span><span class="pun">)</span><span class="pln">
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">EchoFactory</span><span class="pun">(</span><span class="pln">protocol</span><span class="pun">.</span><span class="typ">Factory</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">def</span><span class="pln"> buildProtocol</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> addr</span><span class="pun">):</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">Echo</span><span class="pun">()</span><span class="pln">
+
+reactor</span><span class="pun">.</span><span class="pln">listenTCP</span><span class="pun">(</span><span class="lit">8000</span><span class="pun">,</span><span class="pln"> </span><span class="typ">EchoFactory</span><span class="pun">())</span><span class="pln">
+reactor</span><span class="pun">.</span><span class="pln">run</span><span class="pun">()</span></code></pre>
+<p>接着是客户端部分：</p>
+<pre class="prettyprint"><code><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">internet </span><span class="kwd">import</span><span class="pln"> reactor</span><span class="pun">,</span><span class="pln"> protocol
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">EchoClient</span><span class="pun">(</span><span class="pln">protocol</span><span class="pun">.</span><span class="typ">Protocol</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">def</span><span class="pln"> connectionMade</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">):</span><span class="pln">
+        </span><span class="kwd">self</span><span class="pun">.</span><span class="pln">transport</span><span class="pun">.</span><span class="pln">write</span><span class="pun">(</span><span class="str">&quot;hello, world!&quot;</span><span class="pun">)</span><span class="pln">
+
+</span><span class="kwd">def</span><span class="pln"> dataReceived</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> data</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> </span><span class="str">&quot;Server said:&quot;</span><span class="pun">,</span><span class="pln"> data
+        </span><span class="kwd">self</span><span class="pun">.</span><span class="pln">transport</span><span class="pun">.</span><span class="pln">loseConnection</span><span class="pun">()</span><span class="pln">
+
+</span><span class="kwd">def</span><span class="pln"> connectionLost</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> reason</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> </span><span class="str">&quot;connection lost&quot;</span><span class="pln">
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">EchoFactory</span><span class="pun">(</span><span class="pln">protocol</span><span class="pun">.</span><span class="typ">ClientFactory</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">def</span><span class="pln"> buildProtocol</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> addr</span><span class="pun">):</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">EchoClient</span><span class="pun">()</span><span class="pln">
+
+</span><span class="kwd">def</span><span class="pln"> clientConnectionFailed</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> connector</span><span class="pun">,</span><span class="pln"> reason</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> </span><span class="str">&quot;Connection failed - goodbye!&quot;</span><span class="pln">
+        reactor</span><span class="pun">.</span><span class="pln">stop</span><span class="pun">()</span><span class="pln">
+
+</span><span class="kwd">def</span><span class="pln"> clientConnectionLost</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> connector</span><span class="pun">,</span><span class="pln"> reason</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">print</span><span class="pln"> </span><span class="str">&quot;Connection lost - goodbye!&quot;</span><span class="pln">
+        reactor</span><span class="pun">.</span><span class="pln">stop</span><span class="pun">()</span><span class="pln">
+
+reactor</span><span class="pun">.</span><span class="pln">connectTCP</span><span class="pun">(</span><span class="str">&quot;localhost&quot;</span><span class="pun">,</span><span class="pln"> </span><span class="lit">8000</span><span class="pun">,</span><span class="pln"> </span><span class="typ">EchoFactory</span><span class="pun">())</span><span class="pln">
+reactor</span><span class="pun">.</span><span class="pln">run</span><span class="pun">()</span></code></pre>
+<p>运行服务器端脚本将启动一个TCP服务器，监听端口8000上的连接。服务器采用的是Echo协议，数据经TCP transport对象写出。运行客户端脚本将对服务器发起一个TCP连接，回显服务器端的回应然后终止连接并停止reactor事件循环。这里的Factory用来对连接的双方生成protocol对象实例。两端的通信是异步的，connectTCP负责注册回调函数到reactor事件循环中，当socket上有数据可读时通知回调处理。</p>
+<h4><strong>Applications</strong></h4>
+<p>Twisted是用来创建具有可扩展性、跨平台的网络服务器和客户端的引擎。在生产环境中，以标准化的方式简化部署这些应用的过程对于Twisted这种被广泛采用的平台来说是非常重要的一环。为此，Twisted开发了一套应用程序基础组件，采用可重用、可配置的方式来部署Twisted应用。这种方式使程序员避免堆砌千篇一律的代码来将应用程序同已有的工具整合在一起，这包括精灵化进程（daemonization）、日志处理、使用自定义的reactor循环、对代码做性能剖析等。</p>
+<p>应用程序基础组件包含4个主要部分：服务（Service）、应用（Application）、配置管理（通过TAC文件和插件）以及twistd命令行程序。为了说明这个基础组件，我们将上一节的Echo服务器转变成一个应用。</p>
+<h4><strong>Service</strong></h4>
+<p>Service就是IService接口下实现的可以启动和停止的组件。Twisted自带有TCP、FTP、HTTP、SSH、DNS等服务以及其他协议的实现。其中许多Service都可以注册到单独的应用中。IService接口的核心是：</p>
+<pre class="prettyprint"><code><span class="pln">startService    </span><span class="pun">启动服务。可能包含加载配置数据，设定数据库连接或者监听某个端口</span><span class="pln">
+stopService     </span><span class="pun">关闭服务。可能包含将状态保存到磁盘，关闭数据库连接或者停止监听端口</span></code></pre>
+<p>我们的Echo服务使用TCP协议，因此我们可以使用Twisted中IService接口下默认的TCPServer实现。</p>
+<h4><strong>Application</strong></h4>
+<p>Application是处于最顶层的Service，代表了整个Twisted应用程序。Service需要将其自身同Application注册，然后就可以用下面我们将介绍的部署工具twistd搜索并运行应用程序。我们将创建一个可以同Echo Service注册的Echo应用。</p>
+<h4><strong>TAC文件</strong></h4>
+<p>当在一个普通的Python文件中管理Twisted应用程序时，需要由开发者负责编写启动和停止reactor事件循环以及配置应用程序的代码。在Twisted的基础组件中，协议的实现都是在一个模块中完成的，需要使用到这些协议的Service可以注册到一个Twisted应用程序配置文件中（TAC文件）去，这样reactor事件循环和程序配置就可以由外部组件来进行管理。</p>
+<p>要将我们的Echo服务器转变成一个Echo应用，我们可以按照以下几个简单的步骤来完成：</p>
+<ol>
+<li>
+<p>将Echo服务器的Protocol部分移到它们自己所归属的模块中去。</p>
+</li><li>
+<p>在TAC文件中：</p>
+<ol>
+<li>创建一个Echo应用。</li><li>创建一个TCPServer的Service实例，它将使用我们的EchoFactory，然后同前面创建的应用完成注册。</li></ol>
+</li></ol>
+<p>管理reactor事件循环的代码将由twistd来负责，我们下面会对此进行讨论。这样，应用程序的代码就变成这样了：</p>
+<p>echo.py文件：</p>
+<pre class="prettyprint"><code><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">internet </span><span class="kwd">import</span><span class="pln"> protocol</span><span class="pun">,</span><span class="pln"> reactor
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Echo</span><span class="pun">(</span><span class="pln">protocol</span><span class="pun">.</span><span class="typ">Protocol</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">def</span><span class="pln"> dataReceived</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> data</span><span class="pun">):</span><span class="pln">
+        </span><span class="kwd">self</span><span class="pun">.</span><span class="pln">transport</span><span class="pun">.</span><span class="pln">write</span><span class="pun">(</span><span class="pln">data</span><span class="pun">)</span><span class="pln">
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">EchoFactory</span><span class="pun">(</span><span class="pln">protocol</span><span class="pun">.</span><span class="typ">Factory</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">def</span><span class="pln"> buildProtocol</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> addr</span><span class="pun">):</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="typ">Echo</span><span class="pun">()</span></code></pre>
+<h4><strong>twistd</strong></h4>
+<p>twistd（读作“twist-dee”）是一个跨平台的用来部署Twisted应用程序的工具。它执行TAC文件并负责处理启动和停止应用程序。作为Twisted在网络编程中具有“内置电池”能力的一部分，twistd自带有一些非常有用的配置标志，包括将应用程序转变为守护进程、定义日志文件的路径、设定特权级别、在chroot下运行、使用非默认的reactor，甚至是在profiler下运行应用程序。</p>
+<p>我们可以像这样运行这个Echo服务应用：</p>
+<pre class="prettyprint"><code><span class="pln">$ twistd </span><span class="pun">–</span><span class="pln">y echo_server</span><span class="pun">.</span><span class="pln">tac</span></code></pre>
+<p>在这个简单的例子里，twistd将这个应用程序作为守护进程来启动，日志记录在twistd.log文件中。启动和停止应用后，日志文件内容如下：</p>
+<pre class="prettyprint"><code><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">07</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> </span><span class="typ">Log</span><span class="pln"> opened</span><span class="pun">.</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">07</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> twistd </span><span class="lit">11.0</span><span class="pun">.</span><span class="lit">0</span><span class="pln"> </span><span class="pun">(</span><span class="str">/usr/</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">python </span><span class="lit">2.7</span><span class="pun">.</span><span class="lit">1</span><span class="pun">)</span><span class="pln"> starting up</span><span class="pun">.</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">07</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> reactor </span><span class="kwd">class</span><span class="pun">:</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">internet</span><span class="pun">.</span><span class="pln">selectreactor</span><span class="pun">.</span><span class="typ">SelectReactor</span><span class="pun">.</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">07</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> echo</span><span class="pun">.</span><span class="typ">EchoFactory</span><span class="pln"> starting on </span><span class="lit">8000</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">07</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> </span><span class="typ">Starting</span><span class="pln"> factory </span><span class="pun">&lt;</span><span class="pln">echo</span><span class="pun">.</span><span class="typ">EchoFactory</span><span class="pln"> instance at </span><span class="lit">0x12d8670</span><span class="pun">&gt;</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">20</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> </span><span class="typ">Received</span><span class="pln"> SIGTERM</span><span class="pun">,</span><span class="pln"> shutting down</span><span class="pun">.</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">20</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> </span><span class="pun">(</span><span class="pln">TCP </span><span class="typ">Port</span><span class="pln"> </span><span class="lit">8000</span><span class="pln"> </span><span class="typ">Closed</span><span class="pun">)</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">20</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> </span><span class="typ">Stopping</span><span class="pln"> factory </span><span class="pun">&lt;</span><span class="pln">echo</span><span class="pun">.</span><span class="typ">EchoFactory</span><span class="pln"> instance at </span><span class="lit">0x12d8670</span><span class="pun">&gt;</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">20</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> </span><span class="typ">Main</span><span class="pln"> loop terminated</span><span class="pun">.</span><span class="pln">
+</span><span class="lit">2011</span><span class="pun">-</span><span class="lit">11</span><span class="pun">-</span><span class="lit">19</span><span class="pln"> </span><span class="lit">22</span><span class="pun">:</span><span class="lit">23</span><span class="pun">:</span><span class="lit">20</span><span class="pun">-</span><span class="lit">0500</span><span class="pln"> </span><span class="pun">[-]</span><span class="pln"> </span><span class="typ">Server</span><span class="pln"> </span><span class="typ">Shut</span><span class="pln"> </span><span class="typ">Down</span><span class="pun">.</span></code></pre>
+<p>通过使用Twisted框架中的基础组件来运行服务，这么做使得开发人员能够不用再编写类&#20284;守护进程和记录日志这样的冗余代码了。这同样也为部署应用程序建立了一个标准的命令行接口。</p>
+<h4><strong>Plugins</strong></h4>
+<p>对于运行Twisted应用程序的方法，除了基于TAC文件外还有一种可选的方法，这就是插件系统。TAC系统可以很方便的将Twisted预定义的服务同应用程序配置文件注册，而插件系统能够方便的将用户自定义的服务注册为twistd工具的子命令，然后扩展应用程序的命令行接口。</p>
+<p>在使用插件系统时：</p>
+<ol>
+<li>
+<p>由于只有plugin API需要保持稳定，这使得第三方开发者能很容易地扩展软件。</p>
+</li><li>
+<p>插件发现能力已经集成到系统中了。插件可以在程序首次运行时加载并保存，每次程序启动时会重新触发插件发现过程，或者也可以在程序运行期间反复轮询新插件，这使得在程序已经启动后我们还可以判断是否有新的插件安装上了。</p>
+</li></ol>
+<p>当使用Twisted插件系统来扩展软件时，我们要做的就是创建IPlugin接口下实现的对象并将它们放到一个特定的位置中，这里插件系统知道该如何去找到它们。</p>
+<p>我们已经将Echo服务转换为一个Twisted应用程序了，而将其转换为一个Twisted插件也是非常简单直接的。在我们之前的Echo模块中，除了包含有Echo协议和EchoFactory的定义之外，现在我们还要添加一个名为twistd的目录，其中还包含着一个名为plugins的子目录，这里正是我们需要定义echo插件的地方。通过这个插件，我们可以启动一个echo服务，并将需要使用的端口号作为参数指定给twistd工具。</p>
+<pre class="prettyprint"><code><span class="kwd">from</span><span class="pln"> zope</span><span class="pun">.</span><span class="kwd">interface</span><span class="pln"> </span><span class="kwd">import</span><span class="pln"> </span><span class="kwd">implements</span><span class="pln">
+
+</span><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">python </span><span class="kwd">import</span><span class="pln"> usage
+</span><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">plugin </span><span class="kwd">import</span><span class="pln"> </span><span class="typ">IPlugin</span><span class="pln">
+</span><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">application</span><span class="pun">.</span><span class="pln">service </span><span class="kwd">import</span><span class="pln"> </span><span class="typ">IServiceMaker</span><span class="pln">
+</span><span class="kwd">from</span><span class="pln"> twisted</span><span class="pun">.</span><span class="pln">application </span><span class="kwd">import</span><span class="pln"> internet
+
+</span><span class="kwd">from</span><span class="pln"> echo </span><span class="kwd">import</span><span class="pln"> </span><span class="typ">EchoFactory</span><span class="pln">
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">Options</span><span class="pun">(</span><span class="pln">usage</span><span class="pun">.</span><span class="typ">Options</span><span class="pun">):</span><span class="pln">
+    optParameters </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[[</span><span class="str">&quot;port&quot;</span><span class="pun">,</span><span class="pln"> </span><span class="str">&quot;p&quot;</span><span class="pun">,</span><span class="pln"> </span><span class="lit">8000</span><span class="pun">,</span><span class="pln"> </span><span class="str">&quot;The port number to listen on.&quot;</span><span class="pun">]]</span><span class="pln">
+
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">EchoServiceMaker</span><span class="pun">(</span><span class="kwd">object</span><span class="pun">):</span><span class="pln">
+    </span><span class="kwd">implements</span><span class="pun">(</span><span class="typ">IServiceMaker</span><span class="pun">,</span><span class="pln"> </span><span class="typ">IPlugin</span><span class="pun">)</span><span class="pln">
+    tapname </span><span class="pun">=</span><span class="pln"> </span><span class="str">&quot;echo&quot;</span><span class="pln">
+    description </span><span class="pun">=</span><span class="pln"> </span><span class="str">&quot;A TCP-based echo server.&quot;</span><span class="pln">
+    options </span><span class="pun">=</span><span class="pln"> </span><span class="typ">Options</span><span class="pln">
+
+</span><span class="kwd">def</span><span class="pln"> makeService</span><span class="pun">(</span><span class="kwd">self</span><span class="pun">,</span><span class="pln"> options</span><span class="pun">):</span><span class="pln">
+    </span><span class="str">&quot;&quot;&quot;
+    Construct a TCPServer from a factory defined in myproject.
+    &quot;&quot;&quot;</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> internet</span><span class="pun">.</span><span class="typ">TCPServer</span><span class="pun">(</span><span class="kwd">int</span><span class="pun">(</span><span class="pln">options</span><span class="pun">[</span><span class="str">&quot;port&quot;</span><span class="pun">]),</span><span class="pln"> </span><span class="typ">EchoFactory</span><span class="pun">())</span><span class="pln">
+
+serviceMaker </span><span class="pun">=</span><span class="pln"> </span><span class="typ">EchoServiceMaker</span><span class="pun">()</span></code></pre>
+<p>现在，我们的Echo服务器将作为一个服务选项出现在twistd –help的输出中。运行twistd echo –port=1235将在端口1235上启动一个Echo服务器。</p>
+<p>Twisted还带有一个可拔插的针对服务器端认证的模块twisted.cred，插件系统常见的用途就是为应用程序添加一个认证模式。我们可以使用twisted.cred中现成的AuthOptionMixin类来添加针对各种认证的命令行支持，或者是添加新的认证类型。比如，我们可以使用插件系统来添加基于本地Unix密码数据库或者是基于LDAP服务器的认证方式。</p>
+<p>twistd工具中附带有许多Twisted所支持的协议插件，只用一条单独的命令就可以完成启动服务器的工作了。这里有一些通过twistd启动服务器的例子：</p>
+<pre class="prettyprint"><code><span class="pln">twistd web </span><span class="pun">–</span><span class="pln">port </span><span class="lit">8080</span><span class="pln"> </span><span class="pun">–</span><span class="pln">path </span><span class="pun">.</span></code></pre>
+<p>这条命令将在8080端口启动一个HTTP服务器，在当前目录中负责处理静态和动态页面请求。</p>
+<pre class="prettyprint"><code><span class="pln">twistd dns </span><span class="pun">–</span><span class="pln">p </span><span class="lit">5553</span><span class="pln"> </span><span class="pun">–</span><span class="pln">hosts</span><span class="pun">-</span><span class="pln">file</span><span class="pun">=</span><span class="pln">hosts</span></code></pre>
+<p>这条命令在端口5553上启动一个DNS服务器，解析指定的文件hosts中的域名，这个文件的内容&#26684;式同/etc/hosts一样。</p>
+<pre class="prettyprint"><code><span class="pln">sudo twistd conch </span><span class="pun">–</span><span class="pln">p tcp</span><span class="pun">:</span><span class="lit">2222</span></code></pre>
+<p>这条命令在端口2222上启动一个SSH服务器。ssh的密钥必须独立设定。</p>
+<pre class="prettyprint"><code><span class="pln">twistd mail </span><span class="pun">–</span><span class="pln">E </span><span class="pun">–</span><span class="pln">H localhost </span><span class="pun">–</span><span class="pln">d localhost</span><span class="pun">=</span><span class="pln">emails</span></code></pre>
+<p>这条命令启动一个ESMTP POP3服务器，为本地主机接收邮件并保存到指定的emails目录下。</p>
+<p>我们可以方便的通过twistd来搭建一个用于测试客户端功能的服务器，但它同样是可装载的、产品级的服务器实现。</p>
+<p>在部署应用程序的方式上，Twisted通过TAC文件、插件以及命令行工具twistd的部署方式已经获得了成功。但是有趣的是，对于大多数大型Twisted应用程序来说，部署它们仍然需要重写一些这类管理和监控组件；Twisted的架构并没有对系统管理员的需求呈现出太多的友好性。这也反映了一个事实，那就是对于系统管理员来说Twisted历来就没有太多架构可言，而这些系统管理员才是部署和维护应用程序的专家。在这方面，Twisted在未来架构设计的决策上需要更积极的征求这类专家级用户的反馈意见。</p>
+<h2>21.3 反思与教训</h2>
+<p>Twisted最近刚刚渡过了其10周年的诞辰。自项目成立以来，由于受2000年早期的网络游戏启发，目前的Twisted已经在很大程度上实现了作为一个可扩展、跨平台、事件驱动的网络引擎的目标。Twisted广泛使用于生产环境中，从Google、卢卡斯电影到Justin.TV以及Launchpad软件协作平台都有在使用。Twisted中的服务器端实现是多个开源软件的核心，包括BuildBot、BitTorrent以及TahoeLAFS。</p>
+<p>Twisted从最初开发到现在，其架构已经经历了几次大的变动。Deferred对象作为一个关键部分被增加了进来。如前文所述，这是用来管理延后的结果以及相应的回调链。</p>
+<p>还有一个重要的部分被移除掉了，在目前的实现中已经几乎看不到任何影子了，这就是Twisted应用持久化（Twisted Application Persistence）。</p>
+<h3><strong>Twisted应用持久化</strong></h3>
+<p>Twisted应用持久化（TAP）是指将应用程序的配置和状态保存在一个pickle中。要运行采用了这种方案的应用需要两个步骤：</p>
+<ol>
+<li>
+<p>使用mktap工具创建一个代表该应用的pickle（该工具现已废弃不用）。</p>
+</li><li>
+<p>使用twistd命令行工具进行unpickle操作，然后运行该应用。</p>
+</li></ol>
+<p>这个过程是受Smalltalk images的启发，因为我们讨厌那种临时性的且难以使用的专用配置语言，不希望它们在项目中不断扩散。我们更希望在Python中表示配置的细节。</p>
+<p>很快，TAP文件就引入了不必要的复杂性。修改Twisted中的类并不会使pickle中这些类的实例得到改变。在pickle对象上使用新版本的类方法或属性时可能会使整个应用崩溃。因此“升级版”的概念得以引入，即将pickle对象升级到新的API版本。但这就会出现升级版本的矩阵化现象，出现各种不同版本的pickle对象，因此单元测试时需要维护涵盖所有可能的升级路径。想全面地跟踪所有的接口变化依然很难，而且容易出错。</p>
+<p>TAP以及相关的组件全部被废除了，最终从Twisted中完全剔除掉。取而代之的是TAC文件和插件系统。TAP这个缩写被重新定义为Twisted Application Plugin（Twisted应用插件），如今已经很难在Twisted中找到pickle系统的踪迹了。</p>
+<p>我们从TAP的惨败中得到的教训是：如果可维护性要达到合理化的程度，则持久性数据就需要有一个明确的模式。更一般的是，我们学到了如何为项目增加复杂度：为了解决某个问题而需要引入一个新系统时，我们要正确理解这个方案的复杂性，并经过测试。新系统所带来的价&#20540;应该明显大于其复杂性。确保了这一点之后我们才能将方案付诸于项目中。</p>
+<h3><strong>web2：重构的教训</strong></h3>
+<p>虽然这基本上不属于架构设计上的决策，但从项目管理的角度来看，重写Twisted的Web实现对于Twisted的外在形象以及维护者对代码库中其他部分做架构改善的能力却有着长远的影响，因此这里&#20540;得我们简单讨论一下。</p>
+<p>在2000年中期，Twisted的开发者决定完全重写twisted.web API，在Twisted代码库中将其作为一个单独的项目实现，这就是web2。web2将包含许多针对原有twisted.web的改善和提升，包括完全支持HTTP1.1，以及对流式数据的API支持。</p>
+<p>web2最初只是试验性的项目，但最终被大型项目所采用，甚至意外的得以在Debian系统上打包发布。twisted.web和web2的开发一直并行持续了多年，新用户常常被这两个并行的项目搞混，关于究竟应该使用哪种实现缺乏明确的提示，这使得新用户很沮丧。转换到web2的情况从未出现，终于在2011年开发者将其从代码库中移除，官方主页上再也看不到它了。web2中做出的一些改进也被慢慢地移植回twisted.web中。</p>
+<p>Twisted获得了难以导航且结构混乱，容易使新开发者感到困惑的“恶名”，这个印象部分归功于web2。以至于数年之后，Twisted社区仍然在同这种不和谐的名声做斗争。</p>
+<p>我们从web2中汲取的教训是：从头开始重构一个项目通常都是糟糕的主意。但如果必须这么做，请确保开发者社区能够懂得这么做的长远意义，而且在用户社群中要有明确的选择该使用哪种实现。</p>
+<p>如果Twisted能够倒退回web2的时代，开发者们应该会对twisted.web做一系列向后兼容型的修改而不是去重构。</p>
+<h3><strong>紧跟互联网的浪潮</strong></h3>
+<p>我们使用互联网的方式还在持续演进中。把多种协议的实现作为软件核心的一部分，这个技术决策使得Twisted背负了维护这些协议的沉重负担。随着标准的改变以及对新协议的采纳，原有的实现必须跟着演进，同时需要严&#26684;的保证向后兼容性。</p>
+<p>Twisted基本上是一个志愿者驱动型的项目，项目发展的限制因素不是技术社区的热情，而在于志愿者的时间。比如说，1999年的RFC 2616中定义了HTTP 1.1规范，而在Twisted的HTTP协议实现中增加对HTTP 1.1的支持却在2005年才开始，等到完成时已经是2009年了。1998年RFC 2460中定义了对IPv6的支持，而Twisted对其的支持还在进行中，但是直到2011年都未能合并进去。</p>
+<p>随着所支持的操作系统的接口改变，实现也要跟着演进。比如，epoll事件通知机制是在2002年加入到Linux 2.5.44版中的，Twisted随之也发展出基于epoll的reactor事件循环来利用这个新的系统接口。2007年时，苹果公司发布的OS 10.5 Leopard系统中，系统调用poll的实现居然不支持外设，对于苹果公司来说这个问题足以让他们在系统自带的Python中屏蔽掉select.poll接口。Twisted不得不自行解决这个问题，并从那时起就对用户提供文档说明。</p>
+<p>有时候，Twisted的开发并没有紧跟网络世界的变化，有一些改进被移到核心层之外的程序库中去了。比如Wokkel project，这是对Twisted的Jabber/XMPP支持的改进合集，已经作为“待合入”的独立项目有几年之久了，但还没有看到合入的希望。在2009年也曾经尝试过增加WebSocket到Twisted中，因为浏览器已经开始采纳对新协议的支持了。但开发计划最终却转到其他外部项目中去了，因为开发者们决定暂不包含新的协议，直到IETF把它从草案转变成标准以后再说。</p>
+<p>所有这一切都在说明，库和附加组件的扩散有力的证明了Twisted的灵活性和可扩展性。通过采用严&#26684;的测试驱动开发策略以及文档化和编码规范标准，这样做能够帮助项目避免出现需要“回炉”的情况。在维护大量所支持的协议和平台的同时保持向后兼容性。Twisted是一个成熟、稳定的项目，并继续保持有非常活跃的开发状态。</p>
+<p>Twisted期待着在下一个十年里成为你遨游互联网的引擎。</p>
+</div>
+
+</div>
+
+
+
+
+<!-- Baidu Button BEGIN -->
+
+<div class="bdsharebuttonbox" style="float: right;">
+<a href="#" class="bds_more" data-cmd="more" style="background-position:0 0 !important; background-image: url(http://bdimg.share.baidu.com/static/api/img/share/icons_0_16.png?v=d754dcc0.png) !important"></a>
+<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"  style="background-position:0 -52px !important"></a>
+<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"style="background-position:0 -104px !important"></a>
+<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"style="background-position:0 -260px !important"></a>
+<a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"style="background-position:0 -208px !important"></a>
+<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"style="background-position:0 -1612px !important" ></a>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+<!-- Baidu Button END -->
+
+<!--192.168.100.33-->
+<ul class="article_next_prev">
+            <li class="prev_article"><span  onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian']);location.href='/hanhuili/article/details/9389099';">上一篇</span><a href="/hanhuili/article/details/9389099" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian'])">The Python web services developer: XML-RPC for Python</a></li>
+            <li class="next_article"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian']);location.href='/hanhuili/article/details/9389571';">下一篇</span><a href="/hanhuili/article/details/9389571" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian'])">Nginx介绍</a></li>
+</ul>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+
+</div>
+      <dl class="blog-associat-tag">
+        <dt>主题推荐</dt>
+        <dd>
+                <a href="http://www.csdn.net/tag/python" target="_blank" class="blog-tage-red" >python</a> 
+                <a href="http://www.csdn.net/tag/http服务器" target="_blank" class="blog-tage-red" >http服务器</a> 
+                <a href="http://www.csdn.net/tag/测试驱动开发" target="_blank" class="blog-tage-red" >测试驱动开发</a> 
+                <a href="http://www.csdn.net/tag/http协议" target="_blank" class="blog-tage-red" >http协议</a> 
+                <a href="http://www.csdn.net/tag/dns服务器" target="_blank" class="blog-tage-red" >dns服务器</a> 
+        </dd>
+    </dl> 
+
+
+<dl class="blog-ass-articl tracking-ad"  data-mod="popu_36" id="res-relatived"> 
+     <dt><span>猜你在找</span></dt>    
+</dl>
+
+<script type="text/javascript">
+    var searchtitletags = 'Python Twisted介绍' + ',' + 'python,http服务器,测试驱动开发,http协议,dns服务器';
+    searchService({
+        index: 'blog',
+        query: searchtitletags,
+        from: 10,
+        size: 10,
+        appendTo: '#res-relatived',
+        url: 'recommend',
+        his: 2,
+        client: "blog_cf_enhance",
+        tmpl: '<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="#{ url }" title="#{ title }" strategy="#{ strategy }">#{ title }</a></dd>'
+    });
+
+ </script>   
+
+
+    <div id="ad_cen">
+   
+          <script type="text/javascript">
+              new Ad(4, 'ad_cen');
+          </script>
+    </div>
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list">
+    </div>
+    <div id="comment_bar">
+    </div>
+    <div id="comment_form">
+    </div>
+
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '9389433';
+    var commentscount = 1;
+    var islock = false
+</script>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/comment.js"></script>
+    <div id="ad_bot">
+    </div>
+    <script type="text/javascript">
+    new Ad(5, 'ad_bot');
+    </script>
+<div id="report_dialog">
+</div>
+
+<div id="d-top"  style="bottom:60px;">
+      
+
+       <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="http://static.blog.csdn.net/images/blog-icon-reply.png" alt="快速回复">
+        </a>    
+
+    <a id="d-top-a" class="btn btn-top backtop"  style="display: none;" title="返回顶部" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_huidaodingbu'])" style="">         
+         <img src="http://static.blog.csdn.net/images/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+        
+        setTimeout(function(){
+            $("#ad_frm_2").height("200px");
+        },1000);
+        
+
+        if($("#comment_content").length>0)
+        {
+            $("#quick-reply").show();
+
+            $("#quick-reply").click(function(){
+                setEditorFocus();
+            });
+        }       
+     
+        var d_top = $('#d-top-a');
+        document.onscroll = function ()
+        {
+            var scrTop = (document.body.scrollTop || document.documentElement.scrollTop);
+            if (scrTop > 500)
+            {
+                d_top.show();
+            } else
+            {
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function ()
+        {
+            scrollTo(0, 0);
+            this.blur();
+            return false;
+        });
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+<div class="tag_list">
+    <h5>
+        <a href="http://www.csdn.net/tag/" target="_blank">核心技术类目</a></h5>
+    <div class="classify">
+<a title="全部主题" href="http://www.csdn.net/tag" target="_blank" onclick="LogClickCount(this,336);">全部主题</a>
+<a title="Hadoop" href="http://g.csdn.net/5272865" target="_blank" onclick="LogClickCount(this,336);">Hadoop</a>
+<a title="AWS" href="http://g.csdn.net/5272866" target="_blank" onclick="LogClickCount(this,336);">AWS</a>
+<a title="移动游戏" href="http://g.csdn.net/5272870" target="_blank" onclick="LogClickCount(this,336);">移动游戏</a>
+<a title="Java" href="http://g.csdn.net/5272871" target="_blank" onclick="LogClickCount(this,336);">Java</a>
+<a title="Android" href="http://g.csdn.net/5272872" target="_blank" onclick="LogClickCount(this,336);">Android</a>
+<a title="iOS" href="http://g.csdn.net/5272873" target="_blank" onclick="LogClickCount(this,336);">iOS</a>
+<a title="Swift" href="http://g.csdn.net/5272868" target="_blank" onclick="LogClickCount(this,336);">Swift</a>
+<a title="智能硬件" href="http://g.csdn.net/5272869" target="_blank" onclick="LogClickCount(this,336);">智能硬件</a>
+<a title="Docker" href="http://g.csdn.net/5272867" target="_blank" onclick="LogClickCount(this,336);">Docker</a>
+<a title="OpenStack" href="http://g.csdn.net/5272925" target="_blank" onclick="LogClickCount(this,336);">OpenStack</a>
+<a title="VPN" href="http://www.csdn.net/tag/vpn" target="_blank" onclick="LogClickCount(this,336);">VPN</a>
+<a title="Spark" href="http://g.csdn.net/5272924" target="_blank" onclick="LogClickCount(this,336);">Spark</a>
+<a title="ERP" href="http://www.csdn.net/tag/erp" target="_blank" onclick="LogClickCount(this,336);">ERP</a>
+<a title="IE10" href="http://www.csdn.net/tag/ie10" target="_blank" onclick="LogClickCount(this,336);">IE10</a>
+<a title="Eclipse" href="http://www.csdn.net/tag/eclipse" target="_blank" onclick="LogClickCount(this,336);">Eclipse</a>
+<a title="CRM" href="http://www.csdn.net/tag/crm" target="_blank" onclick="LogClickCount(this,336);">CRM</a>
+<a title="JavaScript" href="http://www.csdn.net/tag/javascript" target="_blank" onclick="LogClickCount(this,336);">JavaScript</a>
+<a title="数据库" href="http://www.csdn.net/tag/数据库" target="_blank" onclick="LogClickCount(this,336);">数据库</a>
+<a title="Ubuntu" href="http://www.csdn.net/tag/ubuntu" target="_blank" onclick="LogClickCount(this,336);">Ubuntu</a>
+<a title="NFC" href="http://www.csdn.net/tag/nfc" target="_blank" onclick="LogClickCount(this,336);">NFC</a>
+<a title="WAP" href="http://www.csdn.net/tag/wap" target="_blank" onclick="LogClickCount(this,336);">WAP</a>
+<a title="jQuery" href="http://www.csdn.net/tag/jquery" target="_blank" onclick="LogClickCount(this,336);">jQuery</a>
+<a title="BI" href="http://www.csdn.net/tag/bi" target="_blank" onclick="LogClickCount(this,336);">BI</a>
+<a title="HTML5" href="http://www.csdn.net/tag/html5" target="_blank" onclick="LogClickCount(this,336);">HTML5</a>
+<a title="Spring" href="http://www.csdn.net/tag/spring" target="_blank" onclick="LogClickCount(this,336);">Spring</a>
+<a title="Apache" href="http://www.csdn.net/tag/apache" target="_blank" onclick="LogClickCount(this,336);">Apache</a>
+<a title=".NET" href="http://www.csdn.net/tag/.net" target="_blank" onclick="LogClickCount(this,336);">.NET</a>
+<a title="API" href="http://www.csdn.net/tag/api" target="_blank" onclick="LogClickCount(this,336);">API</a>
+<a title="HTML" href="http://www.csdn.net/tag/html" target="_blank" onclick="LogClickCount(this,336);">HTML</a>
+<a title="SDK" href="http://www.csdn.net/tag/sdk" target="_blank" onclick="LogClickCount(this,336);">SDK</a>
+<a title="IIS" href="http://www.csdn.net/tag/iis" target="_blank" onclick="LogClickCount(this,336);">IIS</a>
+<a title="Fedora" href="http://www.csdn.net/tag/fedora" target="_blank" onclick="LogClickCount(this,336);">Fedora</a>
+<a title="XML" href="http://www.csdn.net/tag/xml" target="_blank" onclick="LogClickCount(this,336);">XML</a>
+<a title="LBS" href="http://www.csdn.net/tag/lbs" target="_blank" onclick="LogClickCount(this,336);">LBS</a>
+<a title="Unity" href="http://www.csdn.net/tag/unity" target="_blank" onclick="LogClickCount(this,336);">Unity</a>
+<a title="Splashtop" href="http://www.csdn.net/tag/splashtop" target="_blank" onclick="LogClickCount(this,336);">Splashtop</a>
+<a title="UML" href="http://www.csdn.net/tag/uml" target="_blank" onclick="LogClickCount(this,336);">UML</a>
+<a title="components" href="http://www.csdn.net/tag/components" target="_blank" onclick="LogClickCount(this,336);">components</a>
+<a title="Windows Mobile" href="http://www.csdn.net/tag/windowsmobile" target="_blank" onclick="LogClickCount(this,336);">Windows Mobile</a>
+<a title="Rails" href="http://www.csdn.net/tag/rails" target="_blank" onclick="LogClickCount(this,336);">Rails</a>
+<a title="QEMU" href="http://www.csdn.net/tag/qemu" target="_blank" onclick="LogClickCount(this,336);">QEMU</a>
+<a title="KDE" href="http://www.csdn.net/tag/kde" target="_blank" onclick="LogClickCount(this,336);">KDE</a>
+<a title="Cassandra" href="http://www.csdn.net/tag/cassandra" target="_blank" onclick="LogClickCount(this,336);">Cassandra</a>
+<a title="CloudStack" href="http://www.csdn.net/tag/cloudstack" target="_blank" onclick="LogClickCount(this,336);">CloudStack</a>
+<a title="FTC" href="http://www.csdn.net/tag/ftc" target="_blank" onclick="LogClickCount(this,336);">FTC</a>
+<a title="coremail" href="http://www.csdn.net/tag/coremail" target="_blank" onclick="LogClickCount(this,336);">coremail</a>
+<a title="OPhone " href="http://www.csdn.net/tag/ophone " target="_blank" onclick="LogClickCount(this,336);">OPhone </a>
+<a title="CouchBase" href="http://www.csdn.net/tag/couchbase" target="_blank" onclick="LogClickCount(this,336);">CouchBase</a>
+<a title="云计算" href="http://www.csdn.net/tag/云计算" target="_blank" onclick="LogClickCount(this,336);">云计算</a>
+<a title="iOS6" href="http://www.csdn.net/tag/iOS6" target="_blank" onclick="LogClickCount(this,336);">iOS6</a>
+<a title="Rackspace " href="http://www.csdn.net/tag/rackspace " target="_blank" onclick="LogClickCount(this,336);">Rackspace </a>
+<a title="Web App" href="http://www.csdn.net/tag/webapp" target="_blank" onclick="LogClickCount(this,336);">Web App</a>
+<a title="SpringSide" href="http://www.csdn.net/tag/springside" target="_blank" onclick="LogClickCount(this,336);">SpringSide</a>
+<a title="Maemo" href="http://www.csdn.net/tag/maemo" target="_blank" onclick="LogClickCount(this,336);">Maemo</a>
+<a title="Compuware" href="http://www.csdn.net/tag/compuware" target="_blank" onclick="LogClickCount(this,336);">Compuware</a>
+<a title="大数据" href="http://www.csdn.net/tag/大数据" target="_blank" onclick="LogClickCount(this,336);">大数据</a>
+<a title="aptech" href="http://www.csdn.net/tag/aptech" target="_blank" onclick="LogClickCount(this,336);">aptech</a>
+<a title="Perl" href="http://www.csdn.net/tag/perl" target="_blank" onclick="LogClickCount(this,336);">Perl</a>
+<a title="Tornado" href="http://www.csdn.net/tag/tornado" target="_blank" onclick="LogClickCount(this,336);">Tornado</a>
+<a title="Ruby" href="http://www.csdn.net/tag/ruby" target="_blank" onclick="LogClickCount(this,336);">Ruby</a>
+<a title="Hibernate" href="http://www.csdn.net/hibernate" target="_blank" onclick="LogClickCount(this,336);">Hibernate</a>
+<a title="ThinkPHP" href="http://www.csdn.net/tag/thinkphp" target="_blank" onclick="LogClickCount(this,336);">ThinkPHP</a>
+<a title="HBase" href="http://www.csdn.net/tag/hbase" target="_blank" onclick="LogClickCount(this,336);">HBase</a>
+<a title="Pure" href="http://www.csdn.net/tag/pure" target="_blank" onclick="LogClickCount(this,336);">Pure</a>
+<a title="Solr" href="http://www.csdn.net/tag/solr" target="_blank" onclick="LogClickCount(this,336);">Solr</a>
+<a title="Angular" href="http://www.csdn.net/tag/angular" target="_blank" onclick="LogClickCount(this,336);">Angular</a>
+<a title="Cloud Foundry" href="http://www.csdn.net/tag/cloudfoundry" target="_blank" onclick="LogClickCount(this,336);">Cloud Foundry</a>
+<a title="Redis" href="http://www.csdn.net/tag/redis" target="_blank" onclick="LogClickCount(this,336);">Redis</a>
+<a title="Scala" href="http://www.csdn.net/tag/scala" target="_blank" onclick="LogClickCount(this,336);">Scala</a>
+<a title="Django" href="http://www.csdn.net/tag/django" target="_blank" onclick="LogClickCount(this,336);">Django</a>
+<a title="Bootstrap" href="http://www.csdn.net/tag/bootstrap" target="_blank" onclick="LogClickCount(this,336);">Bootstrap</a>
+    </div>
+</div>
+
+
+                        <div class="clear">
+                        </div>
+                    </div>                   
+                
+            </div>
+            <div id="side">
+    <div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/hanhuili" target="_blank">
+    <img src="http://avatar.csdn.net/2/5/6/1_hanhuili.jpg" title="访问我的空间" style="max-width:90%"/>
+    </a>
+    <br />
+    <span><a href="http://my.csdn.net/hanhuili" class="user_name" target="_blank">hanhuili</a></span>
+</div>
+<div class="interact">
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_guanzhu'])"></a>
+<a href="javascript:void(0);" class="letter" onclick="loginto(1)" title="[发私信]" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_sixin'])"></a>
+</div>
+<div id="blog_medal">
+</div>
+<ul id="blog_rank">
+    <li>访问：<span>74067次</span></li>
+    <li>积分：<span>1686分</span></li>
+    <li>排名：<span>第8389名</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>75篇</span></li>
+    <li>转载：<span>92篇</span></li>
+    <li>译文：<span>6篇</span></li>
+    <li>评论：<span>25条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字" /></span>
+        <input id="btnSubmit" type="button" value="搜索" title="search in blog" />
+        <input type="hidden" name="q" id="inputQ" />
+        <input type="hidden" name="t" value="blog" />
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {           
+            search();
+        });
+
+        $("#frmSearch").submit(function () {
+            search();
+            return false;
+        });
+
+        function search()
+        {
+            var url = "http://so.csdn.net/so/search/s.do?q=" + encodeURIComponent($("#inputSearch").val()) + "&u=" + username + "&t=blog";
+            window.location.href = url;
+        }   
+    });
+</script><div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/712026" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Linux</a><span>(28)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/712022" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">读书笔记</a><span>(22)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1727359" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Hadoop/HBase</a><span>(13)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1315792" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">数据库/NoSQL</a><span>(13)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/712023" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">c/c++技术</a><span>(11)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1664431" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">分布式系统</a><span>(11)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1303068" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">项目管理</a><span>(9)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1508819" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">架构设计</a><span>(9)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1306040" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">OS X/iOS</a><span>(7)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1311445" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">虚拟化</a><span>(7)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1727479" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">lua</a><span>(7)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1727431" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">python</a><span>(8)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1727361" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Redis</a><span>(7)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1305695" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">闲话连篇</a><span>(6)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1361954" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Java</a><span>(6)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/2301885" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Machine Learning</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/2175845" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">MySQL/Oracle</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/712025" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">通信协议</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/1727435" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">算法</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/2121051" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">硬件</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/2143421" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">函数式编程</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/hanhuili/article/category/2273349" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Scala</a><span>(1)</span>
+            </li>
+</ul>
+</div><div id="hotarticls" class="panel">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="/hanhuili/article/details/9389433" title="Python Twisted介绍">Python Twisted介绍</a><span>(8454)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/11482509" title="CentOS hadoop启动错误 JAVA_HOME is not set and could not be found">CentOS hadoop启动错误 JAVA_HOME is not set and could not be found</a><span>(3946)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/11483523" title="CentOS hadoop配置错误Incorrect configuration: namenode address dfs.namenode.servicerpc-address ...">CentOS hadoop配置错误Incorrect configuration: namenode address dfs.namenode.servicerpc-address ...</a><span>(3162)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/11055293" title="ssh localhost “Permission denied (publickey)">ssh localhost “Permission denied (publickey)</a><span>(2933)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/9069507" title="python byte array">python byte array</a><span>(2011)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/8925313" title="Python multi-process VS multi-thread （多核CPU利用率）">Python multi-process VS multi-thread （多核CPU利用率）</a><span>(1585)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/8540227" title="Linux内核3.7 TCP Fast Open验证实例">Linux内核3.7 TCP Fast Open验证实例</a><span>(1183)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/8496927" title="和我一起写lua － Mac OS X环境编译C模块">和我一起写lua － Mac OS X环境编译C模块</a><span>(1165)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/8576844" title="VirtualBox: PIIX3 cannot attach drive to the Secondary Master (VERR_SHARING_VIOLATION)">VirtualBox: PIIX3 cannot attach drive to the Secondary Master (VERR_SHARING_VIOLATION)</a><span>(1064)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/7185836" title="字节与比特序">字节与比特序</a><span>(915)</span>
+</li>
+</ul>
+</div>
+<div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list">
+<!--归档统计-->
+<li><a href="http://blog.csdn.net/hanhuili/article/month/2014/08">2014年08月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2014/07">2014年07月</a><span>(4)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2014/06">2014年06月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2014/05">2014年05月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2014/04">2014年04月</a><span>(6)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2014/03">2014年03月</a><span>(6)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2014/02">2014年02月</a><span>(6)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2014/01">2014年01月</a><span>(5)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/12">2013年12月</a><span>(5)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/11">2013年11月</a><span>(3)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/10">2013年10月</a><span>(4)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/09">2013年09月</a><span>(8)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/08">2013年08月</a><span>(4)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/07">2013年07月</a><span>(11)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/06">2013年06月</a><span>(9)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/05">2013年05月</a><span>(3)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/04">2013年04月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/03">2013年03月</a><span>(13)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/02">2013年02月</a><span>(19)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2013/01">2013年01月</a><span>(17)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2012/12">2012年12月</a><span>(41)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2012/01">2012年01月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2010/08">2010年08月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/hanhuili/article/month/2010/07">2010年07月</a><span>(1)</span></li>
+</div>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="/hanhuili/article/details/7171590" title="ISO C语言新标准(C11)">ISO C语言新标准(C11)</a><span>(2)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/9069551" title="《大数据时代》读书笔记">《大数据时代》读书笔记</a><span>(2)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/11482509" title="CentOS hadoop启动错误 JAVA_HOME is not set and could not be found">CentOS hadoop启动错误 JAVA_HOME is not set and could not be found</a><span>(2)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/8452905" title="TCP Fast Open">TCP Fast Open</a><span>(2)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/8712494" title="Duck Duck Go Architecture">Duck Duck Go Architecture</a><span>(2)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/12752537" title="Linux NFS服务器的安装与配置">Linux NFS服务器的安装与配置</a><span>(1)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/8566002" title="A plain english introduction to CAP Theorem">A plain english introduction to CAP Theorem</a><span>(1)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/9389433" title="Python Twisted介绍">Python Twisted介绍</a><span>(1)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/8653894" title="Consistent Hashing">Consistent Hashing</a><span>(1)</span>
+</li>
+<li>
+<a href="/hanhuili/article/details/12873011" title="Redis persistence demystified - part 1">Redis persistence demystified - part 1</a><span>(1)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel tracking-ad" data-mod="popu_4">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend"></ul>
+</div>
+<script type="text/javascript">
+ new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+   
+         <a href="/hanhuili/article/details/7171590#comments">ISO C语言新标准(C11)</a>
+    <p style="margin:0px;"><a href="/hanhuili" class="user_name">hanhuili</a>:
+随后不是有参考吗？
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/9389433#comments">Python Twisted介绍</a>
+    <p style="margin:0px;"><a href="/dark89757" class="user_name">dark89757</a>:
+非常屌，估计能中国写出这样的文章的人不超过100个
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/9389433#comments">ISO C语言新标准(C11)</a>
+    <p style="margin:0px;"><a href="/qq2399431200" class="user_name">qq2399431200</a>:
+下载转载时能不能附上原文链接啊？一个转字太伤人了，想看下原文都看不到.!!
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/11482509#comments">CentOS hadoop启动错误 JAVA_HOME is not set and could not be found</a>
+    <p style="margin:0px;"><a href="/yousongshu520" class="user_name">yousongshu520</a>:
+谢谢。还真是这个原因。
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/11482509#comments">CentOS hadoop启动错误 JAVA_HOME is not set and could not be found</a>
+    <p style="margin:0px;"><a href="/u012665711" class="user_name">u012665711</a>:
+有用，谢谢
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/8452905#comments">TCP Fast Open</a>
+    <p style="margin:0px;"><a href="/hanhuili" class="user_name">hanhuili</a>:
+Linux 3.13 was released on Sun, 19 Jan 2014.      ...
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/12873011#comments">Redis persistence demystified - part 1</a>
+    <p style="margin:0px;"><a href="/hanhuili" class="user_name">hanhuili</a>:
+通过翻译去理解Redis，如有理解错误见谅
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/12752537#comments">Linux NFS服务器的安装与配置</a>
+    <p style="margin:0px;"><a href="/hanhuili" class="user_name">hanhuili</a>:
+如果服务器重新配置nfs，导致nfs client出现Stale NFS file handle的错...
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/12192453#comments">CAP Confusion: Problems with ‘partition tolerance’</a>
+    <p style="margin:0px;"><a href="/hanhuili" class="user_name">hanhuili</a>:
+1) HDFS chose CP rather than AP2) Reference 1 is e...
+    </p>
+    </li>
+    <li>
+   
+         <a href="/hanhuili/article/details/8566002#comments">A plain english introduction to CAP Theorem</a>
+    <p style="margin:0px;"><a href="/hanhuili" class="user_name">hanhuili</a>:
+Partition（系统节点之间无法连通）是分布式系统必然存在的问题，Partition Toler...
+    </p>
+    </li>
+</ul>
+</div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+            <div class="clear">
+            </div>
+        </div>
+        
+
+<script type="text/javascript" src="http://csdnimg.cn/rabbit/cnick/cnick.js"></script>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/newblog.min.js"></script>
+
+
+<script type="text/javascript" src="http://medal.blog.csdn.net/showblogmedal.ashx?blogid=888149"></script>
+<script type="text/javascript">
+    document.write('<script type="text/javascript" src="http://csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date() / 120000).toString(36) + '="></' + 'script>');
+</script>
+    <script type="text/javascript" src="http://passport.csdn.net/content/loginbox/login.js"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script>
+<script type="text/javascript" src="http://www.csdn.net/ui/scripts/Csdn/counter.js"></script>
+<script type="text/javascript" src="http://ad.csdn.net/scripts/ad-blog.js"></script>
+<script type="text/javascript" src="http://zz.csdn.net/js/count.js"></script>
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a>"
+                    + "<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+    });
+</script>
+
+    </div>
+      <!--new top-->
+    
+    <script id="csdn-toolbar-id" btnId="header_notice_num" wrapId="note1" count="5" subCount="5" type="text/javascript" src="http://static.csdn.net/public/common/toolbar/js/toolbar.js"></script>     <!--new top-->
+</body>
+</html>
