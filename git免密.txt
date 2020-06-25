@@ -1,0 +1,10 @@
+C:\Users\Administrator
+
+
+每次git clone 和push 都要输入用户名和密码。虽然安全，但在本机上每次都输有些麻烦，如何记住用户名和密码呢？
+
+当你配置好git后，在C:\Documents and Settings\Administrator\ 目录下有一个  .gitconfig 的文件，里面会有你先前配好的name 和email，只需在下面加一行
+
+[credential] 
+
+     helper = store 
