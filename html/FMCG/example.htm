@@ -1,0 +1,88 @@
+﻿<!DOCTYPE HTML><html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"><meta id="wiz-template-info" data-template-name="weekReport" data-template-version="0.0.2">
+<title></title>
+<script type="text/javascript">
+    //TA.log({id:statId,fid:'cwfx,dbdatacenter'});
+
+var statId = 'db123yjyg';
+var fidId = 'data_cwfx';
+
+if (typeof(fidId)!="undefined" && fidId!=null) {
+	TA.log({id:statId,fid:'info_gather,dbdatacenter,'+fidId});
+} else {
+	TA.log({id:statId,fid:'info_gather,dbdatacenter'});
+}
+
+</script>
+
+<style type="text/css">
+    #footer{border-top:1px solid #777;clear:both;overflow:hidden;padding-top:10px;text-align:center;font-size:12px;line-height:24px;width:1200px;margin:10px auto;font-family:tahoma,arial;}
+    #footer p{margin:0;}
+    #footer p.c333{color:#333;}
+    #footer span{color:#999999;padding:0 10px;}
+    #footer a{line-height:24px;color:#000;text-decoration:none;}
+    #footer a:hover{color:#CC3300;text-decoration:none;}
+    #footer .smarterwiki-linkify{padding:0 14px;}
+    .logined_box{height: 68px;color: #fff;font-size: 14px;}
+    .logined_box a{display: block;height: 68px;float: left;line-height: 68px;color: #fff;}
+    .login_box span,.logined_box span{float: left;line-height: 68px;margin: 0 5px;}
+</style>
+</head>
+
+<body class="wiz-editor-body wiz-template-client-pc wiz-template-client-win" data-wiz-document-type="common" spellcheck="false" style="opacity: 1;" >
+<div class="table-tab J-ajax-board">
+    <a href="###" class="cur J-board-item" board="ALL">全部</a>
+    <a href="###" class="J-board-item"     board="YJYZ">业绩预增</a>
+    <a href="###" class="J-board-item"     board="YJYJ">业绩预减</a>
+</div>
+<div class="page-table" id="J-ajax-main">
+    <div class="page-loading" style="display: none;">
+        <div class="mask"></div>
+        <div class="loading-img"></div>
+    </div>
+        <table class="m-table J-ajax-table J-canvas-table">
+        <thead>
+        <tr class="row2">
+            <th width="50" >序号</th>
+            <th width="90" ><a class="J-ajax-a" field='stockcode'  colidx="1"><a class="J-ajax-a" field="STOCKCODE">股票代码</a><i class="arr-down"></i></th>
+            <th width="90" >股票简称</th>
+            <th width="150" ><a class="J-ajax-a" field='summ' ><a class="J-ajax-a">业绩预告类型</a><i class="arr-down"></i></th>
+            <th width="150">业绩预告摘要</th>
+            <th width="150" ><a class="J-ajax-a" field='jlrbl' >净利润变动幅度 </a><i class="arr-down"></i></th>
+            <th width="150" ><a class="J-ajax-a" field='SNTQJLR' >上年同期净利润</a><i class="arr-down"></i></th>
+            <th width="150" class="cur"><a class="J-ajax-a" field='enddate' order="asc">公告日期</a><i class="arr-down"></i></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr >
+                <td>1</td>
+                <td class="linkToGghq"  > <a target="_blank" class="stockCode">002346</a></td>
+                <td class="linkToGghq"  > <a target="_blank" code="hs_002346" >柘中股份</a></td>
+                <td class="c-fall"      > <span>业绩大幅下降</span> </td>
+                <td class="tl"          > <a target="_blank"> 1</a></td>
+                <td class="c-fall"      > -97.19</td>
+                <td class="c-rise"      > 7120.56万</td>
+                <td class="tc cur"      > 2020-07-04</td>
+            </tr>
+            <tr class="even">
+                <td>2</td>
+                <td class="linkToGghq"  > <a target="_blank" class="stockCode">002346</a></td>
+                <td class="linkToGghq"  > <a target="_blank" code="hs_002346" >柘中股份</a></td>
+                <td class="c-fall"      > <span>业绩大幅下降</span> </td>
+                <td class="tl"          > <a target="_blank">1 </a></td>
+                <td class="c-fall"      > -97.19</td>
+                <td class="c-rise"      > 7120.56万</td>
+                <td class="tc cur"      > 2020-07-04</td>
+            </tr>
+        </tbody>
+</table>
+     <div class="m-page J-ajax-page">
+       &nbsp;<a class="cur" href="javascript:void(0)">1</a>&nbsp;&nbsp;<a class="changePage" page="2" href="javascript:void(0);">2</a>&nbsp;&nbsp;<a class="changePage" page="3" href="javascript:void(0);">3</a>&nbsp;&nbsp;<a class="changePage" page="4" href="javascript:void(0);">4</a>&nbsp;&nbsp;<a class="changePage" page="5" href="javascript:void(0);">5</a>&nbsp;&nbsp;<a class="changePage" page="2" href="javascript:void(0);">下一页</a><a class="changePage" page="14" href="javascript:void(0);">尾页</a><span class="page_info">1/14</span>
+     </div>
+</div>
+</div>
+</div>
+</body>
+
+</html>
