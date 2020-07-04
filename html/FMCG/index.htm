@@ -1,21 +1,17 @@
-﻿
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
 <title>小白数据</title>
 <style>#page a,#page b{margin-right:5px;}</style>
 <script type="text/javascript" src="./data.js"></script>
-
 <script type="text/javascript">
-<!-- var alltxt="2011年考研-上海财经大学金融学（网授）-国庆提高班1,2011年考研-上海财经大学金融学（网授）-国庆提高班2,2011年考研-上海财经大学金融学（网授）-国庆提高班3,2011年考研-上海财经大学金融学（面授）-国庆提高班4,2011年考研-上海财经大学金融学（面授）-一卡通5,2011年考研-上海财经大学dsad金融学（面授）-一卡通6,2011年考研-上海财经大dsadas学金融学（网授）-一卡通7,2011年考研-上海财经大学金融dsadasd学（网授）-一卡通8,2011年考研-上海财经大学金融学（网授）-国庆提高班9,2011年考研-上海财经大学金融学（网授）-国庆提高班10,2011年考研-上海财经大学金融学（网授）-国庆提高班11,2011年考研-上海财经大学金融学（网授）-国庆提高班12"; -->
-
-var pcount=50;              //每页数量
-var searchtxt="";           //搜索结果
-function goindex(txt) {     //搜索内容
+var pcount=50;              // 每页数量
+var searchtxt="";           // 搜索结果
+function goindex(txt)   {   //
     window.location.href='http://chernic.github.io/html/FMCG/index.htm';
 }
-function searchs0(txt) {    //搜索内容
+function searchs0(txt)  {   // 搜索内容
 	searchtxt="";	
 	//alert(txt);
 	var re= new RegExp(txt);
@@ -43,10 +39,13 @@ function searchs0(txt) {    //搜索内容
 		gopage(1);
 	}
 }
-function searchs_0() {txt=document.getElementById("stxt").value;searchs0(txt) }
-function searchs_1(txt) {searchs0(txt) }
-
-function getpage() { //获取总页数
+function searchs_0()    {   //
+txt=document.getElementById("stxt").value;searchs0(txt)
+}
+function searchs_1(txt) {   //
+searchs0(txt) 
+}
+function getpage()      {   // 获取总页数
 	var sch_all=searchtxt.split(',');
 	var allcount=(sch_all.length-1)/pcount; //一共有几页
 	if(sch_all.length%pcount>1)
@@ -55,12 +54,12 @@ function getpage() { //获取总页数
 	}
 	return allcount;
 }
-function getlcont(){ //获取最后一个页面的记录数
+function getlcont()     {   // 获取最后一个页面的记录数
 	var sch_all=searchtxt.split(',');
 	var allcount=(sch_all.length-1)%pcount;
 	return allcount;
 }
-function gopage(p) { //跳转到第几个页面
+function gopage(p)      {   // 跳转到第几个页面
 	var tcount=0;
 	var sch_all=searchtxt.split(',');
 	allpage=parseInt(getpage());
@@ -118,24 +117,19 @@ function gopage(p) { //跳转到第几个页面
 </head>
 
 <body>
-
 <div id="index">
 <input type="button" value="主页" onclick="goindex()" />
 </div>
-
 <div id="search">
 <input type="text"   value="" id="stxt" />
 <input type="button" value="搜索" onclick="searchs_0()" />
 </div>
-
 <div id="search_1">
 <input type="button" value="搜索网授" onclick="searchs_1('网授')" />
 <input type="button" value="搜索网授" onclick="searchs_2('网授')" />
 </div>
-
-<div id="show"></div>
 <div id="page"></div>
-
+<div id="show"></div>
 
 <script>searchs_0();</script> 
 <!-- 放到最后 -->
