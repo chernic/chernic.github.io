@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-<title>无标题文档</title>
+<title>小白数据</title>
 <style>#page a,#page b{margin-right:5px;}</style>
 <script type="text/javascript" src="./data.js"></script>
 
@@ -11,6 +12,9 @@
 
 var pcount=50;              //每页数量
 var searchtxt="";           //搜索结果
+function goindex(txt) {     //搜索内容
+    window.location.href='http://chernic.github.io/html/FMCG/index.htm';
+}
 function searchs0(txt) {    //搜索内容
 	searchtxt="";	
 	//alert(txt);
@@ -114,6 +118,10 @@ function gopage(p) { //跳转到第几个页面
 </head>
 
 <body>
+
+<div id="index">
+<input type="button" value="主页" onclick="goindex()" />
+</div>
 
 <div id="search">
 <input type="text"   value="" id="stxt" />
